@@ -11,7 +11,7 @@ const Login: AppPage = () => {
       <div className="bg-primary h-screen">
         <div className="w-full h-full bg-login">
         <div className="box h-full place-center">
-          <Link href="/" className="absolute top-6 left-2 lg:left-6">
+          <Link href="/" className="lg:hidden absolute top-6 left-2 lg:left-6">
             <Image
               src={logo}
               alt="logo"
@@ -20,7 +20,15 @@ const Login: AppPage = () => {
               height={100}
             />
           </Link>
+          
           <div className="lg:w-[550px] mx-auto bg-white lg:px-16 p-6">
+          <Image
+              src='https://res.cloudinary.com/greenmouse-tech/image/upload/v1689001814/globfolio/Group_48319_zrfe2h.png'
+              alt="logo"
+              className="w-44 mx-auto my-6 hidden lg:block"
+              width={400}
+              height={80}
+            />
             <div className="mt-6 lg:mt-6">
               <p className="text-xl fw-600">Super Admin Login</p>
               <p className="mt-3 fs-500">Fill in your credentials to login to your dashboard</p>
