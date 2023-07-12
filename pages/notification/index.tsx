@@ -29,7 +29,7 @@ const NotificationPage:AppPage = () => {
       content: 
       <div>
           {
-            notify && !!notify.length && notify.map((item, index) => <NotifyItem item={item} index={index}/>)
+            notify && !!notify.length && notify.map((item, index) => <NotifyItem item={item} index={index} key={index}/>)
           }
       </div>
     },
@@ -38,7 +38,7 @@ const NotificationPage:AppPage = () => {
       content: 
       <div>
           {
-            unread && !!unread.length && unread.map((item, index) => <NotifyItem item={item} index={index}/>)
+            unread && !!unread.length && unread.map((item, index) => <NotifyItem item={item} index={index} key={index}/>)
           }
       </div>
     }
