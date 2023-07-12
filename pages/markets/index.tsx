@@ -41,8 +41,8 @@ const MarketsPage: AppPage = () => {
                     <p className='p-6 border-b text-xl fw-600'>Latest Stock Rates</p>
                     <div className='p-6 my-2'>
                       {
-                        stock && !!stock.length && stock.map((item, inde) => (
-                          <div className='grid grid-cols-3 items-center mb-6'>
+                        stock && !!stock.length && stock.map((item, index) => (
+                          <div className='grid grid-cols-3 items-center mb-6' key={index}>
                               <div className='flex gap-x-3 items-center'>
                                 <Image src={item.image} alt='image' width={100} height={100} className='w-12 h-12'/>
                                 <p className='fw-500'>{item.name}</p>
