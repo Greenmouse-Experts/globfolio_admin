@@ -38,7 +38,7 @@ const MarketsPage: AppPage = () => {
                   </div>
                 </div>
                 <div className='col-span-5 bg-white rounded-[10px]'>
-                    <p className='p-6 border-b text-xl fw-600'>Latest Stock Rates</p>
+                    <p className='p-6 border-b text-xl fw-600'>Top Value List</p>
                     <div className='p-6 my-2'>
                       {
                         stock && !!stock.length && stock.map((item, index) => (
