@@ -82,7 +82,7 @@ const SidebarLayout:FC<Props>  = ({setToggled, toggled}) => {
             icon={<AiOutlineUnorderedList className='text-xl'/>}
             active={path === "/top-gainer" && true}
           >
-            <p className='fs-400'>Watchlist</p>
+            <p className='fs-400'>Top Gainers</p>
           </MenuItem>
           <MenuItem
             component={<Link href="/markets" />}

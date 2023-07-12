@@ -2,14 +2,14 @@ import React, {FC, useMemo } from 'react'
 import Table from '../UI/table';
 import { FormatStatus } from '@/shared/utils/format';
 import Initials from '@/shared/utils/initials';
-import { AiOutlineSetting } from 'react-icons/ai';
-import { TiDelete } from 'react-icons/ti'
+import { BiTransfer } from 'react-icons/bi';
+import { BsThreeDotsVertical } from 'react-icons/bs';
 
 interface Props {
     users: any;
     status?: string;
 }
-const UserInfoTable:FC<Props> = ({status, users}) => {
+const TransactionTable:FC<Props> = ({status, users}) => {
 
     if (status) {
         users = users.filter((where:any) => where.status === status);
@@ -18,8 +18,8 @@ const UserInfoTable:FC<Props> = ({status, users}) => {
     const columns = useMemo(
         () => [
           {
-            Header: "S/N",
-            accessor: (row: any, index: number) => index + 1, //RDT provides index by default
+            Header: " ",
+            accessor: (row: any, index: number) => <div className='grid place-content-center bg-[#F2F2F2] w-8 h-8 rounded'><BiTransfer className='text-xl'/></div>
           },
           {
             Header: "Name",
@@ -27,27 +27,30 @@ const UserInfoTable:FC<Props> = ({status, users}) => {
             Cell: (Props:any) => <div className='flex items-center gap-x-2'><Initials fname={Props.value} lname={Props.value} size={34} text='14'/>{Props.value}</div>
           },
           {
-            Header: "Date Joined",
+            Header: "Date of Transaction",
             accessor: "date",
           },
           {
-            Header: "Email Address",
-            accessor: "email",
+            Header: "Amount",
+            accessor: "amount",
           },
           {
-            Header: "Subscription Status",
+            Header: "Status",
             accessor: "status",
             Cell: (props: any) =>
               FormatStatus[props.value as keyof typeof FormatStatus],
           },
           {
-            Header: "Action",
+            Header: "Transaction ID",
+            accessor: "id",
+          },
+          {
+            Header: " ",
             accessor: "status",
-            id: "id",
+            id: "ids",
             Cell: (props: any) =>
-              <div className='flex items-center gap-x-2'>
-                <AiOutlineSetting className='text-xl cursor-pointer'/>
-                <TiDelete className='text-2xl text-red-600 cursor-pointer'/>
+              <div className='flex items-center'>
+                <BsThreeDotsVertical/>
               </div>
           },
         ], // eslint-disable-next-line
@@ -66,4 +69,4 @@ const UserInfoTable:FC<Props> = ({status, users}) => {
       );
 }
 
-export default UserInfoTable
+export default TransactionTable

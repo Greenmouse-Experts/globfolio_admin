@@ -256,10 +256,6 @@ const MarketOverviewChart = () => {
       type: "candlestick",
       height: 350,
     },
-    title: {
-      text: "Ethereum / Bitcoin",
-      align: "center",
-    },
     xaxis: {
       type: "datetime",
     },
