@@ -14,11 +14,9 @@ import TextInput, { InputType } from "../UI/TextInput";
 import { AiOutlineMail } from "react-icons/ai";
 import { VscLock } from 'react-icons/vsc'
 import { ScaleSpinner } from "../UI/Loading";
-// import { ScaleSpinner } from "../Ui/Loaders";
 
 const LoginForm = () => {
   const [isBusy, setIsBusy] = useState(false);
-  // const [login] = useLazyLoginQuery()
   const dispatch = useAppDispatch()
   const router = useRouter()
   const {

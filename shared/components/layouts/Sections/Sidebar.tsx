@@ -78,6 +78,13 @@ const SidebarLayout:FC<Props>  = ({setToggled, toggled}) => {
             <p className='fs-400'>Users</p>
           </MenuItem>
           <MenuItem
+            component={<Link href="/subscription" />}
+            icon={<FaRegCreditCard className='' />}
+            active={path === "/subscription" && true}
+          >
+            <p className='fs-400'>Subscriptions</p>
+          </MenuItem>
+          <MenuItem
             component={<Link href="/top-gainer" />}
             icon={<AiOutlineUnorderedList className='text-xl'/>}
             active={path === "/top-gainer" && true}
@@ -92,18 +99,11 @@ const SidebarLayout:FC<Props>  = ({setToggled, toggled}) => {
             <p className='fs-400'>Markets</p>
           </MenuItem>
           <MenuItem
-            component={<Link href="/stocks" />}
+            component={<Link href="/analyst-picks" />}
             icon={<RiFileCopy2Line className='text-lg' />}
-            active={path === "/stocks" && true}
+            active={path === "/analyst-picks" && true}
           >
-            <p className='fs-400'>Stocks Advisory</p>
-          </MenuItem>
-          <MenuItem
-            component={<Link href="/subscription" />}
-            icon={<FaRegCreditCard className='' />}
-            active={path === "/subscription" && true}
-          >
-            <p className='fs-400'>Subscriptions</p>
+            <p className='fs-400'>Analyst Picks</p>
           </MenuItem>
           <MenuItem
             component={<Link href="/notification" />}

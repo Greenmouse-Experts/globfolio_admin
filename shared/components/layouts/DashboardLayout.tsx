@@ -36,7 +36,7 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
         </div>
         <div className="bg-[#F6F7FB] relative">
           {/* header */}
-          <div className="fixed hidden lg:flex justify-between bg-white p-5 py-1 right-0 top-0 w-full lg:w-[calc(100%_-_250px)]">
+          <div className="fixed hidden lg:flex index-30 justify-between bg-white p-5 py-1 right-0 top-0 w-full lg:w-[calc(100%_-_250px)]">
             <div className="flex items-center gap-x-8">
               <RiMenu3Line
                 className="text-2xl"

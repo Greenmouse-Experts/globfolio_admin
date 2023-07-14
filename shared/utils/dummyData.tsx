@@ -3,37 +3,43 @@ export const subscribers = [
         name: "Jessica Anya",
         market: "MTN",
         date: "05-07-2023",
-        estimate: "₦518,000.16"
+        estimate: "₦518,000.16",
+        plan: "Premium Plan"
     },
     {
         name: "Ohitemeh Jezi",
         market: "AAPL",
         date: "03-07-2023",
-        estimate: "₦423,000.16"
+        estimate: "₦423,000.16",
+        plan: "Basic Plan"
     },
     {
         name: "Mike Ozubor",
         market: "TSLA",
         date: "02-07-2023",
-        estimate: "₦500,000.16"
+        estimate: "₦500,000.16",
+        plan: "Medium Plan"
     },
     {
         name: "Naomi Abacha",
         market: "NFLX",
         date: "01-07-2023",
-        estimate: "₦340,000.27"
+        estimate: "₦340,000.27",
+        plan: "Medium Plan"
     },
     {
         name: "Mike Ozubor",
         market: "TSLA",
         date: "02-07-2023",
-        estimate: "₦500,000.16"
+        estimate: "₦500,000.16",
+        plan: "Medium Plan"
     },
     {
         name: "Jessica Anya",
         market: "MTN",
         date: "05-07-2023",
-        estimate: "₦518,000.16"
+        estimate: "₦518,000.16",
+        plan: "Basic Plan"
     },
 ]
 
@@ -358,5 +364,28 @@ export const stock = [
         amount: "₦300,000",
         add: "₦700,000",
         image: "https://res.cloudinary.com/greenmouse-tech/image/upload/v1689167035/globfolio/Ellipse_1328_rc0w3a.png"
+    },
+]
+
+export const picks = [
+    {
+        name: "Red Hot But Silent IT Stock I Will Buy Today.",
+        topic: "Business",
+        time: "1hr ago"
+    },
+    {
+        name: "Growth Stocks You Should Buy on Pull Back.",
+        topic: "Business",
+        time: "2hr ago"
+    },
+    {
+        name: "Big Cap & 1 Penny Stocks You Should Pick Today.",
+        topic: "Business",
+        time: "3hr ago"
+    },
+    {
+        name: "Growth Stocks You Should Buy on Pull Back.",
+        topic: "Business",
+        time: "2hr ago"
     },
 ]

@@ -8,13 +8,9 @@ import WatchlistTable from '@/shared/components/top-gainer/watchlistTable'
 const TopGainersPage:AppPage = () => {
     const tab = [
         {
-            title: <p>My Watchlist #1</p>,
+            title: <p>My List #1</p>,
             content: <WatchlistTable/>
         },
-        {
-            title: <p className='flex gap-x-2 items-center'><FaPlus/>Create new watchlist</p>,
-            content: <></>
-        }
     ]
   return (
     <>

@@ -1,12 +1,14 @@
 import React, { FC } from "react";
 import { subscribers } from "../../utils/dummyData";
+import Link from "next/link";
 
 const SubscriberMiniTable = () => {
   return (
     <>
       <div className="">
-        <div className="mb-4">
+        <div className="mb-4 flex justify-between">
           <p className="fw-600 fs-700">List of Subscribers</p>
+          <Link href='/subscription' className="fs-500 fw-600 underline">View All</Link>
         </div>
         {subscribers && !!subscribers?.length && (
           <div className="lg:p-4 w-full">
@@ -24,7 +26,7 @@ const SubscriberMiniTable = () => {
                             Name
                           </th>
                           <th className="px-2 pl-3 text-black align-middle border-b border-solid border-gray-200 py-3 fs-500 whitespace-nowrap text-left">
-                            Market
+                            Plan
                           </th>
                           <th className="px-2 pl-3 text-black align-middle border-b border-solid border-gray-200 py-3 fs-500 whitespace-nowrap text-left">
                             Date
@@ -44,7 +46,7 @@ const SubscriberMiniTable = () => {
                               {item.name}
                             </td>
                             <td className="border-b border-gray-200 align-middle fs-500 whitespace-nowrap px-2 py-4 text-left">
-                              {item.market}
+                              {item.plan}
                             </td>
                             <td className="border-b border-gray-200 align-middle fs-500 whitespace-nowrap px-2 py-4 text-left">
                               {item.date}
