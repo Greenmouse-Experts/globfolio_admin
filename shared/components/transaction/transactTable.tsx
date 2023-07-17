@@ -24,7 +24,7 @@ const TransactionTable:FC<Props> = ({status, users}) => {
           {
             Header: "Name",
             accessor: "name",
-            Cell: (Props:any) => <div className='flex items-center gap-x-2'><Initials fname={Props.value} lname={Props.value} size={34} text='14'/>{Props.value}</div>
+            Cell: (Props:any) => <div className='flex items-center gap-x-2'><Initials name={Props.value} size={34} text='14'/>{Props.value}</div>
           },
           {
             Header: "Date of Transaction",
