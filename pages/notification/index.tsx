@@ -11,7 +11,7 @@ const NotificationPage:AppPage = () => {
     return(
         <div className={`bg-[#F6F7FB] rounded-xl p-2 lg:p-4 mt-4 flex justify-between items-center ${item.status === 'unread'? "border border-l-[5px] border-orange-600" : ""}`} key={index}>
           <div className='flex gap-x-3 items-center'>
-          <Initials fname={item.name} lname={item.name} size={45} text='15'/>
+          <Initials name={item.name} size={45} text='15'/>
           <div>
             <p>{item.message}</p>
             <p className='italic fs-300 mt-1'>{item.time}</p>
