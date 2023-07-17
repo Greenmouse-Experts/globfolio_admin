@@ -11,42 +11,40 @@ export interface AdminLoginResult extends BaseResult {
 }
 
 export interface UserData {
-    id: number
-    account_type: string
-    title: string | null
-    first_name: string
-    middle_name: string | null
-    last_name: string
-    email: string
-    phone: string
-    phone2: string | null
-    gender: string | null
-    dob: string | null
-    avatar: string | null
-    email_verified_at: string
-    current_password: string | null
-    role: string
-    wallet: number | null
-    fcm_token: string | null
-    means_of_identification: string | null
-    address: string | null
-    zone_id: string | null
-    truck_id: string | null
-    isVerified: string
+    id?: string;
+    fullname: string;
+    email: string;
+    phone_no?: string;
+    access_token: string;
+    country?: string;
+    userType?: string
+    avatar: string
+    email_verify?: boolean
+    createdAt?: string
+    updatedAt?: string
+    expiresIn?: string
     status: string
     created_at: string
     updated_at: string
 }
 
 export interface authUser {
-    id: string;
-    firstname: string;
-    lastname: string;
+    id?: string;
+    fullname: string;
     email: string;
     phone?: string;
     token: string;
     country?: string;
-    user_type: string
-    admin_type: string
+    userType?: string
     avatar: string
+    email_verify?: boolean
+    createdAt?: string
+    updatedAt?: string
+    expiresIn?: string
+}
+
+export interface UpdatePasswordInput {
+    password: string
+    new_password: string
+    confirm_password: string
 }

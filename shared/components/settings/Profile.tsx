@@ -1,21 +1,27 @@
+import { useAppSelector } from "@/shared/redux/store";
+import Initials from "@/shared/utils/initials";
 import Image from "next/image";
 import React from "react";
 import { AiOutlineEdit } from "react-icons/ai";
 
 const ProfileSettings = () => {
+  const user = useAppSelector((state) => state.user.user)
+  const fname = user?.fullname?.split(' ')[0]
+  const lname = user?.fullname?.split(' ').length > 0 && user?.fullname?.split(' ')[1]
   return (
     <>
       <div className="border border-[#E8EAED] rounded-[15px] p-6 flex items-center justify-between">
         <div className="flex items-center gap-x-4">
-          <Image
+          {/* <Image
             src="https://res.cloudinary.com/greenmouse-tech/image/upload/v1689167035/globfolio/Group_48399_mxhgen.png"
             alt="profile"
             width={150}
             height={150}
             className="w-16 h-16"
-          />
+          /> */}
+          <Initials name={user.fullname} size={55} text="18"/>
           <div>
-            <p className="fw-600 fs-500">James Howie</p>
+            <p className="fw-600 fs-500 capitalize">{user.fullname}</p>
             <p className="fs-300 mt-1">Super admin, Nigeria.</p>
           </div>
         </div>
@@ -29,19 +35,19 @@ const ProfileSettings = () => {
         <div className="grid lg:grid-cols-2 lg:w-10/12 gap-6 mt-6">
             <div className="">
                 <p className="text-[#5F5F5F] fw-500 fs-400">First Name</p>
-                <p className="mt-2 fw-500">James</p>
+                <p className="mt-2 fw-500 capitalize">{fname}</p>
             </div>
             <div className="">
                 <p className="text-[#5F5F5F] fw-500 fs-400">Last Name</p>
-                <p className="mt-2 fw-500">Howie</p>
+                <p className="mt-2 fw-500 capitalize">{lname}</p>
             </div>
             <div className="">
                 <p className="text-[#5F5F5F] fw-500 fs-400">Email address</p>
-                <p className="mt-2 fw-500">greenmouse@gmail.com</p>
+                <p className="mt-2 fw-500">{user.email}</p>
             </div>
             <div className="">
                 <p className="text-[#5F5F5F] fw-500 fs-400">Phone</p>
-                <p className="mt-2 fw-500">09066774535</p>
+                <p className="mt-2 fw-500">{user.phone}</p>
             </div>
         </div>
       </div>
@@ -50,11 +56,11 @@ const ProfileSettings = () => {
         <div className="grid lg:grid-cols-2 lg:w-10/12 gap-6 mt-6">
             <div className="">
                 <p className="text-[#5F5F5F] fw-500 fs-400">Country</p>
-                <p className="mt-2 fw-500">Nigeria</p>
+                <p className="mt-2 fw-500">{user.country}</p>
             </div>
             <div className="">
                 <p className="text-[#5F5F5F] fw-500 fs-400">City/State</p>
-                <p className="mt-2 fw-500">Ikeja, Lagos</p>
+                <p className="mt-2 fw-500">Nill</p>
             </div>
         </div>
       </div>

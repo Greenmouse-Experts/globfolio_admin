@@ -22,3 +22,9 @@ export const getLocalToken = (key: string) => {
       }
       return null;
 }
+
+export const deleteFromLocalStorage = (key: string) => {
+  if (typeof window !== "undefined") {
+    window.localStorage.removeItem(key);
+  }
+};

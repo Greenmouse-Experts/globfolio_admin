@@ -3,19 +3,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { RootState } from "../store";
 import { authUser } from "@/shared/types/auth";
-// import { authUser } from "@/shared/utils/types/auth";
 
 const initialState = {
   user: {
     token: "",
-    firstname: "",
-    lastname: "",
+    fullname: "",
     email: "",
     phone: "",
-    country: "",
-    id: "",
-    user_type: "",
-    admin_type: "",
     avatar: ""
   } as authUser,
 };

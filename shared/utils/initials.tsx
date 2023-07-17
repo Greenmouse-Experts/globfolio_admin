@@ -2,16 +2,18 @@ import React, {FC} from 'react'
 
 interface Props {
   size: number
-  fname: string
-  lname: string
+  name: string
   text: string
 }
-const Initials:FC<Props> = ({size, fname, lname, text}) => {
+const Initials:FC<Props> = ({size, name, text}) => {
 
+  const nameRow = name?.split(' ')
+    const firstLetter = nameRow[0]?.charAt(0)
+    const lastLetter = nameRow[1]?.charAt(0)
   return (
     <div className='circle flex gap-x-[1px] justify-center items-center fw-600 bg-primary text-white' style={{width:size, height:size}}>
-        <p style={{ fontSize: text}}>{fname.charAt(0)}</p>
-        <p style={{ fontSize: text}}>{lname.charAt(0)}</p>
+        <p style={{ fontSize: text}} className='uppercase'>{firstLetter}</p>
+        <p style={{ fontSize: text}}  className='uppercase'>{lastLetter}</p>
     </div>
   )
 }

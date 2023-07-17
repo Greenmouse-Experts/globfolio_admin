@@ -17,7 +17,7 @@ const SettingsPage: AppPage = () => {
   return (
     <>
       <div>
-        <p className="mb-8">Account Setting</p>
+        <p className="mb-8 fw-500 lg:text-xl">Account Setting</p>
         <div className="rounded-[17px] bg-white p-6 py-12 flex">
           <div className="w-2/12 border-r">
             <ul className="text-black w-10/12">

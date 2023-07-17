@@ -7,8 +7,8 @@ import useAuthCheck from "@/hooks/useAuthCheck";
 const AddAuth = (Component: any) => {
   const Wrapper = (props: any) => {
     const router = useRouter();
-    const { IsAuthenticated } = useAuthCheck();
-
+    const { IsAuthenticated, IsAuth } = useAuthCheck();
+    
     if (!IsAuthenticated) {
       router.push("/", { query: { callback: router.pathname } });
       return null;

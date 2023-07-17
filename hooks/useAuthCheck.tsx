@@ -13,7 +13,7 @@ const useAuthCheck = () => {
 
   const IsAuthenticated = !!authenticatedUser.user.token;
 
-  const IsAuth = getLocalToken
+  const IsAuth = getLocalToken("token")
 
   const LoggedInUser = authenticatedUser.user;
 

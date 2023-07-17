@@ -85,7 +85,7 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
               height={60}
               className="w-28 circle"
             /> */}
-            <Initials fname="Woo" lname="Poo" size={40} text="12"/>
+            <Initials name={"wooo ball"} size={40} text="12"/>
               </div>
             </div>
           </div>
@@ -103,4 +103,4 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
   );
 };
 
-export default DashboardLayout;
+export default AddAuth(DashboardLayout);
