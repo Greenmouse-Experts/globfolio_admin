@@ -5,8 +5,10 @@ import AddAnalyticPicksForm from "@/shared/components/analytic-picks/addAnalytic
 import LivePicks from "@/shared/components/analytic-picks/livePicks";
 import { BiEdit } from "react-icons/bi";
 import DraftPicks from "@/shared/components/analytic-picks/draftPicks";
+import { useGetAdvisoryQuery } from "@/services/api/stockSlice";
 
 const StocksPage: AppPage = () => {
+  const {data} = useGetAdvisoryQuery()
   return (
     <>
       <div className="lg:px-10">

@@ -153,7 +153,7 @@ const SecurityPass = () => {
                 )
               }
               disabled={!isValid}
-              altClassName="py-2 bg-primary px-12 rounded-lg text-white fw-500"
+              altClassName="py-2 bg-primary flex justify-center lg:w-56 rounded-lg text-white fw-500"
             />
           </div>
         </form>

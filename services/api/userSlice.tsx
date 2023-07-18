@@ -4,7 +4,7 @@ import { AdminLoginInput, AdminLoginResult, UpdatePasswordInput } from "@/shared
 import { apiSlice } from "../apiSlice";
 
 import * as ENDPOINT from "../constants";
-import { requestAuthorization } from "../helpers";
+import { getLocalToken, requestAuthorization } from "../helpers";
 import { BaseResult, ErrorResult } from "@/shared/types";
 
 export const userApiSlice = apiSlice.injectEndpoints({
@@ -14,7 +14,7 @@ export const userApiSlice = apiSlice.injectEndpoints({
         url: `${ENDPOINT.GET_USERS}`,
         method: ENDPOINT.HTTP_METHODS.GET,
         headers: {
-          Authrization: requestAuthorization()
+          Authorization: getLocalToken("token")
         }
       }),
       keepUnusedDataFor: ENDPOINT.CACHE_LIFETIME.EXTENDED,

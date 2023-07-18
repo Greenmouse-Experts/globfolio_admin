@@ -1,10 +1,10 @@
 "use client";
 
-import { AdminLoginInput, AdminLoginResult, UpdatePasswordInput } from "@/shared/types/auth";
+import { AdminLoginInput, AdminLoginResult, UpdatePasswordInput, UpdateProfileInput } from "@/shared/types/auth";
 import { apiSlice } from "../apiSlice";
 
 import * as ENDPOINT from "../constants";
-import { requestAuthorization } from "../helpers";
+import { getLocalToken, requestAuthorization } from "../helpers";
 import { BaseResult, ErrorResult } from "@/shared/types";
 
 export const authApiSlice = apiSlice.injectEndpoints({
@@ -24,32 +24,32 @@ export const authApiSlice = apiSlice.injectEndpoints({
         body: payload ,
         method: ENDPOINT.HTTP_METHODS.PATCH,
         headers: {
-          Authorization: requestAuthorization(),
+          Authorization: getLocalToken("token"),
         },
       }),
     }),
 
-    // updateUserProfile: builder.query<AdminLoginResult | ErrorResult, UpdateProfileInput>({
-    //   query: (payload) => ({
-    //     url: ENDPOINT.USER_UPDATE_PROFILE,
-    //     body: payload ,
-    //     method: ENDPOINT.HTTP_METHODS.POST,
-    //     headers: {
-    //       Authorization: requestAuthorization(),
-    //     },
-    //   }),
-    // }),
+    updateProfile: builder.query<AdminLoginResult | ErrorResult, UpdateProfileInput>({
+      query: (payload) => ({
+        url: ENDPOINT.UPDATE_PROFILE,
+        body: payload ,
+        method: ENDPOINT.HTTP_METHODS.PATCH,
+        headers: {
+          Authorization: getLocalToken("token"),
+        },
+      }),
+    }),
 
-    //   updateUserPhoto: builder.query({
-    //     query: (payload) => ({
-    //       url: ENDPOINT.USER_UPDATE_PHOTO,
-    //       body: payload ,
-    //       method: ENDPOINT.HTTP_METHODS.POST,
-    //       headers: {
-    //         Authorization: requestAuthorization(),
-    //       },
-    //     }),
-    //   }),
+      updatePhoto: builder.query({
+        query: (payload) => ({
+          url: ENDPOINT.UPDATE_PROFILE_PHOTO,
+          body: payload ,
+          method: ENDPOINT.HTTP_METHODS.POST,
+          headers: {
+            Authorization: requestAuthorization(),
+          },
+        }),
+      }),
     
   }),
   overrideExisting: true,
@@ -57,5 +57,7 @@ export const authApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useLazyAdminLoginQuery,
-  useLazyChangePasswordQuery
+  useLazyChangePasswordQuery,
+  useLazyUpdatePhotoQuery,
+  useLazyUpdateProfileQuery
 } = authApiSlice;

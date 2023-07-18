@@ -11,15 +11,15 @@ const UsersPage:AppPage = () => {
     const tab = [
         {
             title: <p>All Users</p>,
-            content: <UserInfoTable users={users}/>
+            content: <UserInfoTable users={data?.data}/>
         },
         {
             title: <p>Active Subscribers</p>,
-            content: <UserInfoTable status = 'active'  users={users}/>
+            content: <UserInfoTable status = 'active'  users={data?.data}/>
         },
         {
             title: <p>Non-Active Users</p>,
-            content: <UserInfoTable  status='inactive'  users={users}/>
+            content: <UserInfoTable  status=""  users={data?.data}/>
         },
     ]
   return (

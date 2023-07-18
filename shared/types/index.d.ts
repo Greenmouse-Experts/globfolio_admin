@@ -7,4 +7,5 @@ export interface ErrorResult {
   success: boolean;
   message: string;
   errors: Array[any];
+  [key: string]: any;
 }

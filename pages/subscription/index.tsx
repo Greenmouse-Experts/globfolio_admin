@@ -2,8 +2,10 @@ import React from "react";
 import { AppPage } from "@/shared/components/layouts/Types";
 import Image from "next/image";
 import EditSubComponent from "@/shared/components/subscription/EditSubComp";
+import { useGetSubscriptionQuery } from "@/services/api/subscriptionSlice";
 
 const SubscriptionPage: AppPage = () => {
+  const {data} = useGetSubscriptionQuery()
   return (
     <>
       <div>
@@ -70,7 +72,7 @@ const SubscriptionPage: AppPage = () => {
           </div>
         </div>
         <div className="mt-12">
-          <EditSubComponent/>
+          {data && <EditSubComponent data={data}/>}
         </div>
       </div>
     </>

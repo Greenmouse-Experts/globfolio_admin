@@ -4,6 +4,7 @@ import { FormatStatus } from '@/shared/utils/format';
 import Initials from '@/shared/utils/initials';
 import { AiOutlineSetting } from 'react-icons/ai';
 import { TiDelete } from 'react-icons/ti'
+import dayjs from 'dayjs';
 
 interface Props {
     users: any;
@@ -12,7 +13,7 @@ interface Props {
 const UserInfoTable:FC<Props> = ({status, users}) => {
 
     if (status) {
-        users = users.filter((where:any) => where.status === status);
+        users = users.filter((where:any) => where.hasActiveSubscription === status);
       }
   
     const columns = useMemo(
@@ -23,12 +24,14 @@ const UserInfoTable:FC<Props> = ({status, users}) => {
           },
           {
             Header: "Name",
-            accessor: "name",
+            accessor: "fullname",
             Cell: (Props:any) => <div className='flex items-center gap-x-2'><Initials name={Props.value} size={34} text='14'/>{Props.value}</div>
           },
           {
             Header: "Date Joined",
-            accessor: "date",
+            accessor: "createdAt",
+            Cell: (props: any) =>
+              dayjs(props.value).format('DD-MMM-YYYY'),
           },
           {
             Header: "Email Address",
@@ -36,9 +39,8 @@ const UserInfoTable:FC<Props> = ({status, users}) => {
           },
           {
             Header: "Subscription Status",
-            accessor: "status",
-            Cell: (props: any) =>
-              FormatStatus[props.value as keyof typeof FormatStatus],
+            accessor: "hasActiveSubscription",
+            Cell: (props: any) => props.value? FormatStatus['active'] : FormatStatus['inactive']
           },
           {
             Header: "Action",

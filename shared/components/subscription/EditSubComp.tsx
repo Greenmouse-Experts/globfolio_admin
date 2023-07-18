@@ -1,8 +1,15 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import SubItemComp from "./SubItem";
+import { SubscriptionPlanResult } from "@/shared/types/subscription";
 
-const EditSubComponent = () => {
+interface Props{
+  data: SubscriptionPlanResult
+}
+const EditSubComponent:FC<Props> = ({data}) => {
   const [open, setOpen] = useState(1);
+  const basic = data.data.filter((where) => where.name.indexOf("Basic") > -1)
+  const standard = data.data.filter((where) => where.name.indexOf("Standard") > -1)
+  const premium = data.data.filter((where) => where.name.indexOf("Premiun") > -1)
 
   const handleOpen = (value: number) => {
     setOpen(open === value ? value : value);
@@ -19,7 +26,7 @@ const EditSubComponent = () => {
     <>
       <div>
         <div className="mb-6">
-          <p className="text-lg">Plans and Pricing</p>
+          <p className="text-lg fw-600">Plans and Pricing</p>
         </div>
         <div className="bg-white rounded-lg p-6">
           <div className="w-full">
@@ -48,7 +55,9 @@ const EditSubComponent = () => {
             </ul>
           </div>
           <div className="mt-8">
-            <SubItemComp/>
+            {open === 1 ? <SubItemComp data={basic}/> : ""}
+            {open === 2 ? <SubItemComp data={standard}/> : ""}
+            {open === 3 ? <SubItemComp data={premium}/> : ""}
           </div>
         </div>
       </div>

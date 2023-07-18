@@ -1,11 +1,14 @@
+import useModal from "@/hooks/useModal";
 import { useAppSelector } from "@/shared/redux/store";
 import Initials from "@/shared/utils/initials";
 import Image from "next/image";
 import React from "react";
 import { AiOutlineEdit } from "react-icons/ai";
+import EditProfile from "./EditProfile";
 
 const ProfileSettings = () => {
   const user = useAppSelector((state) => state.user.user)
+  const {Modal, setShowModal} = useModal()
   const fname = user?.fullname?.split(' ')[0]
   const lname = user?.fullname?.split(' ').length > 0 && user?.fullname?.split(' ')[1]
   return (
@@ -25,7 +28,7 @@ const ProfileSettings = () => {
             <p className="fs-300 mt-1">Super admin, Nigeria.</p>
           </div>
         </div>
-        <div className="flex gap-x-2 items-center p-1 px-2 rounded-[15px] border border-[#5F5F5F]">
+        <div className="flex gap-x-2 items-center p-1 px-2 rounded-[15px] border border-[#5F5F5F]" onClick={() => setShowModal(true)}>
           <p>Edit</p>
           <AiOutlineEdit />
         </div>
@@ -64,6 +67,9 @@ const ProfileSettings = () => {
             </div>
         </div>
       </div>
+      <Modal title="Update Admin Profile">
+          <EditProfile close={() => setShowModal(false)}/>
+      </Modal>
     </>
   );
 };

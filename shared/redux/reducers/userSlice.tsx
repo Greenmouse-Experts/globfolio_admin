@@ -10,7 +10,8 @@ const initialState = {
     fullname: "",
     email: "",
     phone: "",
-    avatar: ""
+    avatar: "",
+    gender: "male"
   } as authUser,
 };
 

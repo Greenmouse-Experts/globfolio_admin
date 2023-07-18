@@ -36,15 +36,23 @@ export interface authUser {
     token: string;
     country?: string;
     userType?: string
-    avatar: string
+    avatar?: string
     email_verify?: boolean
     createdAt?: string
     updatedAt?: string
     expiresIn?: string
+    gender?: string
 }
 
 export interface UpdatePasswordInput {
     password: string
     new_password: string
     confirm_password: string
+}
+
+export interface UpdateProfileInput {
+    phone_no: string
+    gender: string
+    country: string
+    fullname: string
 }
