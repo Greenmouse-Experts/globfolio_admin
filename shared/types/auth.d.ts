@@ -56,3 +56,7 @@ export interface UpdateProfileInput {
     country: string
     fullname: string
 }
+
+export interface SuspendUserInput {
+    userId: string
+}

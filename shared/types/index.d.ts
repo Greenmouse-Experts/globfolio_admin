@@ -35,3 +35,13 @@ export interface UserProfile {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface UserDataResult {
+  status: boolean
+  data: UserProfile[]
+}
+
+export interface SingleUserDataResult {
+  status: boolean
+  message: UserProfile
+}

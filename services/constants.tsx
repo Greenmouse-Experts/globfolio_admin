@@ -25,6 +25,7 @@ export enum CACHE_LIFETIME {
   // manage users
   export const GET_USERS = "/admin/getAllUsers"
   export const GET_SINGLE_USER = '/admin/getUser'
+  export const SUSPEND_USER = '/admin/suspend-user'
 
   // stock advisory
   export const GET_ADVISORY = '/stockAdvisory/stockAdvisorys'
