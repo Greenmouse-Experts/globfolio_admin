@@ -1,6 +1,6 @@
 "use client";
 
-import { CreateAdvisoryInput, CreateAdvisoryOutput, GetAdvisory } from "@/shared/types/stocks";
+import { CreateAdvisoryInput, CreateAdvisoryOutput, DraftsToMain, GetAdvisory } from "@/shared/types/stocks";
 import { apiSlice } from "../apiSlice";
 
 import * as ENDPOINT from "../constants";
@@ -20,9 +20,31 @@ export const stockApiSlice = apiSlice.injectEndpoints({
       keepUnusedDataFor: ENDPOINT.CACHE_LIFETIME.EXTENDED,
     }),
 
+    getDraftAdvisory: builder.query<GetAdvisory | ErrorResult, void>({
+      query: () => ({
+        url: `${ENDPOINT.GET_DRAFT_ADVISORY}`,
+        method: ENDPOINT.HTTP_METHODS.GET,
+        headers: {
+          Authorization: getLocalToken("token")
+        }
+      }),
+      keepUnusedDataFor: ENDPOINT.CACHE_LIFETIME.EXTENDED,
+    }),
+
     getOneAdvisory: builder.query<GetAdvisory | ErrorResult, void>({
         query: (param) => ({
           url: `${ENDPOINT.GET_ADVISORY}/${param}`,
+          method: ENDPOINT.HTTP_METHODS.GET,
+          headers: {
+            Authorization: getLocalToken("token")
+          }
+        }),
+        keepUnusedDataFor: ENDPOINT.CACHE_LIFETIME.EXTENDED,
+      }),
+
+      getOneDraftAdvisory: builder.query<GetAdvisory | ErrorResult, void>({
+        query: (param) => ({
+          url: `${ENDPOINT.GET_DRAFT_ADVISORY}/${param}`,
           method: ENDPOINT.HTTP_METHODS.GET,
           headers: {
             Authorization: getLocalToken("token")
@@ -42,11 +64,43 @@ export const stockApiSlice = apiSlice.injectEndpoints({
         }),
       }),
 
+      draftAdvisory: builder.query<CreateAdvisoryOutput | ErrorResult, FormData>({
+        query: (payload) => ({
+          url: ENDPOINT.DRAFT_ADVISORY,
+          body: payload ,
+          method: ENDPOINT.HTTP_METHODS.POST,
+          headers: {
+            Authorization: getLocalToken("token"),
+          },
+        }),
+      }),
+
       editAdvisory: builder.query<CreateAdvisoryOutput | ErrorResult, FormData>({
         query: (payload) => ({
           url: ENDPOINT.EDIT_ADVISORY,
           body: payload ,
           method: ENDPOINT.HTTP_METHODS.PATCH,
+          headers: {
+            Authorization: getLocalToken("token"),
+          },
+        }),
+      }),
+
+      publishAdvisory: builder.query<BaseResult | ErrorResult, DraftsToMain>({
+        query: (payload) => ({
+          url: ENDPOINT.UPDATE_TO_MAIN,
+          body: payload ,
+          method: ENDPOINT.HTTP_METHODS.PATCH,
+          headers: {
+            Authorization: getLocalToken("token"),
+          },
+        }),
+      }),
+
+      deleteAdvisory: builder.query<BaseResult | ErrorResult, string>({
+        query: (param) => ({
+          url: `${ENDPOINT.DELETE_ADVISORY}/${param}`,
+          method: ENDPOINT.HTTP_METHODS.DELETE,
           headers: {
             Authorization: getLocalToken("token"),
           },
@@ -61,5 +115,10 @@ export const {
   useGetAdvisoryQuery,
   useGetOneAdvisoryQuery,
   useLazyCreateAdvisoryQuery,
-  useLazyEditAdvisoryQuery
+  useLazyDraftAdvisoryQuery,
+  useLazyEditAdvisoryQuery,
+  useGetDraftAdvisoryQuery,
+  useGetOneDraftAdvisoryQuery,
+  useLazyDeleteAdvisoryQuery,
+  useLazyPublishAdvisoryQuery
 } = stockApiSlice;

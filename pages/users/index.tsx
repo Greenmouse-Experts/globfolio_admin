@@ -2,7 +2,6 @@ import React from 'react'
 import { AppPage } from '@/shared/components/layouts/Types'
 import Tabs from '@/shared/components/UI/Tabs'
 import UserInfoTable from '@/shared/components/users/usersTable'
-import { users } from '@/shared/utils/dummyData'
 import { useGetUsersQuery } from '@/services/api/userSlice'
 
 

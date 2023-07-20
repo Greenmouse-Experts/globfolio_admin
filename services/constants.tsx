@@ -29,7 +29,11 @@ export enum CACHE_LIFETIME {
   // stock advisory
   export const GET_ADVISORY = '/stockAdvisory/stockAdvisorys'
   export const CREATE_ADVISORY = '/stockAdvisory/create'
+  export const DRAFT_ADVISORY = '/stockAdvisory/createDraft'
   export const EDIT_ADVISORY = '/stockAdvisory/update'
+  export const GET_DRAFT_ADVISORY = '/stockAdvisory/stockAdvisorysDraft'
+  export const DELETE_ADVISORY = '/stockAdvisory/delete'
+  export const UPDATE_TO_MAIN = '/stockAdvisory/draftToMain'
 
   // subscription plans
   export const GET_SUBSCRIPTION = '/subscription/plans'

@@ -18,5 +18,22 @@ export interface CreateAdvisoryOutput {
 
 export interface GetAdvisory{
     success: boolean
-    data: any[]
+    data: Advisory[]
+}
+
+export interface Advisory {
+    country: string
+    createdAt: string
+    deletedAt: string | null
+    description: string
+    id: string
+    image: string
+    industry: string
+    intro: string
+    status: string
+    updatedAt: string
+}
+
+export interface DraftsToMain {
+    stockAdvisoryId: string
 }

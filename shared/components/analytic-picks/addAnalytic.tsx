@@ -1,15 +1,23 @@
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import TextInput, { InputType } from "../UI/TextInput";
 import Button from "../UI/Button";
-import { useLazyCreateAdvisoryQuery } from "@/services/api/stockSlice";
+import { useLazyCreateAdvisoryQuery, useLazyDraftAdvisoryQuery } from "@/services/api/stockSlice";
 import { toast } from "react-toastify";
 import { ScaleSpinner } from "../UI/Loading";
+import { formatName } from "@/shared/utils/format";
+import { BeatLoader } from "react-spinners";
 
-const AddAnalyticPicksForm = () => {
+interface Props {
+  refetchLive: () => void
+  refetchDraft: () => void
+}
+const AddAnalyticPicksForm:FC<Props> = ({refetchDraft, refetchLive}) => {
   const [isBusy, setIsBusy] = useState(false);
+  const [isPosting, setIsPosting] = useState(false);
   const [image, setImage] = useState<any>()
   const [create] = useLazyCreateAdvisoryQuery()
+  const [draft] = useLazyDraftAdvisoryQuery()
   const handleFileUpload = (e:any) => {
     setImage(e.target.files[0])
 }
@@ -25,7 +33,7 @@ const AddAnalyticPicksForm = () => {
       industry: "",
       country: "",
       intro: "",
-      body: "",
+      description: ""
     },
   });
 
@@ -42,6 +50,7 @@ const AddAnalyticPicksForm = () => {
           toast.success(res.data.message)
           toast.success('Published Successfully')
           reset()
+          refetchLive()
           setIsBusy(false);
         }else {
           toast.error(res.error.data.message)
@@ -51,6 +60,31 @@ const AddAnalyticPicksForm = () => {
       .catch((err) => {
         toast.error(err?.error?.data.message);
         setIsBusy(false);
+      });
+  }
+  const onDraft = async(data:any) => {
+    setIsPosting(true)
+    const formData = new FormData();
+    Object.entries(data).forEach(([key, value]) => {
+      formData.append(key, value as any);
+    });
+    formData.append("image", image);
+    await draft(formData)
+      .then((res:any) => {
+        if (res.data.success) {
+          toast.success(res.data.message)
+          toast.success('Published Successfully')
+          reset()
+          refetchDraft()
+          setIsPosting(false);
+        }else {
+          toast.error(res.error.data.message)
+          setIsPosting(false);
+        }
+      })
+      .catch((err) => {
+        toast.error(err?.error?.data.message);
+        setIsPosting(false);
       });
   }
   return (
@@ -74,6 +108,7 @@ const AddAnalyticPicksForm = () => {
                     <option value="" disabled>Select an Option</option>
                     <option value="Business">Business</option>
                     <option value="Tech">Tech</option>
+                    <option value="Crypto">Crypto</option>
                   </select>
                 )}
               />
@@ -123,7 +158,7 @@ const AddAnalyticPicksForm = () => {
             </div>
             <div className="mt-6">
               <Controller
-                name="body"
+                name="description"
                 control={control}
                 rules={{
                   required: {
@@ -135,7 +170,7 @@ const AddAnalyticPicksForm = () => {
                   <TextInput
                     label="Body"
                     labelClassName="text-[#000000B2] fw-500"
-                    error={errors.body?.message}
+                    error={errors.description?.message}
                     type={InputType.textarea}
                     altClassName="h-48 rounded w-full p-2"
                     {...field}
@@ -146,10 +181,10 @@ const AddAnalyticPicksForm = () => {
           <div className="mt-8 flex justify-between items-center">
             <div className="bg-[#F6F7FB] relative rounded w-44 px-6 py-[9px] cursor-pointer border border-gray-600 border-dashed">
                 <input type="file" className="absolute opacity-0 w-full h-full cursor-pointer" onChange={(e:any) => handleFileUpload(e)}/>
-                <p className="fw-600 text-center cursor-pointer">Choose File</p>
+                <p className="fw-600 text-center cursor-pointer">{image? formatName(image.name, 8) : "Choose File"}</p>
             </div>
-            <div className="bg-[#F2F2F2] px-6 py-2 rounded cursor-pointer hover:shadow-md">
-                <p className="text-[#7D7D7D]">Save as draft</p>
+            <div className="bg-[#F2F2F2] px-6 py-2 rounded cursor-pointer hover:shadow-md" onClick={handleSubmit(onDraft)}>
+                {isPosting? <BeatLoader size={14} color="black" /> : <p className={`${isValid? "text-black fw-600" : "text-[#7D7D7D]"}`}>Save as draft</p>}
             </div>
           </div>
           <div className="mt-12 mb-2">

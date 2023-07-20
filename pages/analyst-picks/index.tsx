@@ -5,10 +5,11 @@ import AddAnalyticPicksForm from "@/shared/components/analytic-picks/addAnalytic
 import LivePicks from "@/shared/components/analytic-picks/livePicks";
 import { BiEdit } from "react-icons/bi";
 import DraftPicks from "@/shared/components/analytic-picks/draftPicks";
-import { useGetAdvisoryQuery } from "@/services/api/stockSlice";
+import { useGetAdvisoryQuery, useGetDraftAdvisoryQuery } from "@/services/api/stockSlice";
 
 const StocksPage: AppPage = () => {
-  const {data} = useGetAdvisoryQuery()
+  const {data:live, isLoading:liveLoading, refetch:liveRefetch} = useGetAdvisoryQuery()
+  const {data:draft, isLoading:draftLoading, refetch:draftRefetch} = useGetDraftAdvisoryQuery()
   return (
     <>
       <div className="lg:px-10">
@@ -19,7 +20,7 @@ const StocksPage: AppPage = () => {
               <MdOutlineAddBox />
             </div>
             <div className="bg-white rounded-[17px] p-6">
-              <AddAnalyticPicksForm />
+              <AddAnalyticPicksForm refetchLive={liveRefetch} refetchDraft={draftRefetch}/>
             </div>
           </div>
           <div className="col-span-4">
@@ -27,7 +28,7 @@ const StocksPage: AppPage = () => {
               <p className="mb-3 fw-500">Live Advisories</p>
               <div className="h-[300px] bg-white rounded-[17px] p-5">
                 <div className="overflow-y-scroll scroll-pro h-full">
-                <LivePicks />
+                <LivePicks data={live?.data} refetch={liveRefetch}/>
                 </div>
               </div>
             </div>
@@ -38,7 +39,7 @@ const StocksPage: AppPage = () => {
               </div>
               <div className="h-[300px] bg-white rounded-[17px] p-5">
               <div className="overflow-y-scroll scroll-pro h-full">
-                <DraftPicks />
+                <DraftPicks data={draft?.data} refetch={draftRefetch}/>
                 </div>
               </div>
             </div>

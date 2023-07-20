@@ -9,7 +9,7 @@ const EditSubComponent:FC<Props> = ({data}) => {
   const [open, setOpen] = useState(1);
   const basic = data.data.filter((where) => where.name.indexOf("Basic") > -1)
   const standard = data.data.filter((where) => where.name.indexOf("Standard") > -1)
-  const premium = data.data.filter((where) => where.name.indexOf("Premiun") > -1)
+  const premium = data.data.filter((where) => where.name.indexOf("Premium") > -1)
 
   const handleOpen = (value: number) => {
     setOpen(open === value ? value : value);

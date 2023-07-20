@@ -6,6 +6,7 @@ interface Props {
   title: string;
   children: any;
   noHead?: boolean;
+  wide?: boolean
 }
 
 const useModal = () => {
@@ -15,7 +16,7 @@ const useModal = () => {
 
   const setShowModal: boolean | any = (state: boolean) => setModal(state);
 
-  const Modal:React.FC<Props> = ({ title, children, noHead }) => {
+  const Modal:React.FC<Props> = ({ title, children, noHead, wide }) => {
     return (
       <>
         {showModal && (
@@ -24,7 +25,7 @@ const useModal = () => {
             onClick={() => setShowModal(false)}
           >
             <div
-              className={`w-11/12  p-4 lg:px-8 rounded shade bg-white ${noHead? 'md:w-6/12 lg:w-96' : 'md:w-8/12 lg:w-5/12 xl:w-4/12 '}`}
+              className={`w-11/12  p-4 lg:px-8 rounded shade bg-white ${noHead? 'md:w-6/12 lg:w-96' : wide? 'md:w-8/12 lg:w-7/12 xl:w-7/12 ' : 'md:w-8/12 lg:w-5/12 xl:w-4/12 '}`}
               onClick={(e) => e.stopPropagation()}
             >
               {!noHead && (
