@@ -25,7 +25,7 @@ const StocksPage: AppPage = () => {
           </div>
           <div className="col-span-4">
             <div>
-              <p className="mb-3 fw-500">Live Advisories</p>
+              <p className="mb-3 fw-500">Live Picks</p>
               <div className="h-[300px] bg-white rounded-[17px] p-5">
                 <div className="overflow-y-scroll scroll-pro h-full">
                 <LivePicks data={live?.data} refetch={liveRefetch}/>
@@ -39,7 +39,7 @@ const StocksPage: AppPage = () => {
               </div>
               <div className="h-[300px] bg-white rounded-[17px] p-5">
               <div className="overflow-y-scroll scroll-pro h-full">
-                <DraftPicks data={draft?.data} refetch={draftRefetch}/>
+                <DraftPicks data={draft?.data} refetch={draftRefetch} liveRefetch={liveRefetch}/>
                 </div>
               </div>
             </div>

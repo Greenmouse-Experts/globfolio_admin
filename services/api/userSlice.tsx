@@ -41,6 +41,17 @@ export const userApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
+
+    unsuspendUser: builder.query<BaseResult | ErrorResult, SuspendUserInput>({
+      query: (payload) => ({
+        url: ENDPOINT.UNSUSPEND_USER,
+        body: payload ,
+        method: ENDPOINT.HTTP_METHODS.POST,
+        headers: {
+          Authorization: getLocalToken("token"),
+        },
+      }),
+    }),
     
   }),
   overrideExisting: true,
@@ -49,5 +60,6 @@ export const userApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetUsersQuery,
   useGetOneUsersQuery,
-  useLazySuspendUserQuery
+  useLazySuspendUserQuery,
+  useLazyUnsuspendUserQuery
 } = userApiSlice;

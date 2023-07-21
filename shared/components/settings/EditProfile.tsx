@@ -119,7 +119,7 @@ const EditProfile: FC<Props> = ({ close }) => {
                   {...field}
                   className="w-full border border-gray-400 rounded h-[42px]"
                 >
-                  <option value="" disabled>
+                  <option value="">
                     Select Option
                   </option>
                   <option value="Male">Male</option>

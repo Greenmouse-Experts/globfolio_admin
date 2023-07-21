@@ -15,6 +15,7 @@
     "@types/react": "18.2.14",
     "@types/react-dom": "18.2.6",
     "autoprefixer": "10.4.14",
+    "country-list": "^2.3.0",
     "dayjs": "^1.11.9",
     "eslint": "8.44.0",
     "eslint-config-next": "13.4.9",
@@ -36,6 +37,7 @@
     "typescript": "5.1.6"
   },
   "devDependencies": {
+    "@types/country-list": "^2.1.1",
     "@types/react-table": "^7.7.14"
   }
 }

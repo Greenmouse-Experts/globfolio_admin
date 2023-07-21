@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { ScaleSpinner } from "../UI/Loading";
 import { formatName } from "@/shared/utils/format";
 import { BeatLoader } from "react-spinners";
+import {getName, getData} from 'country-list'
 
 interface Props {
   refetchLive: () => void
@@ -21,6 +22,7 @@ const AddAnalyticPicksForm:FC<Props> = ({refetchDraft, refetchLive}) => {
   const handleFileUpload = (e:any) => {
     setImage(e.target.files[0])
 }
+
   const {
     control,
     handleSubmit,
@@ -93,7 +95,7 @@ const AddAnalyticPicksForm:FC<Props> = ({refetchDraft, refetchLive}) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid grid-cols-2 gap-4 mt-4">
             <div>
-            <label className="text-[#000000B2] fw-500">Industry</label>
+            <label className="text-[#000000B2] fw-500">Sector</label>
               <Controller
                 name="industry"
                 control={control}
@@ -125,11 +127,14 @@ const AddAnalyticPicksForm:FC<Props> = ({refetchDraft, refetchLive}) => {
                   },
                 }}
                 render={({ field }) => (
-                  <select className="w-full rounded p-2 border border-gray-400 mt-2" {...field}>
+                  <select className="w-full !max-h-[300px] rounded p-2 border border-gray-400 mt-2" {...field}>
                     <option value="" disabled>Select an Option</option>
                     <option value="Nigeria">Nigeria</option>
-                    <option value="Ghana">Ghana</option>
-                    <option value="Canada">Canada</option>
+                    {
+                      getData().map((item:any) => (
+                        <option value={item.name} key={item.code}>{item.name}</option>
+                      ))
+                    }
                   </select>
                 )}
               />
@@ -147,7 +152,7 @@ const AddAnalyticPicksForm:FC<Props> = ({refetchDraft, refetchLive}) => {
                 }}
                 render={({ field }) => (
                   <TextInput
-                    label="Intro"
+                    label="Subject"
                     labelClassName="text-[#000000B2] fw-500"
                     error={errors.intro?.message}
                     type={InputType.text}

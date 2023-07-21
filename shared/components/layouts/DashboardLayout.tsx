@@ -8,9 +8,11 @@ import dayjs from "dayjs";
 import { BsBell } from "react-icons/bs";
 import { Menu, MenuHandler, MenuItem, MenuList, Button } from "../UI/dropdown";
 import Initials from "@/shared/utils/initials";
+import { useAppSelector } from "@/shared/redux/store";
 
 
 const DashboardLayout = ({ children }: PropsWithChildren) => {
+  const user = useAppSelector((state) => state.user.user)
   const [toggled, setToggled] = React.useState(false);
   let today = new Date();
   return (
@@ -85,7 +87,7 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
               height={60}
               className="w-28 circle"
             /> */}
-            <Initials name={"wooo ball"} size={40} text="12"/>
+            <Initials name={user.fullname} size={40} text="12"/>
               </div>
             </div>
           </div>

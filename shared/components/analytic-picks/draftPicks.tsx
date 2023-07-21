@@ -8,6 +8,7 @@ import useModal from "@/hooks/useModal";
 import ReusableModal from "../UI/ReusableModal";
 import { useLazyDeleteAdvisoryQuery, useLazyPublishAdvisoryQuery } from "@/services/api/stockSlice";
 import { toast } from "react-toastify";
+import ViewPicks from "./viewPicks";
 // dayjs time format
 const dayjs = require("dayjs");
 const relativeTime = require("dayjs/plugin/relativeTime");
@@ -16,13 +17,16 @@ dayjs.extend(relativeTime);
 interface Props {
   data: Advisory[];
   refetch: () => void
+  liveRefetch: () => void
 }
-const DraftPicks: FC<Props> = ({ data, refetch }) => {
+const DraftPicks: FC<Props> = ({ data, refetch, liveRefetch }) => {
   const { Modal: Delete, setShowModal: setShowDelete } = useModal();
   const { Modal: Publish, setShowModal: setShowPublish } = useModal();
+  const { Modal: Edit, setShowModal: setShowEdit } = useModal();
   const [delAd] = useLazyDeleteAdvisoryQuery();
   const [publish] = useLazyPublishAdvisoryQuery()
   const [selectedItem, setSelectedItem] = useState("");
+  const [pick, setPick] = useState<any>();
   const openDelete = (id: string) => {
     setSelectedItem(id);
     setShowDelete(true);
@@ -30,6 +34,10 @@ const DraftPicks: FC<Props> = ({ data, refetch }) => {
   const openPublish = (id: string) => {
     setSelectedItem(id);
     setShowPublish(true);
+  };
+  const openEdit = (item:Advisory) => {
+    setPick(item);
+    setShowEdit(true);
   };
   const deleteAdvisory = async (id: string) => {
     await delAd(id)
@@ -53,6 +61,7 @@ const DraftPicks: FC<Props> = ({ data, refetch }) => {
         if (res.isSuccess) {
           toast.success(res.data.message);
           refetch()
+          liveRefetch()
           setShowPublish(false)
         } else {
           toast.error(res.error.data.message);
@@ -90,7 +99,7 @@ const DraftPicks: FC<Props> = ({ data, refetch }) => {
                     </Button>
                   </MenuHandler>
                   <MenuList className="p-2">
-                    <MenuItem>View</MenuItem>
+                    <MenuItem onClick={() => openEdit(item)}>View</MenuItem>
                     <MenuItem onClick={() => openPublish(item.id)}>Publish</MenuItem>
                     <MenuItem
                       className="bg-red-400 text-white"
@@ -122,6 +131,9 @@ const DraftPicks: FC<Props> = ({ data, refetch }) => {
           closeModal={() => setShowPublish(false)}
         />
       </Publish>
+      <Edit title='Edit Advisory' wide>
+            <ViewPicks close={() => setShowEdit(false)} item={pick}/>
+      </Edit>
     </>
   );
 };
