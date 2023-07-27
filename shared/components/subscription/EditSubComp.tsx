@@ -8,8 +8,9 @@ interface Props{
 const EditSubComponent:FC<Props> = ({data}) => {
   const [open, setOpen] = useState(1);
   const basic = data.data.filter((where) => where.name.indexOf("Basic") > -1)
-  const standard = data.data.filter((where) => where.name.indexOf("Standard") > -1)
   const premium = data.data.filter((where) => where.name.indexOf("Premium") > -1)
+  const platinum = data.data.filter((where) => where.name.indexOf("Platinum") > -1)
+  const gold = data.data.filter((where) => where.name.indexOf("Gold") > -1)
 
   const handleOpen = (value: number) => {
     setOpen(open === value ? value : value);
@@ -43,21 +44,29 @@ const EditSubComponent:FC<Props> = ({data}) => {
                 style={open === 2 ? activeStyle : inactive}
                 onClick={() => handleOpen(2)}
               >
-                <span className="">Standard Plan</span>
+                <span className="">Premium Plan</span>
               </li>
               <li
                 className="nav-item py-2 px-6 rounded-lg cursor-pointer fs-600 mb-2"
                 style={open === 3 ? activeStyle : inactive}
                 onClick={() => handleOpen(3)}
               >
-                <span className="">Premium Plan</span>
+                <span className="">Platinum Plan</span>
+              </li>
+              <li
+                className="nav-item py-2 px-6 rounded-lg cursor-pointer fs-600 mb-2"
+                style={open === 4 ? activeStyle : inactive}
+                onClick={() => handleOpen(4)}
+              >
+                <span className="">Gold Plan</span>
               </li>
             </ul>
           </div>
           <div className="mt-8">
             {open === 1 ? <SubItemComp data={basic}/> : ""}
-            {open === 2 ? <SubItemComp data={standard}/> : ""}
-            {open === 3 ? <SubItemComp data={premium}/> : ""}
+            {open === 2 ? <SubItemComp data={premium}/> : ""}
+            {open === 3 ? <SubItemComp data={platinum}/> : ""}
+            {open === 4 ? <SubItemComp data={gold}/> : ""}
           </div>
         </div>
       </div>

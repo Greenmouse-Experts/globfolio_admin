@@ -2,10 +2,11 @@ import React from "react";
 import { AppPage } from "@/shared/components/layouts/Types";
 import Image from "next/image";
 import EditSubComponent from "@/shared/components/subscription/EditSubComp";
-import { useGetSubscriptionQuery } from "@/services/api/subscriptionSlice";
+import { useGetSubUserQuery, useGetSubscriptionQuery } from "@/services/api/subscriptionSlice";
 
 const SubscriptionPage: AppPage = () => {
   const {data} = useGetSubscriptionQuery()
+  const {data:sub, isLoading} = useGetSubUserQuery()
   return (
     <>
       <div>
