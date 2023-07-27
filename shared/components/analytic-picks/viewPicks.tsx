@@ -8,6 +8,7 @@ import Button from "../UI/Button";
 import { ScaleSpinner } from "../UI/Loading";
 import { formatName } from "@/shared/utils/format";
 import Image from "next/image";
+import {getName, getData} from 'country-list'
 
 interface Props {
   item: Advisory;
@@ -96,31 +97,29 @@ const ViewPicks: FC<Props> = ({ item }) => {
                 />
               </div>
               <div>
-                <label className="text-[#000000B2] fw-500">Country</label>
-                <Controller
-                  name="country"
-                  control={control}
-                  rules={{
-                    required: {
-                      value: true,
-                      message: "Please enter country",
-                    },
-                  }}
-                  render={({ field }) => (
-                    <select
-                      className="w-full rounded p-2 border border-gray-400 mt-2"
-                      {...field}
-                    >
-                      <option value="" disabled>
-                        Select an Option
-                      </option>
-                      <option value="Nigeria">Nigeria</option>
-                      <option value="Ghana">Ghana</option>
-                      <option value="Canada">Canada</option>
-                    </select>
-                  )}
-                />
-              </div>
+            <label className="text-[#000000B2] fw-500">Country</label>
+              <Controller
+                name="country"
+                control={control}
+                rules={{
+                  required: {
+                    value: true,
+                    message: "Please enter country",
+                  },
+                }}
+                render={({ field }) => (
+                  <select className="w-full !max-h-[300px] rounded p-2 border border-gray-400 mt-2" {...field}>
+                    <option value="" disabled>Select an Option</option>
+                    <option value="Nigeria">Nigeria</option>
+                    {
+                      getData().map((item:any) => (
+                        <option value={item.name} key={item.code}>{item.name}</option>
+                      ))
+                    }
+                  </select>
+                )}
+              />
+            </div>
             </div>
             <div className="mt-6">
               <Controller
@@ -177,15 +176,15 @@ const ViewPicks: FC<Props> = ({ item }) => {
                 </p>
               </div>
               <div>
-                <a href={item.image} target="_blank" className="">
+                {item?.image && <a href={item?.image} target="_blank" className="">
                   <Image
-                    src={item.image}
+                    src={item?.image}
                     alt="image"
                     width={130}
                     height={130}
                     className=""
                   />
-                </a>
+                </a>}
               </div>
             </div>
             <div className="mt-12 mb-2">

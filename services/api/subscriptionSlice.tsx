@@ -1,6 +1,5 @@
 "use client";
 
-import { AdminLoginInput, AdminLoginResult, UpdatePasswordInput } from "@/shared/types/auth";
 import { apiSlice } from "../apiSlice";
 
 import * as ENDPOINT from "../constants";
@@ -15,7 +14,18 @@ export const subscriptionApiSlice = apiSlice.injectEndpoints({
         url: `${ENDPOINT.GET_SUBSCRIPTION}`,
         method: ENDPOINT.HTTP_METHODS.GET,
         headers: {
-          Authrization: getLocalToken("token")
+          Authorization: getLocalToken("token")
+        }
+      }),
+      keepUnusedDataFor: ENDPOINT.CACHE_LIFETIME.EXTENDED,
+    }),
+
+    getSubUser: builder.query<SubscriptionPlanResult | any, void>({
+      query: () => ({
+        url: `${ENDPOINT.GET_SUBSCRIBED_USERS}`,
+        method: ENDPOINT.HTTP_METHODS.GET,
+        headers: {
+          authorization: getLocalToken("token")
         }
       }),
       keepUnusedDataFor: ENDPOINT.CACHE_LIFETIME.EXTENDED,
@@ -49,5 +59,6 @@ export const subscriptionApiSlice = apiSlice.injectEndpoints({
 
 export const {
   useGetSubscriptionQuery,
-  useLazyEditSubscriptionQuery
+  useLazyEditSubscriptionQuery,
+  useGetSubUserQuery
 } = subscriptionApiSlice;

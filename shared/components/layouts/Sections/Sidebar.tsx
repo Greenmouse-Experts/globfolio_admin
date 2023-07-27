@@ -14,6 +14,7 @@ import { usePathname } from 'next/navigation'
 import  logo  from '../../../../public/logo.svg'
 import { RiFileCopy2Line } from 'react-icons/ri';
 import { FaRegCreditCard } from 'react-icons/fa';
+import { VscFeedback } from 'react-icons/vsc';
 
 interface Props {
   setToggled: (value: boolean | ((prevVar: boolean) => boolean)) => void;
@@ -104,6 +105,13 @@ const SidebarLayout:FC<Props>  = ({setToggled, toggled}) => {
             active={path === "/analyst-picks" && true}
           >
             <p className='fs-400'>Analyst Picks</p>
+          </MenuItem>
+          <MenuItem
+            component={<Link href="/feedback" />}
+            icon={<VscFeedback className='text-lg' />}
+            active={path === "/feedback" && true}
+          >
+            <p className='fs-400'>Feedback</p>
           </MenuItem>
           <MenuItem
             component={<Link href="/notification" />}

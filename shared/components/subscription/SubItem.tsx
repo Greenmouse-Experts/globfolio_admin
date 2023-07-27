@@ -103,7 +103,7 @@ const SubItemComp: FC<Props> = ({ data }) => {
             </div>
           </div>
           <div className="mt-8">
-            <p className="fw-600">Price / month</p>
+            <p className="fw-600">Price Anually</p>
             <div className="border-2 border-[#E8EAED] rounded-[15px] flex p-2 mt-4 px-6">
               <Controller
                 name="amount"
@@ -176,7 +176,7 @@ const SubItemComp: FC<Props> = ({ data }) => {
               <div className="text-center text-white">
                 <p>{watch("name")}</p>
                 <p className="mt-4 fw-600 text-lg">
-                  {formatAsNgnMoney(watch("amount"))} / Month
+                  {formatAsNgnMoney(watch("amount"))} / Annual
                 </p>
               </div>
             </div>

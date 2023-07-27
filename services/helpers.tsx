@@ -8,6 +8,13 @@ export const requestAuthorization = () => {
       : "";
   };
 
+  export const requestBasicAuthorization = () => {
+    const appState = store.getState();
+    return appState && appState.user && appState.user.user
+      ? `authorization ${appState.user.user.token}`
+      : "";
+  };
+
 export const storeLocalToken = (key: string, data: any) => {
     if (typeof window !== "undefined") {
         window.localStorage.setItem(key, JSON.stringify(data));

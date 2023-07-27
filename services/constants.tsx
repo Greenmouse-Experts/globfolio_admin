@@ -41,3 +41,7 @@ export enum CACHE_LIFETIME {
   export const GET_SUBSCRIPTION = '/subscription/plans'
   export const CREATE_SUBSCRIPTION = '/subscription/create'
   export const EDIT_SUBSCRIPTION = '/subscription/update'
+  export const GET_SUBSCRIBED_USERS = '/subscription/getPlanUsers'
+
+  //feedbacks
+  export const GET_FEEDBACKS = '/admin/getFeedbacks'
