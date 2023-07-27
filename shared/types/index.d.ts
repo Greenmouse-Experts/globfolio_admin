@@ -34,6 +34,8 @@ export interface UserProfile {
   expiredAt: string | null;
   createdAt: string;
   updatedAt: string;
+  picture: string | null,
+  subscriptionPlan: string | null
 }
 
 export interface UserDataResult {

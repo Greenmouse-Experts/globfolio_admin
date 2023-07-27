@@ -91,7 +91,7 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
               </div>
             </div>
           </div>
-          <div className="pt-24 min-h-screen px-3 lg:px-5 pb-16">
+          <div className="pt-10 lg:pt-24 min-h-screen px-3 lg:px-5 pb-16">
             {children}
           </div>
           <div className="text-center pb-4">

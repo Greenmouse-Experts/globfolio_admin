@@ -52,7 +52,7 @@ const MoneyIncomeChart = () => {
 
   return (
     <>
-      <div className="text-white">
+      <div className="text-white overflow-hidden">
         <div className="mb-6">
           <p className="fw-600 text-2xl">N24,000,000</p>
           <p className="mt-2 fw-500">Generated in the last 6 months</p>

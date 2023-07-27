@@ -5,7 +5,7 @@ import { RiArrowUpSFill } from 'react-icons/ri'
 const TodaysPickComp = () => {
   return (
     <>
-        <div>
+        <div className='w-full overflow-hidden'>
             <div className='flex justify-between items-center'>
             <p className='fw-600 fs-700'>Today&apos;s Pick</p>
             <BsThreeDotsVertical/>

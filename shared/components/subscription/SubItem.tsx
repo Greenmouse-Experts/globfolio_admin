@@ -13,8 +13,9 @@ import { ScaleSpinner } from "../UI/Loading";
 
 interface Props {
   data: SubscriptionPlan[];
+    refetch: () => void
 }
-const SubItemComp: FC<Props> = ({ data }) => {
+const SubItemComp: FC<Props> = ({ data, refetch }) => {
   const [benefits, setBenefits] = useState<any[]>(data[0]?.benefits || []);
   const [benefit, setBenefit] = useState("")
   const [isBusy, setIsBusy] = useState(false);
@@ -58,6 +59,7 @@ const SubItemComp: FC<Props> = ({ data }) => {
         if (res.isSuccess) {
           toast.success(res.data.message);
           setIsBusy(false);
+          refetch()
         } else {
           toast.error(res.error.data.message);
           setIsBusy(false);
@@ -71,8 +73,8 @@ const SubItemComp: FC<Props> = ({ data }) => {
 
   return (
     <>
-      <div className="flex gap-x-8">
-        <div className="w-8/12">
+      <div className="lg:flex gap-x-8">
+        <div className="lg:w-8/12">
           <div className="">
             <p className="fw-600">Subscription</p>
             <div className="border-2 border-[#E8EAED] rounded-[15px] flex p-2 mt-4 px-6">
@@ -161,7 +163,7 @@ const SubItemComp: FC<Props> = ({ data }) => {
             </div>
           </div>
         </div>
-        <div className="border-l w-4/12">
+        <div className="lg:border-l lg:w-4/12">
           <div className="w-10/12 mx-auto mt-12 rounded-[12px] border">
             <div className="rounded-t-[12px] pb-6 bg-primary ">
               <div className="w-24 h-24 bg-white mx-auto place-center circle relative -top-10 shadow-lg">

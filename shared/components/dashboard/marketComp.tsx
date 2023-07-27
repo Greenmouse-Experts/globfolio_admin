@@ -268,10 +268,10 @@ const MarketOverviewChart = () => {
 
   return (
     <>
-      <div>
-        <div className="flex items-center justify-between">
+      <div className="w-full overflow-hidden">
+        <div className="lg:flex items-center justify-between">
           <p className="fw-600 fs-700">Market Overview</p>
-          <div className="flex items-center gap-x-4">
+          <div className="flex items-center gap-x-4 mt-4 lg:mt-0">
             <div className="flex items-center gap-x-1">
               <input type="radio" name="market" />
               <label className="fs-500">AAPPL</label>
@@ -296,7 +296,8 @@ const MarketOverviewChart = () => {
             <option>Mothly (2023)</option>
           </select>
         </div>
-        <div className="mt-8">
+        <div className="overflow-x-auto overflow-y-hidden">
+        <div className="mt-8 w-[550px] lg:w-full">
           {typeof window !== "undefined" && (
             <Chart
               options={options}
@@ -306,6 +307,7 @@ const MarketOverviewChart = () => {
               height="350px"
             />
           )}
+        </div>
         </div>
       </div>
     </>

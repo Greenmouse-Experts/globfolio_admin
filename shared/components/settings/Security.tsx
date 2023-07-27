@@ -77,8 +77,8 @@ const SecurityPass = () => {
               </div>
             </div>
             <div className="py-12 border-b lg:pl-12">
-              <div className="flex items-center">
-                <p className="w-3/12">New password</p>
+              <div className="lg:flex items-center">
+                <p className="lg:w-3/12">New password</p>
                 <div className="lg:w-7/12">
                   <div>
                     <Controller
@@ -112,8 +112,8 @@ const SecurityPass = () => {
               </div>
             </div>
             <div className="py-12 border-b lg:pl-12">
-              <div className="flex items-center">
-                <p className="w-3/12">Confirm password</p>
+              <div className="lg:flex items-center">
+                <p className="lg:w-3/12">Confirm password</p>
                 <div className="lg:w-7/12">
                   <Controller
                     name="confirm_password"
@@ -153,7 +153,7 @@ const SecurityPass = () => {
                 )
               }
               disabled={!isValid}
-              altClassName="py-2 bg-primary flex justify-center lg:w-56 rounded-lg text-white fw-500"
+              altClassName="py-2 bg-primary flex justify-center px-5 lg:w-56 rounded-lg text-white fw-500"
             />
           </div>
         </form>
