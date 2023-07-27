@@ -93,7 +93,7 @@ const AddAnalyticPicksForm:FC<Props> = ({refetchDraft, refetchLive}) => {
     <>
       <div>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <div className="grid grid-cols-2 gap-4 mt-4">
+          <div className="grid lg:grid-cols-2 gap-4 mt-4">
             <div>
             <label className="text-[#000000B2] fw-500">Sector</label>
               <Controller
@@ -183,12 +183,12 @@ const AddAnalyticPicksForm:FC<Props> = ({refetchDraft, refetchLive}) => {
                 )}
               />
             </div>
-          <div className="mt-8 flex justify-between items-center">
+          <div className="mt-8 lg:flex justify-between items-center">
             <div className="bg-[#F6F7FB] relative rounded w-44 px-6 py-[9px] cursor-pointer border border-gray-600 border-dashed">
                 <input type="file" className="absolute opacity-0 w-full h-full cursor-pointer" onChange={(e:any) => handleFileUpload(e)}/>
                 <p className="fw-600 text-center cursor-pointer">{image? formatName(image.name, 8) : "Choose File"}</p>
             </div>
-            <div className="bg-[#F2F2F2] px-6 py-2 rounded cursor-pointer hover:shadow-md" onClick={handleSubmit(onDraft)}>
+            <div className="bg-[#F2F2F2] mt-6 lg:mt-0 w-6/12 lg:w-auto px-6 py-2 rounded cursor-pointer hover:shadow-md" onClick={handleSubmit(onDraft)}>
                 {isPosting? <BeatLoader size={14} color="black" /> : <p className={`${isValid? "text-black fw-600" : "text-[#7D7D7D]"}`}>Save as draft</p>}
             </div>
           </div>

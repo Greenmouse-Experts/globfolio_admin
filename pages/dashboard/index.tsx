@@ -12,9 +12,9 @@ const DashboardHome: AppPage = () => {
       <div>
         <TopAnalysisDetails />
       </div>
-      <div className="mt-6 lg:mt-12 grid lg:grid-cols-12 gap-8">
-        <div className="col-span-8">
-          <div className="p-6 bg-white rounded-[10px]">
+      <div className="mt-6 lg:mt-12 lg:grid lg:grid-cols-12 gap-8">
+        <div className="lg:col-span-8">
+          <div className="lg:p-6 p-3 py-5 bg-white rounded-[10px] w-full overflow-x-auto">
             <MarketOverviewChart/>
           </div>
           <div className="p-6 bg-white rounded-[10px] mt-6 lg:mt-8">
@@ -22,7 +22,7 @@ const DashboardHome: AppPage = () => {
           </div>
         </div>
         <div className="col-span-4">
-          <div className="p-6 bg-white rounded">
+          <div className="p-6 bg-white rounded mt-6 lg:mt-0">
             <TodaysPickComp/>
           </div>
           <div className="p-6 bg-white rounded mt-6 lg:mt-8">

@@ -67,7 +67,7 @@ const ViewUserProfile: FC<Props> = ({ item }) => {
               <p className="fs-700 fw-600">{data?.message.fullname}</p>
               <p>{item.email}</p>
             </div>
-            <div className="absolute right-0 -top-7">
+            {item.subscriptionPlan && <div className="absolute right-0 -top-7">
               <Image
                 src="https://res.cloudinary.com/greenmouse-tech/image/upload/v1689834080/globfolio/3974366_iboyrd.png"
                 alt="sub"
@@ -75,8 +75,8 @@ const ViewUserProfile: FC<Props> = ({ item }) => {
                 height={70}
                 className="w-8 mx-auto"
               />
-              <p className="fs-200 fw-600 italic">Basic</p>
-            </div>
+              <p className="fs-200 fw-600 italic">{item.subscriptionPlan}</p>
+            </div>}
           </div>
           <div className="mt-3">
             <div className="flex items-center gap-x-2">

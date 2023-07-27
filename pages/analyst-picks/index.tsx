@@ -13,7 +13,7 @@ const StocksPage: AppPage = () => {
   return (
     <>
       <div className="lg:px-10">
-        <div className="grid grid-cols-12 gap-6">
+        <div className="lg:grid lg:grid-cols-12 gap-6">
           <div className="col-span-8">
             <div className="flex gap-x-2 items-center mb-3">
               <p className="fw-500">Create New</p>

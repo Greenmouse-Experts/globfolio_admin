@@ -18,9 +18,9 @@ const SettingsPage: AppPage = () => {
     <>
       <div>
         <p className="mb-8 fw-500 lg:text-xl">Account Setting</p>
-        <div className="rounded-[17px] bg-white p-6 py-12 flex">
-          <div className="w-2/12 border-r">
-            <ul className="text-black w-10/12">
+        <div className="rounded-[17px] bg-white px-3 py-6 lg:p-6 lg:py-12 lg:flex">
+          <div className="lg:w-2/12 border-r">
+            <ul className="text-black lg:w-10/12 flex lg:block">
               <li
                 className="nav-item py-2 px-6 rounded-lg cursor-pointer fs-400 mb-2"
                 style={open === 1 ? activeStyle : undefined}
@@ -37,7 +37,7 @@ const SettingsPage: AppPage = () => {
               </li>
             </ul>
           </div>
-          <div className="w-10/12  lg:pl-12">
+          <div className="lg:w-10/12 mt-5 lg:mt-0 lg:pl-12">
           {open === 1 ? <ProfileSettings/> : ""}
           {open === 2 ? <SecurityPass/> : ""}
           </div>

@@ -15,14 +15,7 @@ const ProfileSettings = () => {
     <>
       <div className="border border-[#E8EAED] rounded-[15px] p-6 flex items-center justify-between">
         <div className="flex items-center gap-x-4">
-          {/* <Image
-            src="https://res.cloudinary.com/greenmouse-tech/image/upload/v1689167035/globfolio/Group_48399_mxhgen.png"
-            alt="profile"
-            width={150}
-            height={150}
-            className="w-16 h-16"
-          /> */}
-          <Initials name={user.fullname} size={55} text="18"/>
+          <div><Initials name={user.fullname} size={55} text="18"/></div>
           <div>
             <p className="fw-600 fs-500 capitalize">{user.fullname}</p>
             <p className="fs-300 mt-1">Super admin, Nigeria.</p>
