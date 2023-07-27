@@ -37,6 +37,7 @@ const SubscriptionPage: AppPage = () => {
                 className={`flex items-center justify-between p-5 rounded-[8px] ${
                   formatBgColor[item.name as keyof typeof formatBgColor]
                 }`}
+                key={index}
               >
                 <div>
                   <p className="fs-400 fw-500">{item.name}</p>
