@@ -32,6 +32,7 @@ export const FormatStatus=  {
   "accepted": <p className="w-28 text-center py-1 text-green-800 bg-green-100 border border-green-800 rounded">Accepted</p>,
   "cleared": <p className="w-28 text-center py-1 text-blue-800 bg-blue-100 border border-blue-800 rounded">Cleared</p>,
   "paid": <div className="flex items-center gap-x-2"><span className="bg-green-600 w-4 h-4 circle"></span> <span className="fw-500 text-green-600">Paid</span></div>,
+  "approved": <div className="flex items-center gap-x-2"><span className="bg-green-600 w-4 h-4 circle"></span> <span className="fw-500 text-green-600">Paid</span></div>,
   "declined": <div className="flex items-center gap-x-2"><span className="bg-red-600 w-4 h-4 circle"></span> <span className="fw-500 text-red-600">Declined</span></div>,
 }
 

@@ -80,13 +80,6 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
                 </MenuList>
               </Menu>
               <div>
-              {/* <Image
-              src="https://res.cloudinary.com/greenmouse-tech/image/upload/v1689001814/globfolio/Group_48319_zrfe2h.png"
-              alt="logo"
-              width={150}
-              height={60}
-              className="w-28 circle"
-            /> */}
             <Initials name={user.fullname} size={40} text="12"/>
               </div>
             </div>

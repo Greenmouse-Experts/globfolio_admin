@@ -8,6 +8,7 @@ import dayjs from "dayjs";
 import useModal from "@/hooks/useModal";
 import { UserProfile } from "@/shared/types";
 import ViewUserProfile from "./userProfile";
+import { EmptyState2 } from "@/shared/utils/emptyState";
 
 interface Props {
   users: UserProfile[];
@@ -76,6 +77,9 @@ const UserInfoTable: FC<Props> = ({ status, users }) => {
   return (
     <>
       <div className="mt-6">
+        {
+          users && !users?.length && <div className="py-6 flex justify-center"><EmptyState2 message="No Users Data Avaivable Yet"/></div>
+        }
         {users && !!users?.length && (
           <div className="lg:p-4 w-full">
             <Table columns={columns} data={list} />

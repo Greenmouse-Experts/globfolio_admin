@@ -45,3 +45,9 @@ export enum CACHE_LIFETIME {
 
   //feedbacks
   export const GET_FEEDBACKS = '/admin/getFeedbacks'
+
+  // transaction
+  export const GET_TRANSACTION = '/transactions'
+
+  // notification
+  export const GET_ADMIN_NOTIFICATION = '/notifications/admin'

@@ -1,18 +1,19 @@
 import React, {FC, useMemo } from 'react'
 import Table from '../UI/table';
-import { FormatStatus } from '@/shared/utils/format';
+import { FormatStatus, formatAsNgnMoney } from '@/shared/utils/format';
 import Initials from '@/shared/utils/initials';
 import { BiTransfer } from 'react-icons/bi';
 import { BsThreeDotsVertical } from 'react-icons/bs';
+import dayjs from 'dayjs';
 
 interface Props {
-    users: any;
+    transact: any;
     status?: string;
 }
-const TransactionTable:FC<Props> = ({status, users}) => {
+const TransactionTable:FC<Props> = ({status, transact}) => {
 
     if (status) {
-        users = users.filter((where:any) => where.status === status);
+        transact = transact.filter((where:any) => where.status === status);
       }
   
     const columns = useMemo(
@@ -23,16 +24,26 @@ const TransactionTable:FC<Props> = ({status, users}) => {
           },
           {
             Header: "Name",
-            accessor: "name",
+            accessor: "user.fullname",
             Cell: (Props:any) => <div className='flex items-center gap-x-2'><Initials name={Props.value} size={34} text='14'/>{Props.value}</div>
           },
           {
+            Header: "Email",
+            accessor: "user.email",
+          },
+          {
             Header: "Date of Transaction",
-            accessor: "date",
+            accessor: "createdAt",
+            Cell: (props: any) => dayjs(props.value).format('DD-MMM-YYYY')
           },
           {
             Header: "Amount",
             accessor: "amount",
+            Cell: (props: any) => formatAsNgnMoney(props.value)
+          },
+          {
+            Header: "Description",
+            accessor: "description",
           },
           {
             Header: "Status",
@@ -42,7 +53,7 @@ const TransactionTable:FC<Props> = ({status, users}) => {
           },
           {
             Header: "Transaction ID",
-            accessor: "id",
+            accessor: "TransactionId",
           },
           {
             Header: " ",
@@ -57,11 +68,11 @@ const TransactionTable:FC<Props> = ({status, users}) => {
         []
       );
     
-      const list = useMemo(() => users, [users]);
+      const list = useMemo(() => transact, [transact]);
       return (
         <>
-          <div className='mt-6'>
-            {users && !!users?.length && <div className="lg:p-4 w-full">
+          <div className='mt-6 lg:w-[70vw] overflow-x-auto'>
+            {transact && !!transact?.length && <div className="lg:p-4 w-full">
             <Table columns={columns} data={list} />
           </div>}
           </div>
