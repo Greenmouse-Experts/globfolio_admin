@@ -1,21 +1,29 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import SubItemComp from "./SubItem";
-import { SubscriptionPlanResult } from "@/shared/types/subscription";
+import { SubscriptionPlan, SubscriptionPlanResult } from "@/shared/types/subscription";
+import useModal from "@/hooks/useModal";
+import CreateNewPlan from "./NewPlan";
+
 
 interface Props{
   data: SubscriptionPlanResult
   refetch: () => void
 }
 const EditSubComponent:FC<Props> = ({data, refetch}) => {
-  const [open, setOpen] = useState(1);
-  const basic = data.data.filter((where) => where.name.indexOf("Basic") > -1)
-  const premium = data.data.filter((where) => where.name.indexOf("Premium") > -1)
-  const platinum = data.data.filter((where) => where.name.indexOf("Platinum") > -1)
-  const gold = data.data.filter((where) => where.name.indexOf("Gold") > -1)
+  const [open, setOpen] = useState("");
+  const [plan, setPlan] = useState<SubscriptionPlan[]>(data?.data)
+  const {Modal, setShowModal} = useModal()
 
-  const handleOpen = (value: number) => {
-    setOpen(open === value ? value : value);
+  const handleOpen = (value: any) => {
+    setOpen(value.id)
+    const plans = data.data.filter((where) => where.id === value.id)
+    setPlan(plans);
   };
+  // useEffect(() => {
+  //   if(open){
+  //     // setPlan(data.data.filter((where) => where.id.indexOf(open) > -1));
+  //   }
+  // }, [handleOpen])
   const inactive = {
     background: "#A4A4A4"
   }
@@ -27,50 +35,35 @@ const EditSubComponent:FC<Props> = ({data, refetch}) => {
   return (
     <>
       <div>
-        <div className="mb-6">
+        <div className="mb-6 flex items-center justify-between">
           <p className="text-lg fw-600">Plans and Pricing</p>
+          <p className="fw-600 border-b border-gray-600" onClick={() => setShowModal(true)}>Add New Plan</p>
         </div>
         <div className="bg-white rounded-lg p-6">
           <div className="w-full overflow-x-auto scroll-pro">
             <ul className="flex w-[550px] lg:w-auto gap-x-5 text-white">
-              <li
+              {
+                data.data.map((item:SubscriptionPlan, index:number) => (
+                  <li
                 className="nav-item py-2 lg:px-6 px-2 rounded-lg cursor-pointer fs-500 lg:fs-600 mb-2"
-                style={open === 1 ? activeStyle : inactive}
-                onClick={() => handleOpen(1)}
+                style={open === item.id ? activeStyle : inactive}
+                onClick={() => handleOpen(item)}
+                key={index}
               >
-                <span className="">Basic Plan</span>
+                <span className="">{item.name}</span>
               </li>
-              <li
-                className="nav-item py-2 lg:px-6 px-2 rounded-lg cursor-pointer fs-500 lg:fs-600 mb-2"
-                style={open === 2 ? activeStyle : inactive}
-                onClick={() => handleOpen(2)}
-              >
-                <span className="">Premium Plan</span>
-              </li>
-              <li
-                className="nav-item py-2 lg:px-6 px-2 rounded-lg cursor-pointer fs-500 lg:fs-600 mb-2"
-                style={open === 3 ? activeStyle : inactive}
-                onClick={() => handleOpen(3)}
-              >
-                <span className="">Platinum Plan</span>
-              </li>
-              <li
-                className="nav-item py-2 lg:px-6 px-2 rounded-lg cursor-pointer fs-500 lg:fs-600 mb-2"
-                style={open === 4 ? activeStyle : inactive}
-                onClick={() => handleOpen(4)}
-              >
-                <span className="">Gold Plan</span>
-              </li>
+                ))
+              }
             </ul>
           </div>
           <div className="mt-8">
-            {open === 1 ? <SubItemComp data={basic} refetch={refetch}/> : ""}
-            {open === 2 ? <SubItemComp data={premium} refetch={refetch}/> : ""}
-            {open === 3 ? <SubItemComp data={platinum} refetch={refetch}/> : ""}
-            {open === 4 ? <SubItemComp data={gold} refetch={refetch}/> : ""}
+            <div>{open && <SubItemComp data={plan[0]} refetch={refetch}/>}</div>
           </div>
         </div>
       </div>
+      <Modal title="Create a new subscription plan" wide>
+              <CreateNewPlan/>
+      </Modal>
     </>
   );
 };

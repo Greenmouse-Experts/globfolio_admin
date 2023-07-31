@@ -72,7 +72,6 @@ const DraftPicks: FC<Props> = ({ data, refetch, liveRefetch }) => {
   return (
     <>
       <div>
-        {data && !data.length && <EmptyState1 message="Draft is empty" />}
         {data &&
           !!data?.length &&
           data?.map((item, index) => (

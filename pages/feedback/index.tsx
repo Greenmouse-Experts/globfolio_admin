@@ -6,9 +6,10 @@ import { formatRating } from "@/shared/utils/format";
 import { FeedbackItem } from "@/shared/types/routine";
 import dayjs from "dayjs";
 import Paginate from "@/shared/components/UI/Paginate";
+import { InfinityLoader } from "@/shared/components/UI/Loading";
 
 const FeedbackPage: AppPage = () => {
-  const { data: feeds } = useGetFeedQuery();
+  const { data: feeds, isLoading } = useGetFeedQuery();
   const [currentPage, setCurrentPage] = useState(1);
   const [postsPerPage] = useState(8);
   const [data, setData] = useState<FeedbackItem[] | any>();
@@ -46,7 +47,7 @@ const FeedbackPage: AppPage = () => {
             <p className="lg:w-5/12 pl-3 lg:text-lg">Feedback</p>
             <p className="lg:w-3/12 pl-3 lg:text-lg">Rating</p>
           </div>
-
+          {isLoading && <div className='py-6 lg:py-12 flex justify-center'><InfinityLoader size='300'/></div>}
           {data &&
             !!data.length &&
             currentPosts.map((item: FeedbackItem, index: number) => (
@@ -68,14 +69,14 @@ const FeedbackPage: AppPage = () => {
                     <p className="text-lg mt-1 fw-500 capitalize">
                       {item?.user?.fullname}
                     </p>
-                    <p className="fs-500">{item?.user?.email}</p>
-                    <p className="fs-300 lg:fs-500">
+                    <p className="fs-400 truncate">{item?.user?.email}</p>
+                    <p className="fs-300 lg:fs-400">
                       Joined{" "}
                       {dayjs(item?.user?.createdAt).format("DD-MMM-YYYY")}
                     </p>
                   </div>
                 </div>
-                <div className="lg:w-5/12 mt-3 lg:mt-0">
+                <div className="lg:w-5/12 mt-3 lg:mt-0 lg:pr-5">
                   <p>{item.message}</p>
                 </div>
                 <div className="lg:w-3/12 mt-3 lg:mt-0">

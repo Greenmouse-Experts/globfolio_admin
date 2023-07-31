@@ -12,11 +12,13 @@ import { BiAddToQueue } from "react-icons/bi";
 import { ScaleSpinner } from "../UI/Loading";
 
 interface Props {
-  data: SubscriptionPlan[];
+  data: SubscriptionPlan;
     refetch: () => void
 }
 const SubItemComp: FC<Props> = ({ data, refetch }) => {
-  const [benefits, setBenefits] = useState<any[]>(data[0]?.benefits || []);
+  console.log(data);
+  
+  const [benefits, setBenefits] = useState<any[]>(data?.benefits || []);
   const [benefit, setBenefit] = useState("")
   const [isBusy, setIsBusy] = useState(false);
   const [edit] = useLazyEditSubscriptionQuery();
@@ -37,14 +39,15 @@ const SubItemComp: FC<Props> = ({ data, refetch }) => {
     control,
     handleSubmit,
     watch,
+    reset,
     formState: { errors, isValid },
   } = useForm({
     mode: "onChange",
     defaultValues: {
-      name: data[0]?.name || "",
-      planId: data[0]?.id || "",
-      amount: data[0]?.amount || 0,
-      duration: data[0]?.duration || 0
+      name: data?.name || "",
+      planId: data?.id || "",
+      amount: data?.amount || 0,
+      duration: data?.duration || 0
     },
   });
 
@@ -210,4 +213,4 @@ const SubItemComp: FC<Props> = ({ data, refetch }) => {
   );
 };
 
-export default SubItemComp;
+export default React.memo(SubItemComp);
