@@ -6,6 +6,7 @@ import SearchComponent from "../UI/Search";
 import { MdOutlineCancel } from "react-icons/md";
 import { RiArrowDropDownLine, RiArrowDropUpLine } from "react-icons/ri";
 import Button from "../UI/Button";
+import { toast } from "react-toastify";
 
 const CreateNewPlan = () => {
   const country = getData();
@@ -56,9 +57,18 @@ const CreateNewPlan = () => {
       appleId: "",
     },
   });
+
+  const onSubmit = (data:any) => {
+    const payload = {
+        ...data,
+        pick: pickCountry,
+        chat: chatCountry,
+    }
+    toast.error('Api not ready yet')
+  }
   return (
     <>
-      <form>
+      <form onSubmit={handleSubmit(onSubmit)}>
         <div className="grid lg:grid-cols-2 gap-4">
           <Controller
             name="name"
