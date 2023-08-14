@@ -43,7 +43,7 @@ const StocksPage: AppPage = () => {
             <div>
               <p className="mb-3 fw-500">Live Picks</p>
               <div className="h-[300px] bg-white rounded-[17px] p-5">
-                {live && !!live.data.length && (
+                {live && !!live?.data?.length && (
                   <div className="overflow-y-scroll scroll-pro h-full">
                     <LivePicks data={live?.data} refetch={liveRefetch} />
                   </div>
@@ -53,7 +53,7 @@ const StocksPage: AppPage = () => {
                     <ChatLoader size="100" />
                   </div>
                 )}
-                {live && !live.data.length && <EmptyState1 message="Live Picks is empty" />}
+                {live && !live?.data?.length && <EmptyState1 message="Live Picks is empty" />}
               </div>
             </div>
             <div className="mt-5">

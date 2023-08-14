@@ -43,16 +43,16 @@ export const routineApiSlice = apiSlice.injectEndpoints({
       keepUnusedDataFor: ENDPOINT.CACHE_LIFETIME.EXTENDED,
     }),
 
-      editSubscription: builder.query<CreateSubscriptionOutput | ErrorResult, CreateSubscriptionOutput>({
-        query: (payload) => ({
-          url: ENDPOINT.EDIT_SUBSCRIPTION,
-          body: payload ,
-          method: ENDPOINT.HTTP_METHODS.PATCH,
-          headers: {
-            Authorization: getLocalToken("token"),
-          },
-        }),
+    getSector: builder.query<any | ErrorResult, void>({
+      query: () => ({
+        url: `${ENDPOINT.GET_SECTOR}`,
+        method: ENDPOINT.HTTP_METHODS.GET,
+        headers: {
+            authorization: getLocalToken("token")
+        }
       }),
+      keepUnusedDataFor: ENDPOINT.CACHE_LIFETIME.EXTENDED,
+    }),
     
   }),
   overrideExisting: true,
@@ -61,6 +61,6 @@ export const routineApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetFeedQuery,
   useGetTransactQuery,
-  useLazyEditSubscriptionQuery,
-  useGetNotifyQuery
+  useGetNotifyQuery,
+  useGetSectorQuery,
 } = routineApiSlice;

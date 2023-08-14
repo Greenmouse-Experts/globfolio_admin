@@ -36,12 +36,14 @@ export enum CACHE_LIFETIME {
   export const GET_DRAFT_ADVISORY = '/stockAdvisory/stockAdvisorysDraft'
   export const DELETE_ADVISORY = '/stockAdvisory/delete'
   export const UPDATE_TO_MAIN = '/stockAdvisory/draftToMain'
+  export const GET_SECTOR = '/subscription/sector'
 
   // subscription plans
   export const GET_SUBSCRIPTION = '/subscription/plans'
   export const CREATE_SUBSCRIPTION = '/subscription/create'
   export const EDIT_SUBSCRIPTION = '/subscription/update'
   export const GET_SUBSCRIBED_USERS = '/subscription/getPlanUsers'
+  export const DELETE_SUBSCRIPTION = '/subscription/delete'
 
   //feedbacks
   export const GET_FEEDBACKS = '/admin/getFeedbacks'

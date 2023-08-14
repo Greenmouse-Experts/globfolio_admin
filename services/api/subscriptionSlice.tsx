@@ -5,7 +5,7 @@ import { apiSlice } from "../apiSlice";
 import * as ENDPOINT from "../constants";
 import { getLocalToken, requestAuthorization } from "../helpers";
 import { CreateSubscriptionOutput, SubscriptionPlanResult } from "@/shared/types/subscription";
-import { ErrorResult } from "@/shared/types";
+import { BaseResult, ErrorResult } from "@/shared/types";
 
 export const subscriptionApiSlice = apiSlice.injectEndpoints({
   endpoints: (builder) => ({
@@ -52,6 +52,16 @@ export const subscriptionApiSlice = apiSlice.injectEndpoints({
           },
         }),
       }),
+
+      deleteSubscription: builder.query<BaseResult | ErrorResult, string | undefined>({
+        query: (id) => ({
+          url: `${ENDPOINT.DELETE_SUBSCRIPTION}/${id}`,
+          method: ENDPOINT.HTTP_METHODS.DELETE,
+          headers: {
+            Authorization: getLocalToken("token"),
+          },
+        }),
+      }),
     
   }),
   overrideExisting: true,
@@ -60,5 +70,7 @@ export const subscriptionApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetSubscriptionQuery,
   useLazyEditSubscriptionQuery,
-  useGetSubUserQuery
+  useLazyCreateSubscriptionQuery,
+  useGetSubUserQuery,
+  useLazyDeleteSubscriptionQuery
 } = subscriptionApiSlice;
