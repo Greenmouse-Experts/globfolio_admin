@@ -26,6 +26,11 @@ export interface SubscriptionPlan {
     benefits: Benefits[];
     updatedAt: string;
     createdAt: string;
+    privateMessaging?: boolean
+    googleId?: string
+    appleId?: string
+    analystPickAccess?: string[]
+    chatAccess?: string[]
 }
 
 export interface SubscriptionPlanResult {

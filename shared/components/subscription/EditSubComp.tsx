@@ -11,19 +11,11 @@ interface Props{
 }
 const EditSubComponent:FC<Props> = ({data, refetch}) => {
   const [open, setOpen] = useState("");
-  const [plan, setPlan] = useState<SubscriptionPlan[]>(data?.data)
   const {Modal, setShowModal} = useModal()
 
   const handleOpen = (value: any) => {
     setOpen(value.id)
-    const plans = data.data.filter((where) => where.id === value.id)
-    setPlan(plans);
   };
-  // useEffect(() => {
-  //   if(open){
-  //     // setPlan(data.data.filter((where) => where.id.indexOf(open) > -1));
-  //   }
-  // }, [handleOpen])
   const inactive = {
     background: "#A4A4A4"
   }
@@ -57,12 +49,12 @@ const EditSubComponent:FC<Props> = ({data, refetch}) => {
             </ul>
           </div>
           <div className="mt-8">
-            <div>{open && <SubItemComp data={plan[0]} refetch={refetch}/>}</div>
+            <div>{open && <SubItemComp data={data.data} tab={open} change={handleOpen} refetch={refetch}/>}</div>
           </div>
         </div>
       </div>
       <Modal title="Create a new subscription plan" wide>
-              <CreateNewPlan/>
+              <CreateNewPlan close={() => setShowModal(false)} refetch={refetch}/>
       </Modal>
     </>
   );

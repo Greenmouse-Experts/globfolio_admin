@@ -22,8 +22,13 @@ const UserInfoTable: FC<Props> = ({ status, users }) => {
     setShowModal(true)
   }
   if (status) {
+    if(status  === 'active'){
+      users = users?.filter(
+        (where: any) => where.hasActiveSubscription
+      );
+    } else 
     users = users?.filter(
-      (where: any) => where.hasActiveSubscription === status
+      (where: any) => !where.hasActiveSubscription
     );
   }
 

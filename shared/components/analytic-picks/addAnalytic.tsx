@@ -8,13 +8,19 @@ import { ScaleSpinner } from "../UI/Loading";
 import { formatName } from "@/shared/utils/format";
 import { BeatLoader } from "react-spinners";
 import {getName, getData} from 'country-list'
+import { AiOutlinePlusSquare } from "react-icons/ai";
+import useModal from "@/hooks/useModal";
+import AddSector from "./addSector";
+import { useGetSectorQuery } from "@/services/api/routineSlice";
 
 interface Props {
   refetchLive: () => void
   refetchDraft: () => void
 }
 const AddAnalyticPicksForm:FC<Props> = ({refetchDraft, refetchLive}) => {
+  const {data:sector, refetch:refetchSector} = useGetSectorQuery()
   const [isBusy, setIsBusy] = useState(false);
+  const {Modal, setShowModal} = useModal()
   const [isPosting, setIsPosting] = useState(false);
   const [image, setImage] = useState<any>()
   const [create] = useLazyCreateAdvisoryQuery()
@@ -95,7 +101,7 @@ const AddAnalyticPicksForm:FC<Props> = ({refetchDraft, refetchLive}) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid lg:grid-cols-2 gap-4 mt-4">
             <div>
-            <label className="text-[#000000B2] fw-500">Sector</label>
+            <label className="text-[#000000B2] fw-500 flex items-center gap-x-2">Sector <AiOutlinePlusSquare className="cursor-pointer" onClick={() => setShowModal(true)}/></label>
               <Controller
                 name="industry"
                 control={control}
@@ -108,9 +114,11 @@ const AddAnalyticPicksForm:FC<Props> = ({refetchDraft, refetchLive}) => {
                 render={({ field }) => (
                   <select className="w-full rounded p-2 border border-gray-400 mt-2" {...field}>
                     <option value="" disabled>Select an Option</option>
-                    <option value="Business">Business</option>
-                    <option value="Tech">Tech</option>
-                    <option value="Crypto">Crypto</option>
+                    {
+                      sector && sector?.data.map((item:any, i:number) => (
+                        <option value={item.name} key={i}>{item.name}</option>
+                      ))
+                    }
                   </select>
                 )}
               />
@@ -200,6 +208,9 @@ const AddAnalyticPicksForm:FC<Props> = ({refetchDraft, refetchLive}) => {
           </div>
         </form>
       </div>
+      <Modal title="Add Sector">
+          <AddSector refetch={refetchSector}/>
+      </Modal>
     </>
   );
 };

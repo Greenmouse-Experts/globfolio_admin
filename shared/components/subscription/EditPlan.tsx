@@ -7,37 +7,24 @@ import { MdOutlineCancel } from "react-icons/md";
 import { RiArrowDropDownLine, RiArrowDropUpLine, RiDeleteBin2Line } from "react-icons/ri";
 import Button from "../UI/Button";
 import { toast } from "react-toastify";
-import { BiSolidSend } from "react-icons/bi";
-import { useLazyCreateSubscriptionQuery } from "@/services/api/subscriptionSlice";
 import { ScaleSpinner } from "../UI/Loading";
+import { SubscriptionPlan } from "@/shared/types/subscription";
+import { useLazyEditSubscriptionQuery } from "@/services/api/subscriptionSlice";
 
 interface Props {
   close: Function
   refetch: Function
+  plan: SubscriptionPlan | undefined
 }
-const CreateNewPlan:FC<Props> = ({close, refetch}) => {
+const EditPlan:FC<Props> = ({close, refetch, plan}) => { 
   const country = getData();
-  const [create] = useLazyCreateSubscriptionQuery();
+  const [edit] = useLazyEditSubscriptionQuery();
   const [isBusy, setIsBusy] = useState(false)
-  // benefits
-  const [benefitIn, setBenefitIn] = useState('')
-  const [benefitVal, setBenefitVal] = useState<string[]>([]);
-  const addBenefit = () => {
-    if(!!benefitIn.length){
-      setBenefitVal([...benefitVal, benefitIn])
-      setBenefitIn('')
-    }
-  }
-  const removeField = (item:any) => {
-    // const updatedArr = [...benefitVal]
-    const updatedArr = benefitVal.filter((where) => where !== item)
-    setBenefitVal(updatedArr)
-  };
 
   const [showPickCountry, setShowPickCountry] = useState(false)
-  const [pickCountry, setPickCountry] = useState<string[]>([])
+  const [pickCountry, setPickCountry] = useState<string[]>(plan?.analystPickAccess? plan?.analystPickAccess : [])
   const [showChatCountry, setShowChatCountry] = useState(false)
-  const [chatCountry, setChatCountry] = useState<string[]>([])
+  const [chatCountry, setChatCountry] = useState<string[]>(plan?.chatAccess? plan?.chatAccess : [])
   const addCountry = (value:any) => {
     if(pickCountry.includes(value)){
         setPickCountry([...pickCountry])
@@ -73,28 +60,26 @@ const CreateNewPlan:FC<Props> = ({close, refetch}) => {
   } = useForm({
     mode: "onChange",
     defaultValues: {
-      name: "",
-      amount: "",
-      duration: "",
+      name: plan?.name || "",
+      amount: plan?.amount || "",
+      duration: plan?.duration || "",
       privateMessaging: "",
-      googleId: "",
-      appleId: "",
+      googleId: plan?.googleId || "",
+      appleId: plan?.appleId || "",
     },
   });
 
   const onSubmit = async (data:any) => {
     setIsBusy(true);
-    const benefitValues = Object.keys(benefitVal).map((key: string) => ({
-      benefit: benefitVal[key as keyof typeof benefitVal],
-    }));
     const payload = {
         ...data,
+        planId: plan?.id,
         privateMessaging: data.privateMessaging === "true"? true : false,
         analystPickAccess: pickCountry,
         chatAccess: chatCountry,
-        benefits: benefitValues
+        benefits: plan?.benefits
     }
-    await create(payload)
+    await edit(payload)
       .then((res:any) => {
         if (res.isSuccess) {
           toast.success(res.data.message)
@@ -266,36 +251,13 @@ const CreateNewPlan:FC<Props> = ({close, refetch}) => {
               />
             )}
           />
-          <div className="mt-3 col-span-2 ">
-            <p>Add Benefits</p>
-          <div className="border border-gray-500 rounded">
-              <div className="flex items-center mt-1 w-full ">
-              <input type="text" value={benefitIn} onChange={(e) => setBenefitIn(e.target.value)} className="w-full p-2 rounded outline-none"/>
-              <BiSolidSend className="text-3xl mx-3" onClick={addBenefit}/>
-              </div>
-          </div>
-          <div className="mt-4"> 
-                {benefitVal && !benefitVal.length && "No Benefits Added Yet"}
-                <ul className="list-disc">
-                  {
-                  benefitVal && !!benefitVal.length && benefitVal.map((item, index) => (
-                    <li key={index} className="flex gap-x-4 items-center fw-500 mt-1">
-                      <span>{index + 1}.</span>
-                      {item}
-                      <RiDeleteBin2Line className="text-red-500" onClick={() => removeField(item)}/>
-                    </li>
-                  ))
-                }
-                </ul>
-              </div>
-          </div>
         </div>
         <div className="mt-12">
-            <Button title={isBusy ? <ScaleSpinner size={14} color="white"/> : "Create Plan"} disabled={!isValid}/>
+            <Button title={isBusy ? <ScaleSpinner size={14} color="white"/> : "Edit Plan"} disabled={!isValid}/>
         </div>
       </form>
     </>
   );
 };
 
-export default CreateNewPlan;
+export default EditPlan;

@@ -10,12 +10,7 @@ import {
 const SubscriptionPage: AppPage = () => {
   const { data, refetch } = useGetSubscriptionQuery();
   const { data: sub, isLoading } = useGetSubUserQuery();
-  const formatBgColor = {
-    "Basic Plan": "bg-[#E4E9F7]",
-    "Premium Plan": "bg-[#E3FBE5]",
-    "Platinum Plan": "bg-[#E8F3F4]",
-    "Gold Plan": "bg-[#FAF6D3]",
-  };
+  
   const colors: string[] = [
     "bg-[#E4E9F7]",
     "bg-[#E3FBE5]",
@@ -28,16 +23,6 @@ const SubscriptionPage: AppPage = () => {
     "https://res.cloudinary.com/greenmouse-tech/image/upload/v1689340786/globfolio/Group_48428_btwyxy.png",
     "https://res.cloudinary.com/greenmouse-tech/image/upload/v1689340786/globfolio/Group_48429_ngpka9.png",
   ];
-  const formatAvatar = {
-    "Basic Plan":
-      "https://res.cloudinary.com/greenmouse-tech/image/upload/v1689340787/globfolio/Group_48426_imjly7.png",
-    "Premium Plan":
-      "https://res.cloudinary.com/greenmouse-tech/image/upload/v1689340786/globfolio/Group_48427_mraxjd.png",
-    "Platinum Plan":
-      "https://res.cloudinary.com/greenmouse-tech/image/upload/v1689340786/globfolio/Group_48428_btwyxy.png",
-    "Gold Plan":
-      "https://res.cloudinary.com/greenmouse-tech/image/upload/v1689340786/globfolio/Group_48429_ngpka9.png",
-  };
   return (
     <>
       <div>
