@@ -81,7 +81,7 @@ const UserInfoTable: FC<Props> = ({ status, users }) => {
   const list = useMemo(() => users, [users]);
   return (
     <>
-      <div className="mt-6">
+      <div className="mt-6 lg:w-[70vw] 2xl:w-[75vw]">
         {
           users && !users?.length && <div className="py-6 flex justify-center"><EmptyState2 message="No Users Data Avaivable Yet"/></div>
         }

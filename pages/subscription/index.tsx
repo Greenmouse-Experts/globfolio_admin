@@ -42,9 +42,9 @@ const SubscriptionPage: AppPage = () => {
                 key={index}
               >
                 <div>
-                  <p className="fs-400 fw-500">{item.name}</p>
+                  <p className="fs-400 fw-500">{item.plan}</p>
                   <p className="mt-3 text-xl fw-600">
-                    {item?.subscriptions?.length} Users
+                    {item?.users} <span>User(s)</span>
                   </p>
                 </div>
                 <div>

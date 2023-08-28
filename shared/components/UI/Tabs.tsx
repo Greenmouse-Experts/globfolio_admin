@@ -9,9 +9,10 @@ interface Props {
   broadcastCurrentIndex?: (index: number) => void;
   users?: boolean;
   isFixed?: boolean;
+  chat?: boolean
 }
 
-const Tabs: FC<Props> = ({ tabs, broadcastCurrentIndex, users, isFixed }) => {
+const Tabs: FC<Props> = ({ tabs, broadcastCurrentIndex, users, isFixed, chat }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   return (
@@ -24,6 +25,8 @@ const Tabs: FC<Props> = ({ tabs, broadcastCurrentIndex, users, isFixed }) => {
                 ? "-mb-px tab-bar flex lg:space-x-8 space-x-2 overflow-x-auto border-b-2"
                 : isFixed
                 ? "-mb-px tab-bar flex lg:space-x-8 space-x-4 overflow-x-auto fixed lg:relative top-0 pt-3 lg:pt-0 bg-pri lg:bg-transparent w-full z-10 left-0"
+                : chat
+                ? "flex spax-x-4 overflow-x-auto fw-600"
                 : "-mb-px tab-bar flex lg:space-x-8 space-x-2 overflow-x-auto"
             }
             aria-label="Tabs"
@@ -37,8 +40,9 @@ const Tabs: FC<Props> = ({ tabs, broadcastCurrentIndex, users, isFixed }) => {
                 }}
                 className={classNames(
                   index === currentIndex
-                    ? "border-tertial  text-tertial"
+                    ? chat? "text-white bg-[#1F2937]" : "border-tertial  text-tertial"
                     : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700",
+                    chat? "px-4 py-2 rounded-lg cursor-pointer" :
                   "whitespace-nowrap cursor-pointer border-b-2 py-1 px-3 lg:px-4 font-medium lg:text-lg"
                 )}
               >

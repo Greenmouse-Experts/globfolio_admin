@@ -209,7 +209,7 @@ const AddAnalyticPicksForm:FC<Props> = ({refetchDraft, refetchLive}) => {
         </form>
       </div>
       <Modal title="Add Sector">
-          <AddSector refetch={refetchSector}/>
+          <AddSector refetch={refetchSector} close={() => setShowModal(false)}/>
       </Modal>
     </>
   );

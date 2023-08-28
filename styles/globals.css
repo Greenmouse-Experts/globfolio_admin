@@ -141,6 +141,31 @@ input[type="checkbox"]:checked {
 .ps-menu-label{
   font-size: 15px !important;
 }
+.chat::-webkit-scrollbar-thumb {
+  background: linear-gradient(90deg, #0B1B2B 0%, #0B1B2B 100%);
+  /* border-radius: 10px; */
+}
+.chat::-webkit-scrollbar {
+  width: 5px;
+}
+/* Handle on hover */
+.chat::-webkit-scrollbar-thumb:hover {
+  background: rgba(63, 121, 173);
+}
+/* Track */
+.chat::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px rgb(164, 164, 164);
+  /* border-radius: 10px; */
+}
+.grid-container {
+  max-height: 600px; /* Set the maximum height as per your requirement */
+  overflow-y: auto; /* Enable vertical scrolling */
+  display: grid;
+  grid-template-columns: repeat(1fr); /* Adjust the number of columns as needed */
+  align-items: end; /* Align the contents to the end (bottom) */
+  grid-auto-rows: max-content; /* Ensure each row takes the height of its content */
+  gap: 10px; /* Add gap between grid items if desired */
+}
 
 @layer components {
   /* container settings */
@@ -349,6 +374,10 @@ input[type="checkbox"]:checked {
   }
   .bg-login{
     background-image: url('https://res.cloudinary.com/greenmouse-tech/image/upload/v1688995561/globfolio/Group_62_1_s5rrif.png');
+    background-size: cover;
+  }
+  .bg-chat{
+    background-image: url('https://res.cloudinary.com/greenmouse-tech/image/upload/v1692974015/globfolio/Group_48466_1_afdkbj.png');
     background-size: cover;
   }
 }

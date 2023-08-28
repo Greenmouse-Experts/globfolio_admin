@@ -53,3 +53,7 @@ export enum CACHE_LIFETIME {
 
   // notification
   export const GET_ADMIN_NOTIFICATION = '/notifications/admin'
+
+  // for chats and chat room
+  export const CREATE_CHATROOM = '/chat/rooms'
+  export const GET_USER_QUERY = 'admin/getAllUsers'

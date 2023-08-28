@@ -71,7 +71,7 @@ const TransactionTable:FC<Props> = ({status, transact}) => {
       const list = useMemo(() => transact, [transact]);
       return (
         <>
-          <div className='mt-6 lg:w-[70vw] overflow-x-auto'>
+          <div className='mt-6 lg:w-[70vw] 2xl:w-[75vw] overflow-x-auto'>
             {transact && !!transact?.length && <div className="lg:p-4 w-full">
             <Table columns={columns} data={list} />
           </div>}

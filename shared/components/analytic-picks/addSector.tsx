@@ -4,13 +4,15 @@ import { toast } from 'react-toastify';
 import TextInput, { InputType } from '../UI/TextInput';
 import Button from '../UI/Button';
 import { ScaleSpinner } from '../UI/Loading';
+import { useLazyAddSectorQuery } from '@/services/api/routineSlice';
 
 interface Props {
     refetch: Function
+    close: () => void
 }
-const AddSector:FC<Props> = ({refetch}) => {
+const AddSector:FC<Props> = ({refetch, close}) => {
     const [isBusy, setIsBusy] = useState(false);
-    // const [login] = useLazyAdminLoginQuery()
+    const [add] = useLazyAddSectorQuery()
     const {
       control,
       handleSubmit,
@@ -24,22 +26,23 @@ const AddSector:FC<Props> = ({refetch}) => {
     });
   
     const onSubmit = async (data:any) => {
-    //   setIsBusy(true);
-    //   await login(data)
-    //     .then((res:any) => {
-    //       if (res.isSuccess) {
-    //         toast.success(res.data.message)
-    //         setIsBusy(false)
-    //         close()
-    //       }else {
-    //         toast.error(res.error.data.message);
-    //         setIsBusy(false);
-    //       }
-    //     })
-    //     .catch((err) => {
-    //       toast.error(err?.error?.data?.message);
-    //       setIsBusy(false);
-    //     });
+      setIsBusy(true);
+      await add(data)
+        .then((res:any) => {
+          if (res.isSuccess) {
+            toast.success(res.data.message)
+            setIsBusy(false)
+            refetch()
+            close()
+          }else {
+            toast.error(res.error.data.message);
+            setIsBusy(false);
+          }
+        })
+        .catch((err) => {
+          toast.error(err?.error?.data?.message);
+          setIsBusy(false);
+        });
     };
     return (
       <div>

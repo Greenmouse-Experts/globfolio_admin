@@ -7,6 +7,7 @@ import { FeedbackItem } from "@/shared/types/routine";
 import dayjs from "dayjs";
 import Paginate from "@/shared/components/UI/Paginate";
 import { InfinityLoader } from "@/shared/components/UI/Loading";
+import { EmptyState2 } from "@/shared/utils/emptyState";
 
 const FeedbackPage: AppPage = () => {
   const { data: feeds, isLoading } = useGetFeedQuery();
@@ -48,6 +49,7 @@ const FeedbackPage: AppPage = () => {
             <p className="lg:w-3/12 pl-3 lg:text-lg">Rating</p>
           </div>
           {isLoading && <div className='py-6 lg:py-12 flex justify-center'><InfinityLoader size='300'/></div>}
+          {data && !data.length && <div className="py-12"><EmptyState2 message='No Feedbacks yet'/></div>}
           {data &&
             !!data.length &&
             currentPosts.map((item: FeedbackItem, index: number) => (
