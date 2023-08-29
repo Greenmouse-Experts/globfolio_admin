@@ -3,11 +3,11 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { Sidebar, Menu, MenuItem } from "react-pro-sidebar";
 import {  BsArrowsAngleContract, BsFillGrid1X2Fill, BsGear } from 'react-icons/bs'
-import { MdOutlineInsertChartOutlined } from 'react-icons/md'
+// import { MdOutlineInsertChartOutlined } from 'react-icons/md'
 import { TfiShiftLeft } from 'react-icons/tfi'
 import { FaUsersViewfinder } from 'react-icons/fa6';
-import { IoNotificationsOutline } from 'react-icons/io5';
-import {  AiOutlineUnorderedList } from 'react-icons/ai';
+import { IoChatbubbleOutline, IoNotificationsOutline } from 'react-icons/io5';
+// import {  AiOutlineUnorderedList } from 'react-icons/ai';
 import useModal from '@/hooks/useModal';
 import LogoutModal from '../../auth/Logout';
 import { usePathname } from 'next/navigation'
@@ -79,26 +79,33 @@ const SidebarLayout:FC<Props>  = ({setToggled, toggled}) => {
             <p className='fs-400'>Users</p>
           </MenuItem>
           <MenuItem
+            component={<Link href="/money-room" />}
+            icon={<IoChatbubbleOutline className='' />}
+            active={path === "/money-room" && true}
+          >
+            <p className='fs-400'>Money Room</p>
+          </MenuItem>
+          <MenuItem
             component={<Link href="/subscription" />}
             icon={<FaRegCreditCard className='' />}
             active={path === "/subscription" && true}
           >
             <p className='fs-400'>Subscriptions</p>
           </MenuItem>
-          <MenuItem
+          {/* <MenuItem
             component={<Link href="/top-gainer" />}
             icon={<AiOutlineUnorderedList className='text-xl'/>}
             active={path === "/top-gainer" && true}
           >
             <p className='fs-400'>Top Gainers</p>
-          </MenuItem>
-          <MenuItem
+          </MenuItem> */}
+          {/* <MenuItem
             component={<Link href="/markets" />}
             icon={<MdOutlineInsertChartOutlined className='text-xl' />}
             active={path === "/markets" && true}
           >
             <p className='fs-400'>Markets</p>
-          </MenuItem>
+          </MenuItem> */}
           <MenuItem
             component={<Link href="/analyst-picks" />}
             icon={<RiFileCopy2Line className='text-lg' />}

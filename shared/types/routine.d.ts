@@ -10,16 +10,16 @@ export interface FeedbackItem {
   user: UserProfile;
 }
 export interface FeedbackResult extends BaseResult {
-    feedbacks: FeedbackItem[]
+  feedbacks: FeedbackItem[];
 }
 
 export interface NotifyResult extends BaseResult {
-  data: NotifyItem[]
+  data: NotifyItem[];
 }
 
 export interface NotifyItem {
-  id: string
-  userId: string
+  id: string;
+  userId: string;
   type: number;
   isRead: boolean;
   message: string;
@@ -27,4 +27,26 @@ export interface NotifyItem {
   createdAt: string;
   updatedAt: string;
   deletedAt: string | null;
+}
+
+export interface ChatData {
+  chatroom?: {
+    access: string;
+    createdAt: string;
+    deletedAt: string | null;
+    description: string | null;
+    id: string;
+    isDeleted: string | null;
+    title: string;
+    updatedAt: string;
+    userId: string;
+  };
+  chatroomid?: string;
+  createdAt: string;
+  deletedAt?: string | null;
+  id: string;
+  message: string;
+  sender: string;
+  updatedAt?: string;
+  owner?:UserProfile
 }
