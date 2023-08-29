@@ -9,17 +9,21 @@ dayjs.extend(relativeTime);
 
 interface Props{
     messages: any
+    comp: any
 }
-const ChatDisplay:FC<Props> = ({messages}) => {
+const ChatDisplay:FC<Props> = ({messages, comp}) => {
     const scrollRef = useRef<HTMLDivElement | null>(null);
     useEffect(() => {
         if (scrollRef.current) {
             console.log('im scrolling');
-            
-          scrollRef.current.scrollIntoView({ behavior: 'smooth', block: 'end' });
+            scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
         }
-      }, [messages]);
+      }, [messages ]);
+    //   console.log(messages);
+    //   console.log(comp);
+      
     const id = useAppSelector((state) => state.user.user.id)
+    // const myMsg = useAppSelector((state) => state.chat.messages)
    const msg = messages.sort((first:any, second:any) => second.createdAt.localeCompare(first.createdAt, undefined, { numeric: true }));
    
   return (
@@ -29,7 +33,8 @@ const ChatDisplay:FC<Props> = ({messages}) => {
                 {
                     msg && msg.reverse().map((item:any, index:number) => (
                         <div key={index} className={`flex h-auto ${item.sender === id && 'justify-end'}`}>
-                            <div className={`mt-2 p-4 rounded-lg ${item.sender === id? 'bg-primary text-white' : 'bg-blue-100'}`}>
+                            <div className={`mt-2 p-4 pt-3 rounded-lg ${item.sender === id? 'bg-primary text-white' : 'bg-blue-100'}`}>
+                                <p className='fw-600 fs-300 mb-1'>{item.owner.fullname}</p>
                             <p className='fs-500'>{item.message}</p>
                             <div className='flex justify-between items-center mt-2'>
                             <div className='flex items-center gap-x-1'>

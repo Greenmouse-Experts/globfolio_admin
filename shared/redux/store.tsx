@@ -16,11 +16,13 @@ import {
 import storage from "redux-persist/lib/storage";
 import { RESET_APP_STATE_ACTION_TYPE } from "./actions/resetState";
 import userReducer from "./reducers/userSlice";
+import chatReducer from "./reducers/ChatSlice";
 import { apiSlice } from "@/services/apiSlice";
 
 const reducers = {
     [apiSlice.reducerPath]: apiSlice.reducer,
     user: userReducer,
+    chat: chatReducer
 }
 
 const persistConfig = {

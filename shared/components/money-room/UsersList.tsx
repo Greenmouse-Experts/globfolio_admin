@@ -35,7 +35,7 @@ const UsersList:FC<Props> = ({select, selected}) => {
                 {(searchQuery === "") && <ul>
                     {
                         dummyUsers.map((item) => (
-                            <li key={item.name} className={`flex gap-x-2 mb-2 cursor-pointer rounded-lg hover:bg-[#1F2937] p-2 ${item.name === selected?.name && `bg-[#1F2937]`}`} onClick={ () => select(item)}>
+                            <li key={item.name} className={`flex gap-x-2 mb-2 cursor-pointer rounded-lg hover:bg-[#1F2937] p-2 ${item.name === selected?.name && `bg-[#1F2937]`}`} onClick={ () => toast.info('User not active')}>
                                 <Image src={item.img} alt='profile' width={80} height={80} className='w-10'/>
                                 <div>
                                     <p className='text-white fw-500 fs-300'>{item.name}</p>
