@@ -1,4 +1,5 @@
 import { useAppSelector } from '@/shared/redux/store'
+import { ChatData } from '@/shared/types/routine';
 import React, {FC, useRef, useEffect} from 'react'
 import { BiTime } from 'react-icons/bi'
 import { BsCheck2All, BsCheckAll } from 'react-icons/bs'
@@ -16,15 +17,17 @@ const ChatDisplay:FC<Props> = ({messages, comp}) => {
     useEffect(() => {
         if (scrollRef.current) {
             console.log('im scrolling');
-            scrollRef.current?.scrollIntoView({ behavior: 'smooth' });
+            scrollRef.current?.scrollIntoView({ behavior: 'smooth', block: "end" });
         }
       }, [messages ]);
     //   console.log(messages);
     //   console.log(comp);
       
     const id = useAppSelector((state) => state.user.user.id)
-    // const myMsg = useAppSelector((state) => state.chat.messages)
-   const msg = messages.sort((first:any, second:any) => second.createdAt.localeCompare(first.createdAt, undefined, { numeric: true }));
+    const myMsg = useAppSelector((state) => state.chat.messages)
+    const showMsg = [...myMsg]
+    
+   const msg = showMsg.sort((first:any, second:any) => second.createdAt.localeCompare(first.createdAt, undefined, { numeric: true }));
    
   return (
     <>
@@ -34,7 +37,7 @@ const ChatDisplay:FC<Props> = ({messages, comp}) => {
                     msg && msg.reverse().map((item:any, index:number) => (
                         <div key={index} className={`flex h-auto ${item.sender === id && 'justify-end'}`}>
                             <div className={`mt-2 p-4 pt-3 rounded-lg ${item.sender === id? 'bg-primary text-white' : 'bg-blue-100'}`}>
-                                <p className='fw-600 fs-300 mb-1'>{item.owner.fullname}</p>
+                                <p className='fw-600 fs-300 mb-1'>{item.owner}</p>
                             <p className='fs-500'>{item.message}</p>
                             <div className='flex justify-between items-center mt-2'>
                             <div className='flex items-center gap-x-1'>
@@ -58,59 +61,3 @@ const ChatDisplay:FC<Props> = ({messages, comp}) => {
 }
 
 export default ChatDisplay
-const dummyMsg = [
-    {
-        chat: "Hello, What is the issue with my product",
-        status: "delivered",
-        from: "user",
-        time: "2 hours ago"
-    },
-    {
-        chat: "Hello, We are working on resolving the issue",
-        status: "delivered",
-        from: "admin",
-        time: "2 hours ago"
-    },
-    {
-        chat: "How long will this take",
-        status: "delivered",
-        from: "user",
-        time: "2 hours ago"
-    },
-    {
-        chat: "I need to complete this project on time",
-        status: "delivered",
-        from: "user",
-        time: "2 hours ago"
-    },
-    {
-        chat: "We're on it, you will get it before the day is over",
-        status: "delivered",
-        from: "admin",
-        time: "2 hours ago"
-    },
-    {
-        chat: "Hello, We are working on resolving the issue",
-        status: "delivered",
-        from: "admin",
-        time: "2 hours ago"
-    },
-    {
-        chat: "How long will this take",
-        status: "delivered",
-        from: "user",
-        time: "2 hours ago"
-    },
-    {
-        chat: "I need to complete this project on time",
-        status: "delivered",
-        from: "user",
-        time: "2 hours ago"
-    },
-    {
-        chat: "We're on it, you will get it before the day is over",
-        status: "delivered",
-        from: "admin",
-        time: "2 hours ago"
-    }
-]

@@ -48,5 +48,5 @@ export interface ChatData {
   message: string;
   sender: string;
   updatedAt?: string;
-  owner?:UserProfile
+  owner?: string
 }

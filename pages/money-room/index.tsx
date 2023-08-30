@@ -5,14 +5,18 @@ import ChatSidebar from '@/shared/components/money-room/ChatSidebar'
 import ChatCover from '@/shared/components/money-room/ChatCover'
 import ChatSection from '@/shared/components/money-room/ChatSection'
 import io from 'socket.io-client';
+import { useAppDispatch } from '@/shared/redux/store'
+import { resetMessages } from '@/shared/redux/reducers/ChatSlice'
 
 const socket = io('https://globfolio-8eb57b28054d.herokuapp.com/');
 const MoneyRoomPage:AppPage = () => {
   const [showChat, setShowChat] = useState(false)
   const [activeChat, setActiveChat] = useState<any>()
+  const dispatch = useAppDispatch()
   const selectActive = (item:any) => {
     setShowChat(true)
     setActiveChat(item)
+    dispatch(resetMessages())
   }
   return (
     <>

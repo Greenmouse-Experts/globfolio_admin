@@ -4,8 +4,12 @@ import ChatInput from "./Chats/ChatInput";
 import Image from "next/image";
 import { useAppDispatch, useAppSelector } from "@/shared/redux/store";
 import { InfinityLoader } from "../UI/Loading";
-import { saveMessages } from "@/shared/redux/reducers/ChatSlice";
+import { saveInitailMsg, saveMessages } from "@/shared/redux/reducers/ChatSlice";
 import { ChatData } from "@/shared/types/routine";
+import { BsThreeDotsVertical } from "react-icons/bs";
+import { Menu, MenuHandler, MenuItem, MenuList, Button } from "../UI/dropdown";
+import useModal from "@/hooks/useModal";
+import GroupUsers from "./GroupUsers";
 
 interface Props {
   item: any;
@@ -13,11 +17,14 @@ interface Props {
 }
 const ChatSection: FC<Props> = ({ item, socket }) => {
   const [messagesRecieved, setMessagesReceived] = useState<any[]>([]);
+  const {Modal:ViewUser, setShowModal:setViewUser} = useModal()
   const dispatch = useAppDispatch();
   const savedMsg = useAppSelector((state) => state.chat.messages);
   const [messages, setMessages] = useState<any[]>([]);
   const [loading, setLoading] = useState(false);
   const id = useAppSelector((state) => state.user.user.id);
+  console.log(messagesRecieved);
+  
   useEffect(() => {
     setLoading(true);
     const data = {
@@ -45,22 +52,20 @@ const ChatSection: FC<Props> = ({ item, socket }) => {
             id,
           })
         );
-
-        dispatch(saveMessages(needed));
+        dispatch(saveInitailMsg(needed));
         setLoading(false);
       } else {
-        const add = {
+        const add = [{
           sender: data.msg.sender,
           owner: data.msg.owner.fullname,
           message: data.msg.message,
           createdAt: data.msg.createdAt,
           id: data.msg.id,
-        };
-        setMessagesReceived(savedMsg => [...savedMsg, add]);
+        }];
+        setMessagesReceived(add);
+        console.log(add);
+        dispatch(saveMessages(add));
         console.log(savedMsg);
-        dispatch(saveMessages(messagesRecieved));
-        console.log(saveMessages);
-        
         setLoading(false);
       }
     });
@@ -70,13 +75,13 @@ const ChatSection: FC<Props> = ({ item, socket }) => {
   };
   useEffect(() => {
     getMessages();
-    setMessages([...messagesRecieved]);
+    // setMessages([...messagesRecieved]);
   }, [socket]);
 
   return (
     <>
       <div>
-        <div className="px-6 py-2 bg-white flex">
+        <div className="px-6 py-2 bg-white flex justify-between">
           <div className="flex gap-x-2 items-center">
             <Image
               src={
@@ -101,6 +106,22 @@ const ChatSection: FC<Props> = ({ item, socket }) => {
               </p>
             </div>
           </div>
+          <Menu placement="bottom-end">
+                  <MenuHandler>
+                    <Button className="p-3 bg-transparent !shadow-none">
+                      <BsThreeDotsVertical className="cursor-pointer text-black" />
+                    </Button>
+                  </MenuHandler>
+                  <MenuList className="p-2">
+                    <MenuItem onClick={() => setViewUser(true)}>View Users</MenuItem>
+                    <MenuItem
+                      className="bg-red-400 text-white"
+                      // onClick={() => openDelete(item.id)}
+                    >
+                      Delete Room
+                    </MenuItem>
+                  </MenuList>
+                </Menu>
         </div>
         {loading && (
           <div className="h-[500px] place-center">
@@ -112,6 +133,9 @@ const ChatSection: FC<Props> = ({ item, socket }) => {
         )}
         <ChatInput socket={socket} item={item} />
       </div>
+      <ViewUser title="Group Users">
+          <GroupUsers item={item} close={() => setViewUser(false)}/>
+      </ViewUser>
     </>
   );
 };
