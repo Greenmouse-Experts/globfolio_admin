@@ -19,6 +19,17 @@ export const subscriptionApiSlice = apiSlice.injectEndpoints({
       keepUnusedDataFor: ENDPOINT.CACHE_LIFETIME.EXTENDED,
     }),
 
+    getRoomUsers: builder.query<any | ErrorResult, any>({
+      query: (id) => ({
+        url: `${ENDPOINT.GET_ROOM_USERS}/${id}/suscribers`,
+        method: ENDPOINT.HTTP_METHODS.GET,
+        headers: {
+          Authorization: getLocalToken("token")
+        }
+      }),
+      keepUnusedDataFor: ENDPOINT.CACHE_LIFETIME.EXTENDED,
+    }),
+
     getUserQuery: builder.query<any | ErrorResult, string>({
         query: (param) => ({
           url: `${ENDPOINT.GET_USER_QUERY}?search=${param}`,
@@ -48,5 +59,6 @@ export const subscriptionApiSlice = apiSlice.injectEndpoints({
 export const {
   useGetRoomQuery,
   useLazyCreateChatRoomQuery,
-  useLazyGetUserQueryQuery
+  useLazyGetUserQueryQuery,
+  useGetRoomUsersQuery
 } = subscriptionApiSlice;

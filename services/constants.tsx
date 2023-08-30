@@ -57,3 +57,4 @@ export enum CACHE_LIFETIME {
   // for chats and chat room
   export const CREATE_CHATROOM = '/chat/rooms'
   export const GET_USER_QUERY = 'admin/getAllUsers'
+  export const GET_ROOM_USERS = 'https://globfolio-8eb57b28054d.herokuapp.com/api/chat/room'
