@@ -4,79 +4,64 @@ import ChatInput from "./Chats/ChatInput";
 import Image from "next/image";
 import { useAppDispatch, useAppSelector } from "@/shared/redux/store";
 import { InfinityLoader } from "../UI/Loading";
-import { saveInitailMsg, saveMessages } from "@/shared/redux/reducers/ChatSlice";
-import { ChatData } from "@/shared/types/routine";
+import { saveMessages } from "@/shared/redux/reducers/ChatSlice";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { Menu, MenuHandler, MenuItem, MenuList, Button } from "../UI/dropdown";
 import useModal from "@/hooks/useModal";
 import GroupUsers from "./GroupUsers";
+import PrivateChatDisplay from "./Chats/PrivateChatDisplay";
 
 interface Props {
   item: any;
   socket: any;
+  select: (value:any) => void
 }
-const ChatSection: FC<Props> = ({ item, socket }) => {
-  const [messagesRecieved, setMessagesReceived] = useState<any[]>([]);
+const ChatSection: FC<Props> = ({ item, socket, select }) => {
   const {Modal:ViewUser, setShowModal:setViewUser} = useModal()
-  const dispatch = useAppDispatch();
-  const savedMsg = useAppSelector((state) => state.chat.messages);
-  const [messages, setMessages] = useState<any[]>([]);
+  const dispatch = useAppDispatch()
   const [loading, setLoading] = useState(false);
   const id = useAppSelector((state) => state.user.user.id);
-  console.log(messagesRecieved);
-  
-  useEffect(() => {
-    setLoading(true);
-    const data = {
-      chatroomId: item.id,
-      userId: id,
-      reload_messages: true,
-    };
-    if (data.userId !== "" && data.chatroomId !== "") {
-      socket.emit("chatroom_listen", data);
-      setLoading(false);
-    }
-  }, [item]);
-  // Runs whenever a socket event is recieved from the server
-  const getMessages = () => {
-    setLoading(true);
-    socket.on("chatroom_messages", (data: any) => {
-      if (data.msgs) {
-        setMessagesReceived([...data?.msgs]);
-        const needed = data?.msgs.map(
-          ({ sender, owner, message, createdAt, id }: any) => ({
-            sender,
-            owner: owner.fullname,
-            message,
-            createdAt,
-            id,
-          })
-        );
-        dispatch(saveInitailMsg(needed));
-        setLoading(false);
-      } else {
-        const add = [{
-          sender: data.msg.sender,
-          owner: data.msg.owner.fullname,
-          message: data.msg.message,
-          createdAt: data.msg.createdAt,
-          id: data.msg.id,
-        }];
-        setMessagesReceived(add);
-        console.log(add);
-        dispatch(saveMessages(add));
-        console.log(savedMsg);
+  const followUp = () => {
+    socket.on('private_messages', (data: any) => {
+    const add = [{
+      sender: data.afrom.id,
+      owner: data.afrom.fullname,
+      message: data.message,
+      createdAt: data.createdAt,
+      id: data.id,
+    }];
+    dispatch(saveMessages(add));
+  })
+  }
+  const selectConnect = () => {
+    setLoading(true)
+    if(item.userId){
+      const data = {
+        chatroomId: item.id,
+        userId: id,
+        reload_messages: true,
+      };
+      if (data.userId !== "" && data.chatroomId !== "") {
+        socket.emit("chatroom_listen", data);
         setLoading(false);
       }
-    });
-
-    // Remove event listener on component unmount
-    return () => socket.off("chatroom_listen");
-  };
+    }else{
+      const data = {
+        to : item.id,
+        from: id,
+        reload_messages: true,
+      };
+      if (data.to !== "" && data.from !== "") {
+        socket.emit("chatroom_listen", data);
+        setLoading(false);
+      }
+    }
+  }
+  
   useEffect(() => {
-    getMessages();
-    // setMessages([...messagesRecieved]);
-  }, [socket]);
+    selectConnect()
+  }, [item]);
+  
 
   return (
     <>
@@ -129,12 +114,15 @@ const ChatSection: FC<Props> = ({ item, socket }) => {
           </div>
         )}
         {!loading && (
-          <ChatDisplay messages={messagesRecieved} comp={messages} />
+          item.userId? 
+          <ChatDisplay socket={socket} />
+          :
+          <PrivateChatDisplay socket={socket}/>
         )}
-        <ChatInput socket={socket} item={item} />
+        <ChatInput socket={socket} item={item} followPrivate={followUp} />
       </div>
       <ViewUser title="Group Users">
-          <GroupUsers item={item} close={() => setViewUser(false)}/>
+          <GroupUsers item={item} close={() => setViewUser(false)} select={select}/>
       </ViewUser>
     </>
   );
