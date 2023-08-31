@@ -22,14 +22,14 @@ const MoneyRoomPage:AppPage = () => {
     <>
         <div className='w-[98%] mx-auto flex p-2 h-[640px] rounded-[15px]'>
             <div className='w-[250px] bg-primary  rounded-l-[15px]'>
-                <ChatSidebar select={selectActive} selected={activeChat}/>
+                <ChatSidebar select={selectActive} selected={activeChat} socket={socket}/>
             </div>
             <div className='w-[calc(100%_-_250px)] bg-light rounded-r-[15px]'>
               {
                   !showChat && <ChatCover/>
               }
               {
-                  showChat && <ChatSection item={activeChat} socket={socket}/>
+                  showChat && <ChatSection select={selectActive} item={activeChat} socket={socket}/>
               }
             </div>
         </div>

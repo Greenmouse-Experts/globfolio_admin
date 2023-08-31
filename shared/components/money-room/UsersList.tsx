@@ -1,16 +1,19 @@
-import React, {FC, useState} from 'react'
+import React, {FC, useEffect, useState} from 'react'
 import Image from 'next/image'
 import { useLazyGetUserQueryQuery } from '@/services/api/chatSlice'
 import { toast } from 'react-toastify'
+import { useAppSelector } from '@/shared/redux/store'
 
 interface Props {
     select: (value:any) => void
     selected: any
+    socket:any
   }
-const UsersList:FC<Props> = ({select, selected}) => {
+const UsersList:FC<Props> = ({select, selected, socket}) => {
     const [myUsers, setMyUsers] = useState<any[]>()
     const [searchQuery, setSearchQuery] = useState('');
     const [getUser] = useLazyGetUserQueryQuery()
+    const id = useAppSelector((state) => state.user.user.id)
     const searchUser = async(e: { target: { value: string; }; }) => {
         setSearchQuery(e.target.value)
         await getUser(e.target.value)
@@ -23,6 +26,15 @@ const UsersList:FC<Props> = ({select, selected}) => {
         })
         .catch(() => {})
     }
+    useEffect(() => {
+        socket.emit("chatroom_listen", id);
+  }, []);
+  useEffect(() => {
+    socket.on(id, (data: any) => {
+        console.log(data);
+    })
+  }, [socket])
+    
   return (
     <>
         <div className='text-white mt-3'>
@@ -33,7 +45,7 @@ const UsersList:FC<Props> = ({select, selected}) => {
             </div>
             <div className='text-white mt-6 h-[450px] overflow-y-auto scroll-pro'>
                 {(searchQuery === "") && <ul>
-                    {
+                    {/* {
                         dummyUsers.map((item) => (
                             <li key={item.name} className={`flex gap-x-2 mb-2 cursor-pointer rounded-lg hover:bg-[#1F2937] p-2 ${item.name === selected?.name && `bg-[#1F2937]`}`} onClick={ () => toast.info('User not active')}>
                                 <Image src={item.img} alt='profile' width={80} height={80} className='w-10'/>
@@ -42,7 +54,7 @@ const UsersList:FC<Props> = ({select, selected}) => {
                                 </div>
                             </li>
                         ))
-                    }
+                    } */}
                 </ul>}
                 {
                     (!!myUsers?.length && searchQuery !== "") && <ul>

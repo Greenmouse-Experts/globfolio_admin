@@ -49,4 +49,5 @@ export interface ChatData {
   sender: string;
   updatedAt?: string;
   owner?: string
+  afrom?: string
 }

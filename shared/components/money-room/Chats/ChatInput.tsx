@@ -1,60 +1,157 @@
 import { useAppSelector } from "@/shared/redux/store";
 import React, { FC, useState, useEffect } from "react";
-import { RiSendPlane2Fill } from "react-icons/ri";
+import { RiAttachment2, RiSendPlane2Fill } from "react-icons/ri";
+import { BiSolidImageAdd } from "react-icons/bi";
+import useModal from "@/hooks/useModal";
+import Image from "next/image";
 
-interface Props{
-  socket: any
-  item: any
+interface Props {
+  socket: any;
+  item: any;
+  followPrivate: () => void;
 }
-const ChatInput:FC<Props> = ({socket, item}) => {
-  const [message, setMessage] = useState('')
-  const id = useAppSelector((state) => state.user.user.id)
+const ChatInput: FC<Props> = ({ socket, item, followPrivate }) => {
+  const [message, setMessage] = useState("");
+  const [photoMessage, setPhotoMessage] = useState("");
+  const [sendFile, setSendFile] = useState<any>();
+  const { Modal, setShowModal } = useModal();
+  const [inputImage, setInputImage] = useState<any>();
+  const [showAttach, setShowAttach] = useState(false);
+  const [selectedImage, setSelectedImage] = useState("");
+  const id = useAppSelector((state) => state.user.user.id);
 
-  const sendMessage = (e:any) => {
+  const handleFileInput = (e: any) => {
     e.preventDefault();
-    setMessage(e.target.value)
-    if (message !== '') {
-      console.log({
-        chatroomId: item.id,
-        userId: id,
-        reload_messages: false,
-        message: `${message}`
-      });
-      
-      socket.emit('chatroom_listen', {
-        chatroomId: item.id,
-        userId: id,
-        reload_messages: false,
-        message: `${message}`
-      });
+    setShowModal(true);
+    setInputImage(e.target.files[0]);
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      const imageUrl = URL.createObjectURL(selectedFile);
+      // setImageFile(selectedFile);
+      setSelectedImage(imageUrl);
     }
-    setMessage('');
+    setShowAttach(false)
   };
-
-  // const sendMessage = () => {
-  //   if (message !== '') {
-  //     const __createdtime__ = Date.now();
-  //     // Send message to server. We can't specify who we send the message to from the frontend. We can only send to server. Server can then send message to rest of users in room
-  //   //   socket.emit('send_message', { user, message, __createdtime__ });
-  //     setMessage('');
-  //   }
-  // };
+  const sendMessage = (e: any) => {
+    e.preventDefault();
+    setMessage(e.target.value);
+    if (message !== "") {
+      if (item.userId) {
+        socket.emit("chatroom_listen", {
+          chatroomId: item.id,
+          userId: id,
+          reload_messages: false,
+          message: `${message}`,
+        });
+      } else {
+        socket.emit("chatroom_listen", {
+          to: item.id,
+          from: id,
+          reload_messages: false,
+          message: `${message}`,
+        });
+        followPrivate();
+      }
+    }
+    setMessage("");
+  };
+  const sendFiles = () => {
+    const reader = new FileReader();
+    reader.readAsDataURL(inputImage);
+    reader.onload = () => {
+      const base64 = reader.result;
+      setSendFile(base64);
+    };
+    if (sendFile) {
+      if (item.userId) {
+        console.log({
+          chatroomId: item.id,
+          userId: id,
+          reload_messages: false,
+          message: `${photoMessage}`,
+          files: [sendFile],
+        });
+        
+        socket.emit("chatroom_listen", {
+          chatroomId: item.id,
+          userId: id,
+          reload_messages: false,
+          message: `${photoMessage}`,
+          files: [sendFile],
+        });
+      } else {
+        socket.emit("chatroom_listen", {
+          to: item.id,
+          from: id,
+          reload_messages: false,
+          message: `${photoMessage}`,
+        });
+        followPrivate();
+      }
+    }
+    setPhotoMessage("");
+    setShowModal(false)
+  };
   return (
     <>
       <div className="px-4 pt-2">
-      <div className="border border-gray-600 bg-white flex p-2 items-center rounded-lg">
-        <input
-          onChange={(e) => setMessage(e.target.value)}
-          value={message}
-          placeholder="Enter Your Message..."
-          className="w-full outline-none"
-        />
-        <RiSendPlane2Fill
-          className="text-2xl text-primary"
-          onClick={sendMessage}
-        />
+        <div className="border border-gray-600 bg-white flex gap-x-2 p-2 items-center rounded-lg">
+          <input
+            onChange={(e) => setMessage(e.target.value)}
+            value={message}
+            placeholder="Enter Your Message..."
+            className="w-full outline-none"
+          />
+          <RiSendPlane2Fill
+            className="text-2xl text-primary"
+            onClick={sendMessage}
+          />
+          <div className="relative">
+            {showAttach && (
+              <div className="absolute -top-[88px] -left-[125px] bg-white p-6 w-40 rounded-xl shadow-lg">
+                <div>
+                  <p className="relative flex gap-x-1 items-center text-black fw-500">
+                    <BiSolidImageAdd className="text-2xl" />
+                    Image
+                    <input
+                      type="file"
+                      accept="image/*"
+                      className="absolute w-full h-full z-10 opacity-0"
+                      onChange={handleFileInput}
+                    />
+                  </p>
+                </div>
+              </div>
+            )}
+            <RiAttachment2 className="text-2xl text-primary" onClick={() => setShowAttach(!showAttach)}/>
+          </div>
+        </div>
       </div>
-      </div>
+      <Modal title="Selected File">
+        <div>
+          <div className="w-full">
+            <Image
+              src={selectedImage}
+              alt="image"
+              width={500}
+              height={500}
+              className="w-10/12 mx-auto"
+            />
+          </div>
+          <div className="w-full mt-4 rounded-[8px] flex justify-end shadow-lg p-2">
+          <input
+            onChange={(e) => setPhotoMessage(e.target.value)}
+            value={photoMessage}
+            placeholder="Enter Your Message..."
+            className="w-full outline-none"
+          />
+            <RiSendPlane2Fill
+              className="text-2xl text-primary"
+              onClick={sendFiles}
+            />
+          </div>
+        </div>
+      </Modal>
     </>
   );
 };
