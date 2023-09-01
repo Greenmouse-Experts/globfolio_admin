@@ -28,6 +28,11 @@ const TransactionTable:FC<Props> = ({status, transact}) => {
             Cell: (Props:any) => <div className='flex items-center gap-x-2'><Initials name={Props.value} size={34} text='14'/>{Props.value}</div>
           },
           {
+            Header: "Transaction ID",
+            accessor: "TransactionId",
+            Cell: (props:any) => <p className='fw-600 text-green-800'>{props.value}</p>
+          },
+          {
             Header: "Email",
             accessor: "user.email",
           },
@@ -50,10 +55,6 @@ const TransactionTable:FC<Props> = ({status, transact}) => {
             accessor: "status",
             Cell: (props: any) =>
               FormatStatus[props.value as keyof typeof FormatStatus],
-          },
-          {
-            Header: "Transaction ID",
-            accessor: "TransactionId",
           },
           {
             Header: " ",
