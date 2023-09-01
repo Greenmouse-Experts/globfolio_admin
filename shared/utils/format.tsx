@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { FaSun } from "react-icons/fa";
 
 export const capitalizeFirstLetter = (string: string) => {
@@ -59,4 +60,17 @@ export const isLink = (url: string) => {
   '(\\?[;&a-z\\d%_.~+=-]*)?'+ // validate query string
   '(\\#[-a-z\\d_]*)?$','i'); // validate fragment locator
 return !!urlPattern.test(url);
+}
+
+export const parseData = (value:string) => {
+  if (!value) return "";
+
+  return JSON.parse(value)
+}
+
+export const formatFile = (url:any) => {
+ const file = parseData(url)
+ console.log(file);
+ 
+ return file[0]
 }

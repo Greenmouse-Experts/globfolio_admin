@@ -4,6 +4,7 @@ import { RiAttachment2, RiSendPlane2Fill } from "react-icons/ri";
 import { BiSolidImageAdd } from "react-icons/bi";
 import useModal from "@/hooks/useModal";
 import Image from "next/image";
+import PreviewModal from "./PreviewModal";
 
 interface Props {
   socket: any;
@@ -12,7 +13,7 @@ interface Props {
 }
 const ChatInput: FC<Props> = ({ socket, item, followPrivate }) => {
   const [message, setMessage] = useState("");
-  const [photoMessage, setPhotoMessage] = useState("");
+  // const [photoMessage, setPhotoMessage] = useState("");
   const [sendFile, setSendFile] = useState<any>();
   const { Modal, setShowModal } = useModal();
   const [inputImage, setInputImage] = useState<any>();
@@ -23,14 +24,14 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate }) => {
   const handleFileInput = (e: any) => {
     e.preventDefault();
     setShowModal(true);
-    setInputImage(e.target.files[0]);
     const selectedFile = e.target.files[0];
     if (selectedFile) {
       const imageUrl = URL.createObjectURL(selectedFile);
-      // setImageFile(selectedFile);
+    setInputImage(selectedFile);
       setSelectedImage(imageUrl);
+      covertFile(selectedFile)
+      setShowAttach(false)
     }
-    setShowAttach(false)
   };
   const sendMessage = (e: any) => {
     e.preventDefault();
@@ -55,20 +56,14 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate }) => {
     }
     setMessage("");
   };
-  const sendFiles = () => {
-    const reader = new FileReader();
-    reader.readAsDataURL(inputImage);
-    reader.onload = () => {
-      const base64 = reader.result;
-      setSendFile(base64);
-    };
+  const sendFiles = (val:string) => {
     if (sendFile) {
       if (item.userId) {
         console.log({
           chatroomId: item.id,
           userId: id,
           reload_messages: false,
-          message: `${photoMessage}`,
+          message: `${val}`,
           files: [sendFile],
         });
         
@@ -76,7 +71,7 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate }) => {
           chatroomId: item.id,
           userId: id,
           reload_messages: false,
-          message: `${photoMessage}`,
+          message: `${val}`,
           files: [sendFile],
         });
       } else {
@@ -84,14 +79,24 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate }) => {
           to: item.id,
           from: id,
           reload_messages: false,
-          message: `${photoMessage}`,
+          message: `${val}`,
         });
         followPrivate();
       }
     }
-    setPhotoMessage("");
     setShowModal(false)
   };
+  const covertFile = (item:any) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(item);
+    reader.onload = () => {
+      const base64 = reader.result;
+      setSendFile(base64);
+    };
+  }
+  const ProceedToUpload = async(item:string) => {
+    sendFiles(item)
+  }
   return (
     <>
       <div className="px-4 pt-2">
@@ -128,29 +133,7 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate }) => {
         </div>
       </div>
       <Modal title="Selected File">
-        <div>
-          <div className="w-full">
-            <Image
-              src={selectedImage}
-              alt="image"
-              width={500}
-              height={500}
-              className="w-10/12 mx-auto"
-            />
-          </div>
-          <div className="w-full mt-4 rounded-[8px] flex justify-end shadow-lg p-2">
-          <input
-            onChange={(e) => setPhotoMessage(e.target.value)}
-            value={photoMessage}
-            placeholder="Enter Your Message..."
-            className="w-full outline-none"
-          />
-            <RiSendPlane2Fill
-              className="text-2xl text-primary"
-              onClick={sendFiles}
-            />
-          </div>
-        </div>
+        <PreviewModal image={selectedImage} proceed={ProceedToUpload} close={() => setShowModal(false)}/>
       </Modal>
     </>
   );

@@ -4,6 +4,7 @@ import { VscDiffAdded } from "react-icons/vsc";
 import AddRoom from "./AddRoom";
 import { useGetRoomQuery } from "@/services/api/chatSlice";
 import Image from "next/image";
+import { formatName } from "@/shared/utils/format";
 
 interface Props {
   select: (value: any) => void;
@@ -24,8 +25,8 @@ const RoomList: FC<Props> = ({ select, selected }) => {
     setShowRoom(filteredItems);
   };
   useEffect(() => {
-    setShowRoom(room?.data)
-  }, [room])
+    setShowRoom(room?.data);
+  }, [room]);
   return (
     <>
       <div className="text-white mt-3">
@@ -58,15 +59,26 @@ const RoomList: FC<Props> = ({ select, selected }) => {
                   onClick={() => select(item)}
                   key={index}
                 >
-                  <Image
-                    src="https://res.cloudinary.com/greenmouse-tech/image/upload/v1692619891/globfolio/Ellipse_1366_rimyab.png"
-                    alt="profile"
-                    width={80}
-                    height={80}
-                    className="w-10"
-                  />
+                  {item.banner ? (
+                    <Image
+                      src={item.banner}
+                      alt="profile"
+                      width={80}
+                      height={80}
+                      className="w-10 h-10 circle"
+                    />
+                  ) : (
+                    <Image
+                      src='https://res.cloudinary.com/greenmouse-tech/image/upload/v1693229127/globfolio/Group_48368_1_y0m8ah.png'
+                      alt="profile"
+                      width={80}
+                      height={80}
+                      className="w-10 h-10 circle"
+                    />
+                  )}
                   <div>
                     <p className="text-white fw-500 fs-300">{item.title}</p>
+                    <p className="text-gray-500 fs-300">{item?.description? formatName(item?.description, 20) : ''}</p>
                   </div>
                 </li>
               ))}

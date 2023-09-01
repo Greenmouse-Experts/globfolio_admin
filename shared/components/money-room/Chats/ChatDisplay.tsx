@@ -15,7 +15,7 @@ import { BiTime } from "react-icons/bi";
 import { BsCheck2All, BsCheckAll } from "react-icons/bs";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { FcCancel } from "react-icons/fc";
-import { isImage, isLink } from "@/shared/utils/format";
+import { formatFile, isImage, isLink, parseData } from "@/shared/utils/format";
 import Image from "next/image";
 // dayjs time format
 const dayjs = require("dayjs");
@@ -35,13 +35,16 @@ const ChatDisplay: FC<Props> = ({ socket }) => {
   const getMessages = () => {
     socket.on("chatroom_messages", (data: any) => {
       if (data.msgs) {
+        console.log(data);
+
         const needed = data?.msgs.map(
-          ({ sender, owner, message, createdAt, id }: any) => ({
+          ({ sender, owner, message, createdAt, id, files }: any) => ({
             sender,
             owner: owner.fullname,
             message,
             createdAt,
             id,
+            files,
           })
         );
         dispatch(saveInitailMsg(needed));
@@ -53,9 +56,9 @@ const ChatDisplay: FC<Props> = ({ socket }) => {
             message: data.msg.message,
             createdAt: data.msg.createdAt,
             id: data.msg.id,
+            files: data.msg.files,
           },
         ];
-        console.log(add);
         dispatch(saveMessages(add));
       }
     });
@@ -130,19 +133,32 @@ const ChatDisplay: FC<Props> = ({ socket }) => {
                       </Menu>
                     </div>
                   </div>
-                  <p className="fs-500">
-                    {isImage(item.message) ? (
-                      <Image
-                        src={item.message}
-                        alt="msg"
-                        width={300}
-                        height={400}
-                        className="w-48"
-                      />
+                  <div>
+                    {!!item?.files?.length && isImage(item.files[0]) ? (
+                      <div>
+                        <Image
+                          src={item.files[0]}
+                          alt="msg"
+                          width={300}
+                          height={400}
+                          className="w-48"
+                        />
+                      </div>
                     ) : (
-                        isLink(item.message) ?
-                      <a href={item.message} target="_blank" className="fw-500 text-blue-700" rel="noopener noreferrer">{item.message}</a>
-                      :
+                      ""
+                    )}
+                  </div>
+                  <p className="fs-500">
+                    {isLink(item.message) ? (
+                      <a
+                        href={item.message}
+                        target="_blank"
+                        className="fw-500 text-blue-700"
+                        rel="noopener noreferrer"
+                      >
+                        {item.message}
+                      </a>
+                    ) : (
                       item.message
                     )}
                   </p>

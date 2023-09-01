@@ -19,7 +19,7 @@ const AddRoom: FC<Props> = ({ refetch, close }) => {
   const [isBusy, setIsBusy] = useState(false);
   const [showRoomCountry, setShowRoomCountry] = useState(false);
   const [roomCountry, setRoomCountry] = useState<string[]>([]);
-  const [image, setImage] = useState<any>()
+  const [sendFile, setSendFile] = useState<any>()
   const [add] = useLazyCreateChatRoomQuery();
   const addCountry = (value: any) => {
     if (roomCountry.includes(value)) {
@@ -35,7 +35,16 @@ const AddRoom: FC<Props> = ({ refetch, close }) => {
     }
   };
   const handleFileUpload = (e:any) => {
-    setImage(e.target.files[0])
+    e.preventDefault();
+  const selectedFile = e.target.files[0];
+  if (selectedFile) {
+    const reader = new FileReader();
+  reader.readAsDataURL(selectedFile);
+  reader.onload = () => {
+    const base64 = reader.result;
+    setSendFile(base64);
+  };
+  }
 }
   const {
     control,
@@ -46,12 +55,18 @@ const AddRoom: FC<Props> = ({ refetch, close }) => {
     mode: "onChange",
     defaultValues: {
       title: "",
+      description: "",
     },
   });
 
   const onSubmit = async (data: any) => {
     setIsBusy(true);
-    await add(data)
+    const payload = {
+      ...data,
+      access: roomCountry,
+      image: sendFile
+    }
+    await add(payload)
       .then((res: any) => {
         if (res.isSuccess) {
           toast.success(res.data.message);
@@ -88,6 +103,25 @@ const AddRoom: FC<Props> = ({ refetch, close }) => {
                   labelClassName="text-[#000000B2] fw-500"
                   error={errors.title?.message}
                   type={InputType.text}
+                  {...field}
+                />
+              )}
+            />
+            <Controller
+              name="description"
+              control={control}
+              rules={{
+                required: {
+                  value: true,
+                  message: "Please enter the name",
+                },
+              }}
+              render={({ field }) => (
+                <TextInput
+                  label="Room Description"
+                  labelClassName="text-[#000000B2] fw-500"
+                  error={errors.description?.message}
+                  type={InputType.textarea}
                   {...field}
                 />
               )}
