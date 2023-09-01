@@ -41,6 +41,17 @@ export const subscriptionApiSlice = apiSlice.injectEndpoints({
         keepUnusedDataFor: ENDPOINT.CACHE_LIFETIME.EXTENDED,
       }),
 
+      getRoomFiles: builder.query<any | ErrorResult, string>({
+        query: (param) => ({
+          url: `${ENDPOINT.GET_ROOM_FILES}/${param}/files`,
+          method: ENDPOINT.HTTP_METHODS.GET,
+          headers: {
+            Authorization: getLocalToken("token")
+          }
+        }),
+        keepUnusedDataFor: ENDPOINT.CACHE_LIFETIME.EXTENDED,
+      }),
+
     createChatRoom: builder.query<BaseResult | ErrorResult, any>({
         query: (payload) => ({
           url: ENDPOINT.CREATE_CHATROOM,
@@ -60,5 +71,6 @@ export const {
   useGetRoomQuery,
   useLazyCreateChatRoomQuery,
   useLazyGetUserQueryQuery,
-  useGetRoomUsersQuery
+  useGetRoomUsersQuery,
+  useGetRoomFilesQuery
 } = subscriptionApiSlice;

@@ -3,6 +3,7 @@ import Image from 'next/image'
 import { useLazyGetUserQueryQuery } from '@/services/api/chatSlice'
 import { toast } from 'react-toastify'
 import { useAppSelector } from '@/shared/redux/store'
+import { formatFile, parseData } from '@/shared/utils/format'
 
 interface Props {
     select: (value:any) => void
@@ -10,6 +11,9 @@ interface Props {
     socket:any
   }
 const UsersList:FC<Props> = ({select, selected, socket}) => {
+    
+    console.log(formatFile("[\"https://res.cloudinary.com/greenmouse-tech/image/upload/v1693574906/haiztmeytpxdy3pioxcc.jpg\"]"));
+    
     const [myUsers, setMyUsers] = useState<any[]>()
     const [searchQuery, setSearchQuery] = useState('');
     const [getUser] = useLazyGetUserQueryQuery()

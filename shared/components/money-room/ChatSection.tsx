@@ -10,6 +10,7 @@ import { Menu, MenuHandler, MenuItem, MenuList, Button } from "../UI/dropdown";
 import useModal from "@/hooks/useModal";
 import GroupUsers from "./GroupUsers";
 import PrivateChatDisplay from "./Chats/PrivateChatDisplay";
+import RoomFilesList from "./RoomFilesList";
 
 interface Props {
   item: any;
@@ -18,17 +19,19 @@ interface Props {
 }
 const ChatSection: FC<Props> = ({ item, socket, select }) => {
   const {Modal:ViewUser, setShowModal:setViewUser} = useModal()
+  const {Modal:ViewFiles, setShowModal:setViewFiles} = useModal()
   const dispatch = useAppDispatch()
   const [loading, setLoading] = useState(false);
   const id = useAppSelector((state) => state.user.user.id);
   const followUp = () => {
     socket.on('private_messages', (data: any) => {
     const add = [{
-      sender: data.afrom.id,
-      owner: data.afrom.fullname,
-      message: data.message,
-      createdAt: data.createdAt,
-      id: data.id,
+      sender: data.msg.afrom.id,
+      owner: data.msg.afrom.fullname,
+      message: data.msg.message,
+      createdAt: data.msg.createdAt,
+      id: data.msg.id,
+      files: data.msg.files
     }];
     dispatch(saveMessages(add));
   })
@@ -99,6 +102,7 @@ const ChatSection: FC<Props> = ({ item, socket, select }) => {
                   </MenuHandler>
                   <MenuList className="p-2">
                     <MenuItem onClick={() => setViewUser(true)}>View Users</MenuItem>
+                    <MenuItem onClick={() => setViewFiles(true)}>View Files</MenuItem>
                     <MenuItem
                       className="bg-red-400 text-white"
                       // onClick={() => openDelete(item.id)}
@@ -124,6 +128,9 @@ const ChatSection: FC<Props> = ({ item, socket, select }) => {
       <ViewUser title="Group Users">
           <GroupUsers item={item} close={() => setViewUser(false)} select={select}/>
       </ViewUser>
+      <ViewFiles title="View Sent Files" wide>
+          <RoomFilesList item={item} close={() => setViewFiles(false)}/>
+      </ViewFiles>
     </>
   );
 };
