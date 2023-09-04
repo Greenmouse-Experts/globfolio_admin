@@ -5,6 +5,8 @@ import {
 import { useAppDispatch, useAppSelector } from "@/shared/redux/store";
 import { ChatData } from "@/shared/types/routine";
 import { EmptyState2 } from "@/shared/utils/emptyState";
+import { isImage, isLink } from "@/shared/utils/format";
+import Image from "next/image";
 import React, { FC, useRef, useEffect } from "react";
 import { BiTime } from "react-icons/bi";
 import { BsCheck2All, BsCheckAll } from "react-icons/bs";
@@ -15,8 +17,9 @@ dayjs.extend(relativeTime);
 
 interface Props {
   socket: any;
+  roomId: any
 }
-const PrivateChatDisplay: FC<Props> = ({ socket }) => {
+const PrivateChatDisplay: FC<Props> = ({ socket, roomId }) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const dispatch = useAppDispatch();
   const id = useAppSelector((state) => state.user.user.id);
@@ -27,12 +30,14 @@ const PrivateChatDisplay: FC<Props> = ({ socket }) => {
       if (data.msgs) {
         // setMessagesReceived([...data?.msgs]);
         const needed = data?.msgs.map(
-          ({ afrom, message, createdAt, id }: any) => ({
+          ({ afrom, message, createdAt, id, files, areplyTo }: any) => ({
             sender: afrom.id,
             owner: afrom.fullname,
             message,
             createdAt,
             id,
+            files,
+            reply: areplyTo
           })
         );
         console.log(needed);
@@ -96,7 +101,35 @@ const PrivateChatDisplay: FC<Props> = ({ socket }) => {
                     }`}
                   >
                     <p className="fw-600 fs-300 mb-1">{item.owner}</p>
-                    <p className="fs-500">{item.message}</p>
+                    <div>
+                    {!!item?.files?.length && isImage(item.files[0]) ? (
+                      <div>
+                        <Image
+                          src={item.files[0]}
+                          alt="msg"
+                          width={300}
+                          height={400}
+                          className="w-48"
+                        />
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+                  <p className="fs-500">
+                    {isLink(item.message) ? (
+                      <a
+                        href={item.message}
+                        target="_blank"
+                        className="fw-500 text-blue-700"
+                        rel="noopener noreferrer"
+                      >
+                        {item.message}
+                      </a>
+                    ) : (
+                      item.message
+                    )}
+                  </p>
                     <div className="flex justify-between items-center mt-2">
                       <div className="flex items-center gap-x-1">
                         <BiTime

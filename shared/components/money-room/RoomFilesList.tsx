@@ -21,8 +21,8 @@ const RoomFilesList:FC<Props> = ({item, close}) => {
         <div className='grid grid-cols-4 gap-4 max-h-[500px] overflow-y-auto scroll-pro'>
             {
                 data && !!data.data.length && data.data.map((item:any, i:number) => (
-                    <div className='rounded-xl h-28 overflow-hidden shadow'>
-                        <Image src={item.message} alt='file' width={200} height={200} className='w-full h-full object-cover'/>
+                    <div className='rounded-xl h-28 overflow-hidden shadow' key={i}>
+                        <Image src={item} alt='file' width={200} height={200} className='w-full h-full object-cover'/>
                     </div>
                 ))
             }

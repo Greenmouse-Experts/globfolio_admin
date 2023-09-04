@@ -10,8 +10,9 @@ interface Props {
   socket: any;
   item: any;
   followPrivate: () => void;
+  response: any
 }
-const ChatInput: FC<Props> = ({ socket, item, followPrivate }) => {
+const ChatInput: FC<Props> = ({ socket, item, followPrivate, response }) => {
   const [message, setMessage] = useState("");
   // const [photoMessage, setPhotoMessage] = useState("");
   const [sendFile, setSendFile] = useState<any>();
@@ -80,6 +81,7 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate }) => {
           from: id,
           reload_messages: false,
           message: `${val}`,
+          files: [sendFile],
         });
         followPrivate();
       }
@@ -97,6 +99,31 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate }) => {
   const ProceedToUpload = async(item:string) => {
     sendFiles(item)
   }
+  const ReplyMessage = (e:any) => {
+    e.preventDefault();
+    setMessage(e.target.value);
+    if (message !== "") {
+      if (item.userId) {
+        socket.emit("chatroom_listen", {
+          chatroomId: item.id,
+          userId: id,
+          reload_messages: false,
+          message: `${message}`,
+          replyTo: response?.id
+        });
+      } else {
+        socket.emit("chatroom_listen", {
+          to: item.id,
+          from: id,
+          reload_messages: false,
+          message: `${message}`,
+          replyTo: response?.id
+        });
+        followPrivate();
+      }
+    }
+    setMessage("");
+  }
   return (
     <>
       <div className="px-4 pt-2">
@@ -109,7 +136,7 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate }) => {
           />
           <RiSendPlane2Fill
             className="text-2xl text-primary"
-            onClick={sendMessage}
+            onClick={response?.message? ReplyMessage : sendMessage}
           />
           <div className="relative">
             {showAttach && (
@@ -121,6 +148,16 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate }) => {
                     <input
                       type="file"
                       accept="image/*"
+                      className="absolute w-full h-full z-10 opacity-0"
+                      onChange={handleFileInput}
+                    />
+                  </p>
+                  <p className="relative flex mt-2 gap-x-1 items-center text-black fw-500">
+                    <BiSolidImageAdd className="text-2xl" />
+                    File
+                    <input
+                      type="file"
+                      // accept="image/*"
                       className="absolute w-full h-full z-10 opacity-0"
                       onChange={handleFileInput}
                     />

@@ -21,7 +21,7 @@ export const subscriptionApiSlice = apiSlice.injectEndpoints({
 
     getRoomUsers: builder.query<any | ErrorResult, any>({
       query: (id) => ({
-        url: `${ENDPOINT.GET_ROOM_USERS}/${id}/suscribers`,
+        url: `${ENDPOINT.GET_ROOM}/${id}/suscribers`,
         method: ENDPOINT.HTTP_METHODS.GET,
         headers: {
           Authorization: getLocalToken("token")
@@ -52,11 +52,44 @@ export const subscriptionApiSlice = apiSlice.injectEndpoints({
         keepUnusedDataFor: ENDPOINT.CACHE_LIFETIME.EXTENDED,
       }),
 
+      getPrevious: builder.query<any | ErrorResult, void>({
+        query: () => ({
+          url: `${ENDPOINT.GET_PREVIOUS_CHAT}`,
+          method: ENDPOINT.HTTP_METHODS.GET,
+          headers: {
+            Authorization: getLocalToken("token")
+          }
+        }),
+        keepUnusedDataFor: ENDPOINT.CACHE_LIFETIME.DEFAULT,
+      }),
+
     createChatRoom: builder.query<BaseResult | ErrorResult, any>({
         query: (payload) => ({
           url: ENDPOINT.CREATE_CHATROOM,
           body: payload ,
           method: ENDPOINT.HTTP_METHODS.POST,
+          headers: {
+            Authorization: getLocalToken("token"),
+          },
+        }),
+      }),
+
+      suspendChatRoom: builder.query<BaseResult | ErrorResult, any>({
+        query: (payload) => ({
+          url: `${ENDPOINT.GET_ROOM}/${payload.id}/suspension`,
+          method: ENDPOINT.HTTP_METHODS.POST,
+          body: payload ,
+          headers: {
+            Authorization: getLocalToken("token"),
+          },
+        }),
+      }),
+
+      deleteChatMsg: builder.query<BaseResult | ErrorResult, any>({
+        query: (payload) => ({
+          url: `${ENDPOINT.DELETE_MESSAGE}`,
+          method: ENDPOINT.HTTP_METHODS.DELETE,
+          body: payload ,
           headers: {
             Authorization: getLocalToken("token"),
           },
@@ -72,5 +105,8 @@ export const {
   useLazyCreateChatRoomQuery,
   useLazyGetUserQueryQuery,
   useGetRoomUsersQuery,
-  useGetRoomFilesQuery
+  useGetRoomFilesQuery,
+  useGetPreviousQuery,
+  useLazySuspendChatRoomQuery,
+  useLazyDeleteChatMsgQuery
 } = subscriptionApiSlice;

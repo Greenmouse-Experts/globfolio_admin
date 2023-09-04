@@ -18,7 +18,7 @@ const PreviewModal:FC<Props> = ({image, proceed, close}) => {
     <div>
           <div className="w-full">
             <Image
-              src={image}
+              src={image? image : 'https://res.cloudinary.com/greenmouse-tech/image/upload/v1693837622/globfolio/file-removebg-preview_stj9w1.png'}
               alt="image"
               width={500}
               height={500}
