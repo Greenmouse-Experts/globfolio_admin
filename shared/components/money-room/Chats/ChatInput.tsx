@@ -5,6 +5,7 @@ import { BiSolidImageAdd } from "react-icons/bi";
 import useModal from "@/hooks/useModal";
 import Image from "next/image";
 import PreviewModal from "./PreviewModal";
+import { AiOutlineFileText } from "react-icons/ai";
 
 interface Props {
   socket: any;
@@ -140,9 +141,9 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate, response }) => {
           />
           <div className="relative">
             {showAttach && (
-              <div className="absolute -top-[88px] -left-[125px] bg-white p-6 w-40 rounded-xl shadow-lg">
+              <div className="absolute -top-[108px] -left-[125px] bg-white p-6 w-40 rounded-xl shadow-lg">
                 <div>
-                  <p className="relative flex gap-x-1 items-center text-black fw-500">
+                  <p className="relative flex gap-x-1 cursor-pointer hover:text-gray-600 items-center text-black fw-500">
                     <BiSolidImageAdd className="text-2xl" />
                     Image
                     <input
@@ -152,8 +153,8 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate, response }) => {
                       onChange={handleFileInput}
                     />
                   </p>
-                  <p className="relative flex mt-2 gap-x-1 items-center text-black fw-500">
-                    <BiSolidImageAdd className="text-2xl" />
+                  <p className="relative text-orange-800 cursor-pointer flex mt-2 gap-x-1 items-center text-black fw-500">
+                    <AiOutlineFileText className="text-2xl" />
                     File
                     <input
                       type="file"

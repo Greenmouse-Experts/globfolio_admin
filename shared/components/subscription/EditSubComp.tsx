@@ -8,8 +8,9 @@ import CreateNewPlan from "./NewPlan";
 interface Props{
   data: SubscriptionPlanResult
   refetch: () => void
+  count: () => void
 }
-const EditSubComponent:FC<Props> = ({data, refetch}) => {
+const EditSubComponent:FC<Props> = ({data, refetch, count}) => {
   const [open, setOpen] = useState("");
   const {Modal, setShowModal} = useModal()
 
@@ -29,7 +30,7 @@ const EditSubComponent:FC<Props> = ({data, refetch}) => {
       <div>
         <div className="mb-6 flex items-center justify-between">
           <p className="text-lg fw-600">Plans and Pricing</p>
-          <p className="fw-600 border-b border-gray-600" onClick={() => setShowModal(true)}>Add New Plan</p>
+          <p className="fw-600 border-b border-gray-600 cursor-pointer" onClick={() => setShowModal(true)}>Add New Plan</p>
         </div>
         <div className="bg-white rounded-lg p-6">
           <div className="w-full overflow-x-auto scroll-pro">
@@ -54,7 +55,7 @@ const EditSubComponent:FC<Props> = ({data, refetch}) => {
         </div>
       </div>
       <Modal title="Create a new subscription plan" wide>
-              <CreateNewPlan close={() => setShowModal(false)} refetch={refetch}/>
+              <CreateNewPlan close={() => setShowModal(false)} refetch={refetch} count={count}/>
       </Modal>
     </>
   );

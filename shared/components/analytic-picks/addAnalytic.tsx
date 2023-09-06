@@ -101,7 +101,7 @@ const AddAnalyticPicksForm:FC<Props> = ({refetchDraft, refetchLive}) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid lg:grid-cols-2 gap-4 mt-4">
             <div>
-            <label className="text-[#000000B2] fw-500 flex items-center gap-x-2">Sector <AiOutlinePlusSquare className="cursor-pointer" onClick={() => setShowModal(true)}/></label>
+            <label className="text-[#000000B2] fw-500 flex items-center gap-x-2">Category <AiOutlinePlusSquare className="cursor-pointer" onClick={() => setShowModal(true)}/></label>
               <Controller
                 name="industry"
                 control={control}
@@ -137,6 +137,7 @@ const AddAnalyticPicksForm:FC<Props> = ({refetchDraft, refetchLive}) => {
                 render={({ field }) => (
                   <select className="w-full !max-h-[300px] rounded p-2 border border-gray-400 mt-2" {...field}>
                     <option value="" disabled>Select an Option</option>
+                    <option value="Global">Global</option>
                     <option value="Nigeria">Nigeria</option>
                     {
                       getData().map((item:any) => (

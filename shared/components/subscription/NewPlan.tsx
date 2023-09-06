@@ -14,8 +14,9 @@ import { ScaleSpinner } from "../UI/Loading";
 interface Props {
   close: Function
   refetch: Function
+  count: () => void
 }
-const CreateNewPlan:FC<Props> = ({close, refetch}) => {
+const CreateNewPlan:FC<Props> = ({close, refetch, count}) => {
   const country = getData();
   const [create] = useLazyCreateSubscriptionQuery();
   const [isBusy, setIsBusy] = useState(false)
@@ -100,6 +101,7 @@ const CreateNewPlan:FC<Props> = ({close, refetch}) => {
           toast.success(res.data.message)
           setIsBusy(false);
           refetch()
+          count()
           close()
         }else {
           toast.error(res.error.data.message);
