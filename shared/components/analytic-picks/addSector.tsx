@@ -59,7 +59,7 @@ const AddSector:FC<Props> = ({refetch, close}) => {
               }}
               render={({ field }) => (
                 <TextInput
-                  label="Sector Name"
+                  label="Category Name"
                   labelClassName="text-[#000000B2] fw-500"
                   error={errors.name?.message}
                   type={InputType.text}

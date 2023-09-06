@@ -5,13 +5,15 @@ import { BiSolidImageAdd } from "react-icons/bi";
 import useModal from "@/hooks/useModal";
 import Image from "next/image";
 import PreviewModal from "./PreviewModal";
+import { AiOutlineFileText } from "react-icons/ai";
 
 interface Props {
   socket: any;
   item: any;
   followPrivate: () => void;
+  response: any
 }
-const ChatInput: FC<Props> = ({ socket, item, followPrivate }) => {
+const ChatInput: FC<Props> = ({ socket, item, followPrivate, response }) => {
   const [message, setMessage] = useState("");
   // const [photoMessage, setPhotoMessage] = useState("");
   const [sendFile, setSendFile] = useState<any>();
@@ -80,6 +82,7 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate }) => {
           from: id,
           reload_messages: false,
           message: `${val}`,
+          files: [sendFile],
         });
         followPrivate();
       }
@@ -97,6 +100,31 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate }) => {
   const ProceedToUpload = async(item:string) => {
     sendFiles(item)
   }
+  const ReplyMessage = (e:any) => {
+    e.preventDefault();
+    setMessage(e.target.value);
+    if (message !== "") {
+      if (item.userId) {
+        socket.emit("chatroom_listen", {
+          chatroomId: item.id,
+          userId: id,
+          reload_messages: false,
+          message: `${message}`,
+          replyTo: response?.id
+        });
+      } else {
+        socket.emit("chatroom_listen", {
+          to: item.id,
+          from: id,
+          reload_messages: false,
+          message: `${message}`,
+          replyTo: response?.id
+        });
+        followPrivate();
+      }
+    }
+    setMessage("");
+  }
   return (
     <>
       <div className="px-4 pt-2">
@@ -109,18 +137,28 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate }) => {
           />
           <RiSendPlane2Fill
             className="text-2xl text-primary"
-            onClick={sendMessage}
+            onClick={response?.message? ReplyMessage : sendMessage}
           />
           <div className="relative">
             {showAttach && (
-              <div className="absolute -top-[88px] -left-[125px] bg-white p-6 w-40 rounded-xl shadow-lg">
+              <div className="absolute -top-[108px] -left-[125px] bg-white p-6 w-40 rounded-xl shadow-lg">
                 <div>
-                  <p className="relative flex gap-x-1 items-center text-black fw-500">
+                  <p className="relative flex gap-x-1 cursor-pointer hover:text-gray-600 items-center text-black fw-500">
                     <BiSolidImageAdd className="text-2xl" />
                     Image
                     <input
                       type="file"
                       accept="image/*"
+                      className="absolute w-full h-full z-10 opacity-0"
+                      onChange={handleFileInput}
+                    />
+                  </p>
+                  <p className="relative text-orange-800 cursor-pointer flex mt-2 gap-x-1 items-center text-black fw-500">
+                    <AiOutlineFileText className="text-2xl" />
+                    File
+                    <input
+                      type="file"
+                      // accept="image/*"
                       className="absolute w-full h-full z-10 opacity-0"
                       onChange={handleFileInput}
                     />

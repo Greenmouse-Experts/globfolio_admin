@@ -54,6 +54,9 @@ export const formatRating = (rate:number, size: string) => {
 export const isImage = (url:string) => {
   return /\.(jpg|jpeg|png|webp|avif|gif|svg)$/.test(url);
 }
+export const isFile = (url:string) => {
+  return /\.(pdf|docx|xml|xls)$/.test(url);
+}
 export const isLink = (url: string) => {
   var urlPattern = new RegExp('^(https?:\\/\\/)?'+ // validate protocol
   '((([a-z\\d]([a-z\\d-]*[a-z\\d])*)\\.)+[a-z]{2,}|'+ // validate domain name

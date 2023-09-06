@@ -11,6 +11,9 @@ import useModal from "@/hooks/useModal";
 import GroupUsers from "./GroupUsers";
 import PrivateChatDisplay from "./Chats/PrivateChatDisplay";
 import RoomFilesList from "./RoomFilesList";
+import ReusableModal from "../UI/ReusableModal";
+import { useLazySuspendChatRoomQuery } from "@/services/api/chatSlice";
+import { toast } from "react-toastify";
 
 interface Props {
   item: any;
@@ -20,7 +23,10 @@ interface Props {
 const ChatSection: FC<Props> = ({ item, socket, select }) => {
   const {Modal:ViewUser, setShowModal:setViewUser} = useModal()
   const {Modal:ViewFiles, setShowModal:setViewFiles} = useModal()
+  const {Modal:Suspend, setShowModal:setShowSuspend} = useModal()
   const dispatch = useAppDispatch()
+  const [suspend] = useLazySuspendChatRoomQuery()
+  const [reply, setReply] = useState<any>()
   const [loading, setLoading] = useState(false);
   const id = useAppSelector((state) => state.user.user.id);
   const followUp = () => {
@@ -61,10 +67,27 @@ const ChatSection: FC<Props> = ({ item, socket, select }) => {
     }
   }
   
+  // suspend chat room
+  const SuspendChatroom = async(item:any) => {
+    const payload = {
+      id: item,
+      status: false
+    }
+    await suspend(payload)
+    .then((res:any) => {
+      if(res.isSuccess){
+        toast.success(res.data.message)
+        setShowSuspend(false)
+      }else{
+        toast.error(res.data.message)
+      }
+    })
+    .catch((err) => {})
+  }
   useEffect(() => {
     selectConnect()
   }, [item]);
-  
+  console.log(reply);
 
   return (
     <>
@@ -105,9 +128,9 @@ const ChatSection: FC<Props> = ({ item, socket, select }) => {
                     <MenuItem onClick={() => setViewFiles(true)}>View Files</MenuItem>
                     <MenuItem
                       className="bg-red-400 text-white"
-                      // onClick={() => openDelete(item.id)}
+                      onClick={() => setShowSuspend(true)}
                     >
-                      Delete Room
+                      Suspend Room
                     </MenuItem>
                   </MenuList>
                 </Menu>
@@ -119,11 +142,11 @@ const ChatSection: FC<Props> = ({ item, socket, select }) => {
         )}
         {!loading && (
           item.userId? 
-          <ChatDisplay socket={socket} />
+          <ChatDisplay socket={socket} roomId={item.id} respond={setReply}/>
           :
-          <PrivateChatDisplay socket={socket}/>
+          <PrivateChatDisplay socket={socket} roomId={item.id}/>
         )}
-        <ChatInput socket={socket} item={item} followPrivate={followUp} />
+        <ChatInput socket={socket} item={item} followPrivate={followUp} response={reply} />
       </div>
       <ViewUser title="Group Users">
           <GroupUsers item={item} close={() => setViewUser(false)} select={select}/>
@@ -131,6 +154,15 @@ const ChatSection: FC<Props> = ({ item, socket, select }) => {
       <ViewFiles title="View Sent Files" wide>
           <RoomFilesList item={item} close={() => setViewFiles(false)}/>
       </ViewFiles>
+      <Suspend title="" noHead>
+        <ReusableModal
+          title="Are you sure you want to Suspend this Chat room"
+          cancelTitle="No, Back"
+          actionTitle="Yes, Suspend"
+          action={() => SuspendChatroom(item.id)}
+          closeModal={() => setShowSuspend(false)}
+        />
+      </Suspend>
     </>
   );
 };

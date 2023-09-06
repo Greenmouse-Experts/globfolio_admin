@@ -127,7 +127,7 @@ const SubItemComp: FC<Props> = ({ data, refetch, tab, change }) => {
            <div className="flex justify-between">
            <p className="fw-600">Subscription</p>
            {deleting && <p className="fw-500 text-red-500">Deleting...</p>}
-           { !deleting && <p className="flex items-center text-red-600 border-b border-red-600 fw-500" onClick={deletePlan}><RiDeleteBin5Fill className=""/>Delete Plan</p>}
+           { !deleting && <p className="flex items-center text-red-600 border-b border-red-600 fw-500 cursor-pointer" onClick={deletePlan}><RiDeleteBin5Fill className=""/>Delete Plan</p>}
            </div>
             <div className="border-2 border-[#E8EAED] rounded-[15px] flex p-2 mt-4 px-6">
               {/*  */}
@@ -150,7 +150,7 @@ const SubItemComp: FC<Props> = ({ data, refetch, tab, change }) => {
                   />
                 )}
               />
-              <div className="flex gap-x-2 items-center p-1 px-2 rounded-[15px] border border-[#5F5F5F]" onClick={() => ShowEdit(true)}>
+              <div className="flex gap-x-2 items-center p-1 px-2 cursor-pointer rounded-[15px] border border-[#5F5F5F]" onClick={() => ShowEdit(true)}>
                 <p>Edit</p>
                 <AiOutlineEdit />
               </div>

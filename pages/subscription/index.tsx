@@ -9,7 +9,7 @@ import {
 
 const SubscriptionPage: AppPage = () => {
   const { data, refetch } = useGetSubscriptionQuery();
-  const { data: sub, isLoading } = useGetSubUserQuery();
+  const { data: sub, isLoading, refetch:refetchCount } = useGetSubUserQuery();
   
   const colors: string[] = [
     "bg-[#E4E9F7]",
@@ -60,7 +60,7 @@ const SubscriptionPage: AppPage = () => {
             )})}
         </div>
         <div className="mt-12">
-          {data && <EditSubComponent data={data} refetch={refetch} />}
+          {data && <EditSubComponent data={data} refetch={refetch} count={refetchCount} />}
         </div>
       </div>
     </>

@@ -15,8 +15,13 @@ import { BiTime } from "react-icons/bi";
 import { BsCheck2All, BsCheckAll } from "react-icons/bs";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { FcCancel } from "react-icons/fc";
-import { formatFile, isImage, isLink, parseData } from "@/shared/utils/format";
+import { formatFile, isFile, isImage, isLink, parseData } from "@/shared/utils/format";
 import Image from "next/image";
+import useModal from "@/hooks/useModal";
+import ReusableModal from "../../UI/ReusableModal";
+import { useLazyDeleteChatMsgQuery } from "@/services/api/chatSlice";
+import { toast } from "react-toastify";
+import { AiOutlineFileText } from "react-icons/ai";
 // dayjs time format
 const dayjs = require("dayjs");
 const relativeTime = require("dayjs/plugin/relativeTime");
@@ -24,13 +29,17 @@ dayjs.extend(relativeTime);
 
 interface Props {
   socket: any;
+  roomId: any;
+  respond: any;
 }
-const ChatDisplay: FC<Props> = ({ socket }) => {
+const ChatDisplay: FC<Props> = ({ socket, roomId, respond }) => {
   const scrollRef = useRef<HTMLDivElement | null>(null);
   const dispatch = useAppDispatch();
+  const [delChat] = useLazyDeleteChatMsgQuery();
   const [reply, setReply] = useState(false);
   const [replyItem, setReplyItem] = useState<any>();
-  const savedMsg = useAppSelector((state) => state.chat.messages);
+  const [selectedItem, setSelectedItem] = useState<any>();
+  const { Modal: Delete, setShowModal: showDelete } = useModal();
   // Runs whenever a socket event is recieved from the server
   const getMessages = () => {
     socket.on("chatroom_messages", (data: any) => {
@@ -38,13 +47,14 @@ const ChatDisplay: FC<Props> = ({ socket }) => {
         console.log(data);
 
         const needed = data?.msgs.map(
-          ({ sender, owner, message, createdAt, id, files }: any) => ({
+          ({ sender, owner, message, createdAt, id, files, areplyTo }: any) => ({
             sender,
             owner: owner.fullname,
             message,
             createdAt,
             id,
             files,
+            reply: areplyTo
           })
         );
         dispatch(saveInitailMsg(needed));
@@ -57,6 +67,7 @@ const ChatDisplay: FC<Props> = ({ socket }) => {
             createdAt: data.msg.createdAt,
             id: data.msg.id,
             files: data.msg.files,
+            reply: data.msg.areplyTo
           },
         ];
         dispatch(saveMessages(add));
@@ -89,11 +100,34 @@ const ChatDisplay: FC<Props> = ({ socket }) => {
 
   const replyMessage = (item: any) => {
     setReplyItem(item);
+    respond(item)
     setReply(true);
   };
   const closeReply = () => {
     setReplyItem("");
+    respond('')
     setReply(false);
+  };
+  const openDelete = (item: any) => {
+    setSelectedItem(item.id);
+    showDelete(true);
+  };
+  const deleteMsg = async (item: any) => {
+    console.log(item);
+    const payload = {
+      message_id: item,
+      chatroom_id: roomId,
+    };
+    await delChat(payload)
+      .then((res: any) => {
+        if (res.isSuccess) {
+          toast.success(res.data.message);
+          showDelete(false);
+        } else {
+          toast.error(res.data.message);
+        }
+      })
+      .catch((err) => {});
   };
 
   return (
@@ -129,10 +163,26 @@ const ChatDisplay: FC<Props> = ({ socket }) => {
                           <MenuItem onClick={() => replyMessage(item)}>
                             Reply
                           </MenuItem>
+                          <MenuItem onClick={() => openDelete(item)}>
+                            Delete
+                          </MenuItem>
                         </MenuList>
                       </Menu>
                     </div>
                   </div>
+                  {
+                    item?.reply?.id? 
+                    item.sender === id?
+                    <div className="bg-gray-800 mb-2">
+                        <p className="fs-500 border-l-2 p-2">{item?.reply.message}</p>
+                  </div>
+                  :
+                  <div className="bg-gray-100 mb-2">
+                        <p className="fs-500 border-l-[3px] border-blue-500 p-2">{item?.reply.message}</p>
+                  </div>
+                  :
+                  ""
+                  }
                   <div>
                     {!!item?.files?.length && isImage(item.files[0]) ? (
                       <div>
@@ -144,9 +194,11 @@ const ChatDisplay: FC<Props> = ({ socket }) => {
                           className="w-48"
                         />
                       </div>
-                    ) : (
-                      ""
-                    )}
+                    ) : isFile(item.files[0])? (
+                      <a href={item.files[0]} target="_blank" rel="noopener noreferrer" className="my-2">
+                        <AiOutlineFileText className="text-7xl mx-auto opacity-70"/>
+                      </a>
+                    ): ("")}
                   </div>
                   <p className="fs-500">
                     {isLink(item.message) ? (
@@ -196,7 +248,35 @@ const ChatDisplay: FC<Props> = ({ socket }) => {
         {reply && (
           <div className="absolute bottom-0 left-0 w-full px-3">
             <div className="bg-white p-4 shadow relative rounded-t-[8px]">
-              <p className="text-left">{replyItem?.message}</p>
+              <div>
+                {!!replyItem?.files?.length && isImage(replyItem.files[0]) ? (
+                  <div>
+                    <Image
+                      src={replyItem.files[0]}
+                      alt="msg"
+                      width={300}
+                      height={400}
+                      className="w-48"
+                    />
+                  </div>
+                ) : (
+                  ""
+                )}
+              </div>
+              <p className="fs-500">
+                {isLink(replyItem.message) ? (
+                  <a
+                    href={replyItem.message}
+                    target="_blank"
+                    className="fw-500 text-blue-700"
+                    rel="noopener noreferrer"
+                  >
+                    {replyItem.message}
+                  </a>
+                ) : (
+                  replyItem.message
+                )}
+              </p>
               <FcCancel
                 className="absolute top-2 right-5 curpointer text-2xl"
                 onClick={closeReply}
@@ -205,6 +285,15 @@ const ChatDisplay: FC<Props> = ({ socket }) => {
           </div>
         )}
       </div>
+      <Delete title="" noHead>
+        <ReusableModal
+          title="Are you sure you want to delete this chat"
+          cancelTitle="No, Back"
+          actionTitle="Yes, Delete"
+          action={() => deleteMsg(selectedItem)}
+          closeModal={() => showDelete(false)}
+        />
+      </Delete>
     </>
   );
 };

@@ -1,6 +1,6 @@
 import React, {FC, useEffect, useState} from 'react'
 import Image from 'next/image'
-import { useLazyGetUserQueryQuery } from '@/services/api/chatSlice'
+import { useGetPreviousQuery, useLazyGetUserQueryQuery } from '@/services/api/chatSlice'
 import { toast } from 'react-toastify'
 import { useAppSelector } from '@/shared/redux/store'
 import { formatFile, parseData } from '@/shared/utils/format'
@@ -11,10 +11,9 @@ interface Props {
     socket:any
   }
 const UsersList:FC<Props> = ({select, selected, socket}) => {
-    
-    console.log(formatFile("[\"https://res.cloudinary.com/greenmouse-tech/image/upload/v1693574906/haiztmeytpxdy3pioxcc.jpg\"]"));
-    
+        
     const [myUsers, setMyUsers] = useState<any[]>()
+    const {data:last, isLoading} = useGetPreviousQuery()
     const [searchQuery, setSearchQuery] = useState('');
     const [getUser] = useLazyGetUserQueryQuery()
     const id = useAppSelector((state) => state.user.user.id)
@@ -38,6 +37,14 @@ const UsersList:FC<Props> = ({select, selected, socket}) => {
         console.log(data);
     })
   }, [socket])
+    const recent = last?.data?.filter((where:any) => where.afrom)
+    console.log(recent);
+    
+   const formatSender = (item:any) => {
+    if(item.afrom.id === id){
+        return item.ato
+    }else return item.afrom
+   }
     
   return (
     <>
@@ -49,16 +56,17 @@ const UsersList:FC<Props> = ({select, selected, socket}) => {
             </div>
             <div className='text-white mt-6 h-[450px] overflow-y-auto scroll-pro'>
                 {(searchQuery === "") && <ul>
-                    {/* {
-                        dummyUsers.map((item) => (
-                            <li key={item.name} className={`flex gap-x-2 mb-2 cursor-pointer rounded-lg hover:bg-[#1F2937] p-2 ${item.name === selected?.name && `bg-[#1F2937]`}`} onClick={ () => toast.info('User not active')}>
-                                <Image src={item.img} alt='profile' width={80} height={80} className='w-10'/>
+                    {
+                        recent && !!recent.length && recent.map((item:any, i:number) => (
+                            <li key={i} className={`flex gap-x-2 mb-2 cursor-pointer rounded-lg hover:bg-[#1F2937] p-2 ${item.name === formatSender(item).fullname && `bg-[#1F2937]`}`} onClick={ () => select(formatSender(item))}>
+                                <Image src='https://res.cloudinary.com/greenmouse-tech/image/upload/v1692619891/globfolio/Ellipse_1366_rimyab.png' alt='profile' width={80} height={80} className='w-10'/>
                                 <div>
-                                    <p className='text-white fw-500 fs-300'>{item.name}</p>
+                                    <p className='text-white fw-500 fs-300'>{formatSender(item).fullname}</p> 
+                                    <p className='whitespace-nowrap fs-200 text-gray-400'>{item.message}</p>
                                 </div>
                             </li>
                         ))
-                    } */}
+                    }
                 </ul>}
                 {
                     (!!myUsers?.length && searchQuery !== "") && <ul>
