@@ -15,7 +15,13 @@ import { BiTime } from "react-icons/bi";
 import { BsCheck2All, BsCheckAll } from "react-icons/bs";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import { FcCancel } from "react-icons/fc";
-import { formatFile, isFile, isImage, isLink, parseData } from "@/shared/utils/format";
+import {
+  formatFile,
+  isFile,
+  isImage,
+  isLink,
+  parseData,
+} from "@/shared/utils/format";
 import Image from "next/image";
 import useModal from "@/hooks/useModal";
 import ReusableModal from "../../UI/ReusableModal";
@@ -47,14 +53,22 @@ const ChatDisplay: FC<Props> = ({ socket, roomId, respond }) => {
         console.log(data);
 
         const needed = data?.msgs.map(
-          ({ sender, owner, message, createdAt, id, files, areplyTo }: any) => ({
+          ({
+            sender,
+            owner,
+            message,
+            createdAt,
+            id,
+            files,
+            areplyTo,
+          }: any) => ({
             sender,
             owner: owner.fullname,
             message,
             createdAt,
             id,
             files,
-            reply: areplyTo
+            reply: areplyTo,
           })
         );
         dispatch(saveInitailMsg(needed));
@@ -67,7 +81,7 @@ const ChatDisplay: FC<Props> = ({ socket, roomId, respond }) => {
             createdAt: data.msg.createdAt,
             id: data.msg.id,
             files: data.msg.files,
-            reply: data.msg.areplyTo
+            reply: data.msg.areplyTo,
           },
         ];
         dispatch(saveMessages(add));
@@ -100,12 +114,12 @@ const ChatDisplay: FC<Props> = ({ socket, roomId, respond }) => {
 
   const replyMessage = (item: any) => {
     setReplyItem(item);
-    respond(item)
+    respond(item);
     setReply(true);
   };
   const closeReply = () => {
     setReplyItem("");
-    respond('')
+    respond("");
     setReply(false);
   };
   const openDelete = (item: any) => {
@@ -122,6 +136,7 @@ const ChatDisplay: FC<Props> = ({ socket, roomId, respond }) => {
       .then((res: any) => {
         if (res.isSuccess) {
           toast.success(res.data.message);
+          filterDeleted(item);
           showDelete(false);
         } else {
           toast.error(res.data.message);
@@ -129,6 +144,22 @@ const ChatDisplay: FC<Props> = ({ socket, roomId, respond }) => {
       })
       .catch((err) => {});
   };
+  const filterDeleted = (item: any) => {
+    const mgs = [...myMsg];
+    const filtered = mgs.filter((where) => where.id !== item);
+    dispatch(saveInitailMsg(filtered));
+  };
+
+  const viewRef = useRef<HTMLDivElement | null>(null);
+  // const goToView = (id: any) => {
+  //   if (viewRef.current) {
+  //     viewRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
+  //   }
+  // };
+  const goToView = (id:any) => {
+    const container = document.getElementById(id);
+    container?.scrollIntoView({ behavior: 'smooth' });
+};
 
   return (
     <>
@@ -144,11 +175,13 @@ const ChatDisplay: FC<Props> = ({ socket, roomId, respond }) => {
                 className={`flex h-auto ${item.sender === id && "justify-end"}`}
               >
                 <div
-                  className={`mt-2 p-4 pt-3 ${
+                  className={`mt-2 p-4 pt-3 max-w-[500px] ${
                     item.sender === id
-                      ? "bg-primary text-white rounded-l-[10px] rounded-b-[10px]"
-                      : "bg-blue-100 rounded-b-[10px] rounded-r-[10px]"
+                      ? "bg-primary text-white rounded-l-[15px] rounded-b-[15px]"
+                      : "bg-blue-100 rounded-b-[15px] rounded-r-[15px]"
                   }`}
+                  ref={viewRef}
+                  id={item.id}
                 >
                   <div className="flex items-center justify-between">
                     <p className="fw-600 fs-300 mb-1">{item.owner}</p>
@@ -170,19 +203,23 @@ const ChatDisplay: FC<Props> = ({ socket, roomId, respond }) => {
                       </Menu>
                     </div>
                   </div>
-                  {
-                    item?.reply?.id? 
-                    item.sender === id?
-                    <div className="bg-gray-800 mb-2">
-                        <p className="fs-500 border-l-2 p-2">{item?.reply.message}</p>
-                  </div>
-                  :
-                  <div className="bg-gray-100 mb-2">
-                        <p className="fs-500 border-l-[3px] border-blue-500 p-2">{item?.reply.message}</p>
-                  </div>
-                  :
-                  ""
-                  }
+                  {item?.reply?.id ? (
+                    item.sender === id ? (
+                      <div className="bg-gray-800 mb-2" onClick={() => goToView(item.reply.id)}>
+                        <p className="fs-500 border-l-2 p-2">
+                          {item?.reply.message}
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="bg-gray-100 mb-2" onClick={() => goToView(item.reply.id)}>
+                        <p className="fs-500 border-l-[3px] border-blue-500 p-2">
+                          {item?.reply.message}
+                        </p>
+                      </div>
+                    )
+                  ) : (
+                    ""
+                  )}
                   <div>
                     {!!item?.files?.length && isImage(item.files[0]) ? (
                       <div>
@@ -194,11 +231,18 @@ const ChatDisplay: FC<Props> = ({ socket, roomId, respond }) => {
                           className="w-48"
                         />
                       </div>
-                    ) : isFile(item.files[0])? (
-                      <a href={item.files[0]} target="_blank" rel="noopener noreferrer" className="my-2">
-                        <AiOutlineFileText className="text-7xl mx-auto opacity-70"/>
+                    ) : isFile(item.files[0]) ? (
+                      <a
+                        href={item.files[0]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="my-2"
+                      >
+                        <AiOutlineFileText className="text-7xl mx-auto opacity-70" />
                       </a>
-                    ): ("")}
+                    ) : (
+                      ""
+                    )}
                   </div>
                   <p className="fs-500">
                     {isLink(item.message) ? (
