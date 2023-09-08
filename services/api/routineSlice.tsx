@@ -65,7 +65,40 @@ export const routineApiSlice = apiSlice.injectEndpoints({
       }),
       keepUnusedDataFor: ENDPOINT.CACHE_LIFETIME.EXTENDED,
     }),
-    
+
+    getDashboard: builder.query<any | ErrorResult, void>({
+      query: () => ({
+        url: `${ENDPOINT.GET_DASHBOARD}`,
+        method: ENDPOINT.HTTP_METHODS.GET,
+        headers: {
+            authorization: getLocalToken("token")
+        }
+      }),
+      keepUnusedDataFor: ENDPOINT.CACHE_LIFETIME.EXTENDED,
+    }),
+
+    markNotify: builder.query<any | ErrorResult, string>({
+      query: (param) => ({
+        url: `${ENDPOINT.MARK_NOTIFY}/${param}`,
+        method: ENDPOINT.HTTP_METHODS.PATCH,
+        headers: {
+            authorization: getLocalToken("token")
+        }
+      }),
+      keepUnusedDataFor: ENDPOINT.CACHE_LIFETIME.EXTENDED,
+    }),
+
+    deleteNotify: builder.query<any | ErrorResult, string>({
+      query: (param) => ({
+        url: `${ENDPOINT.DELETE_NOTIFY}/${param}`,
+        method: ENDPOINT.HTTP_METHODS.DELETE,
+        headers: {
+            authorization: getLocalToken("token")
+        }
+      }),
+      keepUnusedDataFor: ENDPOINT.CACHE_LIFETIME.EXTENDED,
+    }),
+
   }),
   overrideExisting: true,
 });
@@ -75,5 +108,8 @@ export const {
   useGetTransactQuery,
   useGetNotifyQuery,
   useGetSectorQuery,
-  useLazyAddSectorQuery
+  useLazyAddSectorQuery,
+  useGetDashboardQuery,
+  useLazyMarkNotifyQuery,
+  useLazyDeleteNotifyQuery
 } = routineApiSlice;

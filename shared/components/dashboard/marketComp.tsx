@@ -1,5 +1,6 @@
 import React from "react";
 import dynamic from "next/dynamic";
+import Image from "next/image";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
@@ -269,7 +270,7 @@ const MarketOverviewChart = () => {
   return (
     <>
       <div className="w-full overflow-hidden">
-        <div className="lg:flex items-center justify-between">
+        <div className="lg:flex items-center justify-between border-b-[2px]">
           <p className="fw-600 fs-700">Market Overview</p>
           <div className="flex items-center gap-x-4 mt-4 lg:mt-0">
             <div className="flex items-center gap-x-1">
@@ -290,14 +291,15 @@ const MarketOverviewChart = () => {
             </div>
           </div>
         </div>
-        <div className="flex mt-3">
+        {/* <div className="flex mt-3">
           <select className="px-4 py-2 rounded bg-primary text-white">
             <option>Weekly (2023)</option>
             <option>Mothly (2023)</option>
           </select>
-        </div>
+        </div> */}
         <div className="overflow-x-auto overflow-y-hidden">
-        <div className="mt-8 w-[550px] lg:w-full">
+       
+        {/* <div className="mt-8 w-[550px] lg:w-full">
           {typeof window !== "undefined" && (
             <Chart
               options={options}
@@ -307,7 +309,8 @@ const MarketOverviewChart = () => {
               height="350px"
             />
           )}
-        </div>
+        </div> */}
+        <Image src={' https://res.cloudinary.com/greenmouse-tech/image/upload/v1694178250/globfolio/soon_gnl954.png'} alt="soon" width={300} height={300} className="mx-auto py-12" />
         </div>
       </div>
     </>

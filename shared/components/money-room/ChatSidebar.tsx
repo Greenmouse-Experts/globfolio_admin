@@ -8,8 +8,10 @@ interface Props {
   select: (value:any) => void
   selected: any
   socket: any
+  room: any
+  refetch: () => void
 }
-const ChatSidebar:FC<Props> = ({select, selected, socket}) => {
+const ChatSidebar:FC<Props> = ({select, selected, socket, room, refetch}) => {
   const tab = [
     {
       title: <p>Inbox</p>,
@@ -17,7 +19,7 @@ const ChatSidebar:FC<Props> = ({select, selected, socket}) => {
     },
     {
       title: <p>Chat Room</p>,
-      content: <RoomList select={select} selected={selected}/>,
+      content: <RoomList select={select} selected={selected} room={room} refetch={refetch}/>,
     },
   ];
   return (

@@ -9,10 +9,12 @@ import { formatName } from "@/shared/utils/format";
 interface Props {
   select: (value: any) => void;
   selected: any;
+  refetch: () => void
+  room: any
 }
-const RoomList: FC<Props> = ({ select, selected }) => {
+const RoomList: FC<Props> = ({ select, selected, room, refetch }) => {
   const { Modal, setShowModal } = useModal();
-  const { data: room, isLoading, refetch } = useGetRoomQuery();
+  // const { data: room, isLoading, refetch } = useGetRoomQuery();
   const [showRoom, setShowRoom] = useState<any[]>();
   const [searchQuery, setSearchQuery] = useState();
   const filterRoom = (event: any) => {

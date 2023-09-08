@@ -85,6 +85,16 @@ export const subscriptionApiSlice = apiSlice.injectEndpoints({
         }),
       }),
 
+      deleteChatRoom: builder.query<BaseResult | ErrorResult, any>({
+        query: (param) => ({
+          url: `${ENDPOINT.GET_ROOM}/${param}`,
+          method: ENDPOINT.HTTP_METHODS.DELETE,
+          headers: {
+            Authorization: getLocalToken("token"),
+          },
+        }),
+      }),
+
       deleteChatMsg: builder.query<BaseResult | ErrorResult, any>({
         query: (payload) => ({
           url: `${ENDPOINT.DELETE_MESSAGE}`,
@@ -108,5 +118,6 @@ export const {
   useGetRoomFilesQuery,
   useGetPreviousQuery,
   useLazySuspendChatRoomQuery,
-  useLazyDeleteChatMsgQuery
+  useLazyDeleteChatMsgQuery,
+  useLazyDeleteChatRoomQuery
 } = subscriptionApiSlice;

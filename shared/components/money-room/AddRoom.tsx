@@ -159,7 +159,7 @@ const AddRoom: FC<Props> = ({ refetch, close }) => {
               )}
             </div>
             <div className="mt-3">
-            <label className="text-[#000000B2] fw-500">
+            <label className="text-[#000000B2] fw-500 block">
                   Cover Photo
               </label>
               <input type="file" name="cover" id="cover" onChange={(e:any) => handleFileUpload(e)} className="mt-1 border border-gray-400 rounded p-2" />

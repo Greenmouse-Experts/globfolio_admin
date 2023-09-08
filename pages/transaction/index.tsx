@@ -17,11 +17,11 @@ const TransactionsPage: AppPage = () => {
     },
     {
         title: <p>Successful</p>,
-        content: <div>{data && !data?.data?.length && <EmptyState2 message='No Successful Transaction yet'/>}{data && !!data?.data?.length && <TransactionTable status = 'approved'  transact={data?.data}/>}</div>
+        content: <div>{data && !data?.data?.length && <EmptyState2 message='No Successful Transaction yet'/>}{data && !!data?.data?.length && <TransactionTable status = 'PAID'  transact={data?.data}/>}</div>
     },
     {
-        title: <p>Declined</p>,
-        content:  <div>{data && !data?.data?.length && <EmptyState2 message='No Declined Transaction yet'/>}{data && !!data?.data?.length && <TransactionTable  status='declined'  transact={data?.data}/>}</div>
+        title: <p>Pending</p>,
+        content:  <div>{data && !data?.data?.length && <EmptyState2 message='No Declined Transaction yet'/>}{data && !!data?.data?.length && <TransactionTable  status='PENDING'  transact={data?.data}/>}</div>
     },
 ]
   return (
