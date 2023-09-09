@@ -72,15 +72,15 @@ export const TopAnalysisDetails:FC<Props> = ({data}) => {
   );
 };
 
-export const DashboardAlert = () => {
-  const {data, isLoading} = useGetTransactQuery()
-
-  const trans = data?.data?.filter((where:any) => where.status === 'PAID')
+interface AlertProps{
+  alert: any
+}
+export const DashboardAlert:FC<AlertProps> = ({alert}) => {
   return (
     <div>
       <p className="fw-600">Alerts !</p>
       {
-        trans && !!trans.length && trans.slice(0,6).map((item:any, i:number) => (
+        alert && !!alert.length && alert.map((item:any, i:number) => (
           <div className="flex items-center justify-between mt-4" key={i}>
           <p className="fs-300">{item?.description} <span className="fw-600 fs-300 text-green-800">{item?.user?.fullname}</span></p>
           <PiDotsThreeCircleVertical className="text-gray-600 text-xl"/>

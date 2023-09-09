@@ -3,9 +3,10 @@ import { subscribers } from "../../utils/dummyData";
 import Link from "next/link";
 import { UserData } from "@/shared/types/auth";
 import dayjs from "dayjs";
+import { formatAsNgnMoney } from "@/shared/utils/format";
 
 interface Props{
-  users: UserData[]
+  users: any[]
 }
 const SubscriberMiniTable:FC<Props> = ({users}) => {
   return (
@@ -48,16 +49,16 @@ const SubscriberMiniTable:FC<Props> = ({users}) => {
                               {index + 1}
                             </td>
                             <td className="border-b border-gray-200 align-middle fs-500 whitespace-nowrap px-2 py-4 text-left">
-                              {item.id}
+                              {item.fullname}
                             </td>
                             <td className="border-b border-gray-200 align-middle fs-500 whitespace-nowrap px-2 py-4 text-left">
-                              {/* {item.planId} */}
+                              {item.plan.name}
                             </td>
                             <td className="border-b border-gray-200 align-middle fs-500 whitespace-nowrap px-2 py-4 text-left">
-                              {dayjs(item.createdAt).format('DD-MMM-YYYY')}
+                              {dayjs(item.subscription.createdAt).format('DD-MMM-YYYY')}
                             </td>
                             <td className="border-b border-gray-200 align-middle fs-500 whitespace-nowrap px-2 py-4 text-left">
-                              {/* {item.amount} */}
+                              {formatAsNgnMoney(item.plan.amount)}
                             </td>
                           </tr>
                         ))}

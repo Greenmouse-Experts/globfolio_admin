@@ -28,7 +28,7 @@ const DashboardHome: AppPage = () => {
             <TodaysPickComp/>
           </div>
           <div className="p-6 bg-white rounded mt-6 lg:mt-8">
-            <DashboardAlert/>
+            <DashboardAlert alert={data?.data?.alerts}/>
           </div>
           {/* <div className="p-6 bg-primary rounded mt-6 lg:mt-8">
             <MoneyIncomeChart/>
