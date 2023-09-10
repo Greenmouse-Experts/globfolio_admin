@@ -4,15 +4,22 @@ import Image from "next/image";
 import Link from "next/link";
 import { RiMenu3Line } from "react-icons/ri";
 import AddAuth from "./addAuth";
-import dayjs from "dayjs";
 import { BsBell } from "react-icons/bs";
 import { Menu, MenuHandler, MenuItem, MenuList, Button } from "../UI/dropdown";
 import Initials from "@/shared/utils/initials";
 import { useAppSelector } from "@/shared/redux/store";
-
+import { useGetNotifyQuery } from "@/services/api/routineSlice";
+import { NotifyItem } from "@/shared/types/routine";
+import { formatName } from "@/shared/utils/format";
+// dayjs time format
+const dayjs = require("dayjs");
+const relativeTime = require("dayjs/plugin/relativeTime");
+dayjs.extend(relativeTime);
 
 const DashboardLayout = ({ children }: PropsWithChildren) => {
-  const user = useAppSelector((state) => state.user.user)
+  const { data, isLoading, refetch } = useGetNotifyQuery();
+  const unread = data?.data?.filter((where: any) => !where.isRead);
+  const user = useAppSelector((state) => state.user.user);
   const [toggled, setToggled] = React.useState(false);
   let today = new Date();
   return (
@@ -58,7 +65,8 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
                     <div className="bg-[#F4F5F7] px-2 rounded-lg py-2 relative">
                       <BsBell className="lg:text-xl text-lg text-primary" />
                       <p className="absolute index-30 -top-2 left-3/4 border circle px-1 text-white text-xs bg-primary">
-                        4
+                        {unread &&
+                      unread.length}
                       </p>
                     </div>
                   </Button>
@@ -68,10 +76,19 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
                     <p className="mb-3 text-white bg-primary py-2 pl-3 text-lg fw-600">
                       Notifications
                     </p>
-                    content
-                    <Link
-                      href='/'
-                    >
+                    {unread &&
+                      !!unread.length &&
+                      unread
+                        .slice(0, 5)
+                        .map((item: NotifyItem, index: number) => (
+                          <div className="border-b border-gray-700 pb-2 px-4 mb-2">
+                            <p className="pr-2 fs-300 fw-500">{formatName(item.message, 43)}</p>
+                            <p className="italic fs-300 mt-1">
+                              {dayjs(item.createdAt).fromNow()}
+                            </p>
+                          </div>
+                        ))}
+                    <Link href="/notification">
                       <p className="text-center hover:text-orange-500">
                         View All
                       </p>
@@ -80,7 +97,7 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
                 </MenuList>
               </Menu>
               <div>
-            <Initials name={user.fullname} size={40} text="12"/>
+                <Initials name={user.fullname} size={40} text="12" />
               </div>
             </div>
           </div>

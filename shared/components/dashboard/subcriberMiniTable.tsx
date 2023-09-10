@@ -1,8 +1,14 @@
 import React, { FC } from "react";
 import { subscribers } from "../../utils/dummyData";
 import Link from "next/link";
+import { UserData } from "@/shared/types/auth";
+import dayjs from "dayjs";
+import { formatAsNgnMoney } from "@/shared/utils/format";
 
-const SubscriberMiniTable = () => {
+interface Props{
+  users: any[]
+}
+const SubscriberMiniTable:FC<Props> = ({users}) => {
   return (
     <>
       <div className="">
@@ -10,7 +16,7 @@ const SubscriberMiniTable = () => {
           <p className="fw-600 fs-700">List of Subscribers</p>
           <Link href='/subscription' className="fs-500 fw-600 underline">View All</Link>
         </div>
-        {subscribers && !!subscribers?.length && (
+        {users && !!users?.length && (
           <div className="lg:p-4 w-full">
             <div className="mt-2 flex flex-col">
               <div className="-my-2 overflow-x-auto ">
@@ -37,22 +43,22 @@ const SubscriberMiniTable = () => {
                         </tr>
                       </thead>
                       <tbody>
-                        {subscribers.map((item, index) => (
+                        {users.map((item, index) => (
                           <tr className="" key={index}>
                             <td className="border-b border-gray-200 align-middle fs-500 whitespace-nowrap px-2 py-4 text-left">
                               {index + 1}
                             </td>
                             <td className="border-b border-gray-200 align-middle fs-500 whitespace-nowrap px-2 py-4 text-left">
-                              {item.name}
+                              {item.fullname}
                             </td>
                             <td className="border-b border-gray-200 align-middle fs-500 whitespace-nowrap px-2 py-4 text-left">
-                              {item.plan}
+                              {item.plan.name}
                             </td>
                             <td className="border-b border-gray-200 align-middle fs-500 whitespace-nowrap px-2 py-4 text-left">
-                              {item.date}
+                              {dayjs(item.subscription.createdAt).format('DD-MMM-YYYY')}
                             </td>
                             <td className="border-b border-gray-200 align-middle fs-500 whitespace-nowrap px-2 py-4 text-left">
-                              {item.estimate}
+                              {formatAsNgnMoney(item.plan.amount)}
                             </td>
                           </tr>
                         ))}

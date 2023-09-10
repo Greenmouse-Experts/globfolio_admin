@@ -1,12 +1,17 @@
-import React from "react";
+import React, {FC} from "react";
 import { FiTrendingUp } from "react-icons/fi";
 import { PiDotsThreeCircleVertical } from "react-icons/pi";
 import { HiOutlineUsers } from "react-icons/hi";
 import { MdOutlineEventNote } from "react-icons/md";
 import { LuBookCopy } from "react-icons/lu";
 import { BiCandles } from "react-icons/bi";
+import { formatAsNgnMoney } from "@/shared/utils/format";
+import { useGetTransactQuery } from "@/services/api/routineSlice";
 
-export const TopAnalysisDetails = () => {
+interface Props{
+  data: any
+}
+export const TopAnalysisDetails:FC<Props> = ({data}) => {
   return (
     <>
       <div className="grid lg:grid-cols-4 md:grid-cols-2 gap-8">
@@ -16,9 +21,9 @@ export const TopAnalysisDetails = () => {
           <HiOutlineUsers/>
           </div>
           <div className="flex justify-between mt-3">
-            <p className="text-lg fw-600">571</p>
+            <p className="text-lg fw-600">{data?.subscribers}</p>
             <div className="flex items-center gap-x-2">
-              <p className="fw-500 fs-300">+13%</p>
+              {/* <p className="fw-500 fs-300">+13%</p> */}
               <FiTrendingUp />
             </div>
           </div>
@@ -29,9 +34,9 @@ export const TopAnalysisDetails = () => {
           <MdOutlineEventNote/>
           </div>
           <div className="flex justify-between mt-3">
-            <p className="text-lg fw-600">943</p>
+            <p className="text-lg fw-600">{data?.users}</p>
             <div className="flex items-center gap-x-2">
-              <p className="fw-500 fs-300">+40%</p>
+              {/* <p className="fw-500 fs-300">+40%</p> */}
               <FiTrendingUp />
             </div>
           </div>
@@ -42,9 +47,9 @@ export const TopAnalysisDetails = () => {
           <LuBookCopy/>
           </div>
           <div className="flex justify-between mt-3">
-            <p className="text-lg fw-600">₦719,000</p>
+            <p className="text-lg fw-600">{formatAsNgnMoney(data?.transactions)}</p>
             <div className="flex items-center gap-x-2">
-              <p className="fw-500 fs-300">+22%</p>
+              {/* <p className="fw-500 fs-300">+22%</p> */}
               <FiTrendingUp />
             </div>
           </div>
@@ -55,9 +60,9 @@ export const TopAnalysisDetails = () => {
           <BiCandles className="text-xl"/>
           </div>
           <div className="flex justify-between mt-3">
-            <p className="text-lg fw-600">14</p>
+            <p className="text-lg fw-600">{data?.todays_pick}</p>
             <div className="flex items-center gap-x-2">
-              <p className="fw-500 fs-300">+17%</p>
+              {/* <p className="fw-500 fs-300">+17%</p> */}
               <FiTrendingUp />
             </div>
           </div>
@@ -67,28 +72,21 @@ export const TopAnalysisDetails = () => {
   );
 };
 
-export const DashboardAlert = () => {
+interface AlertProps{
+  alert: any
+}
+export const DashboardAlert:FC<AlertProps> = ({alert}) => {
   return (
     <div>
       <p className="fw-600">Alerts !</p>
-      <div className="mt-5">
-        <div className="flex items-center justify-between">
-          <p className="fs-300">New payment alert from <span className="fw-500 fs-300">OHITEMEH IJEZI</span></p>
+      {
+        alert && !!alert.length && alert.map((item:any, i:number) => (
+          <div className="flex items-center justify-between mt-4" key={i}>
+          <p className="fs-300">{item?.description} <span className="fw-600 fs-300 text-green-800">{item?.user?.fullname}</span></p>
           <PiDotsThreeCircleVertical className="text-gray-600 text-xl"/>
         </div>
-        <div className="flex items-center justify-between mt-4">
-          <p className="fs-300">Subscription renewal from <span className="fw-500 fs-300">JESSICA ANWA</span></p>
-          <PiDotsThreeCircleVertical className="text-gray-600 text-xl"/>
-        </div>
-        <div className="flex items-center justify-between mt-4">
-          <p className="fs-300">New referral from <span className="fw-500 fs-300">VICTOR CHIGO</span></p>
-          <PiDotsThreeCircleVertical className="text-gray-600 text-xl"/>
-        </div>
-        <div className="flex items-center justify-between mt-4">
-          <p className="fs-300">Subscription renewal from <span className="fw-500 fs-300">JESSICA ANWA</span></p>
-          <PiDotsThreeCircleVertical className="text-gray-600 text-xl"/>
-        </div>
-      </div>
+        ))
+      }
     </div>
   )
 }

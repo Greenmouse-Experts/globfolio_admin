@@ -12,20 +12,24 @@ import GroupUsers from "./GroupUsers";
 import PrivateChatDisplay from "./Chats/PrivateChatDisplay";
 import RoomFilesList from "./RoomFilesList";
 import ReusableModal from "../UI/ReusableModal";
-import { useLazySuspendChatRoomQuery } from "@/services/api/chatSlice";
+import { useLazyDeleteChatRoomQuery, useLazySuspendChatRoomQuery } from "@/services/api/chatSlice";
 import { toast } from "react-toastify";
 
 interface Props {
   item: any;
   socket: any;
   select: (value:any) => void
+  refetchRoom: () => void
 }
-const ChatSection: FC<Props> = ({ item, socket, select }) => {
+const ChatSection: FC<Props> = ({ item, socket, select, refetchRoom }) => {
   const {Modal:ViewUser, setShowModal:setViewUser} = useModal()
   const {Modal:ViewFiles, setShowModal:setViewFiles} = useModal()
   const {Modal:Suspend, setShowModal:setShowSuspend} = useModal()
+  const {Modal:Delete, setShowModal:setShowDelete} = useModal()
+  const [isBusy, setIsBusy] = useState(false)
   const dispatch = useAppDispatch()
   const [suspend] = useLazySuspendChatRoomQuery()
+  const [delRoom] = useLazyDeleteChatRoomQuery()
   const [reply, setReply] = useState<any>()
   const [loading, setLoading] = useState(false);
   const id = useAppSelector((state) => state.user.user.id);
@@ -69,6 +73,7 @@ const ChatSection: FC<Props> = ({ item, socket, select }) => {
   
   // suspend chat room
   const SuspendChatroom = async(item:any) => {
+    setIsBusy(true)
     const payload = {
       id: item,
       status: false
@@ -78,6 +83,22 @@ const ChatSection: FC<Props> = ({ item, socket, select }) => {
       if(res.isSuccess){
         toast.success(res.data.message)
         setShowSuspend(false)
+      }else{
+        toast.error(res.data.message)
+      }
+    })
+    .catch((err) => {})
+  }
+  // delete charoom function
+  const DeleteChatroom = async(item:any) => {
+    setIsBusy(true)
+    await delRoom(item)
+    .then((res:any) => {
+      if(res.isSuccess){
+        toast.success(res.data.message)
+        setShowDelete(false)
+        select('')
+        refetchRoom()
       }else{
         toast.error(res.data.message)
       }
@@ -127,10 +148,16 @@ const ChatSection: FC<Props> = ({ item, socket, select }) => {
                     <MenuItem onClick={() => setViewUser(true)}>View Users</MenuItem>
                     <MenuItem onClick={() => setViewFiles(true)}>View Files</MenuItem>
                     <MenuItem
-                      className="bg-red-400 text-white"
+                      className="bg-orange-400 text-white"
                       onClick={() => setShowSuspend(true)}
                     >
                       Suspend Room
+                    </MenuItem>
+                    <MenuItem
+                      className="bg-red-400 text-white mt-2"
+                      onClick={() => setShowDelete(true)}
+                    >
+                      Delete Room
                     </MenuItem>
                   </MenuList>
                 </Menu>
@@ -161,8 +188,19 @@ const ChatSection: FC<Props> = ({ item, socket, select }) => {
           actionTitle="Yes, Suspend"
           action={() => SuspendChatroom(item.id)}
           closeModal={() => setShowSuspend(false)}
+          isBusy={isBusy}
         />
       </Suspend>
+      <Delete title="" noHead>
+        <ReusableModal
+          title="Are you sure you want to Delete this Chat room"
+          cancelTitle="No, Back"
+          actionTitle="Yes, Delete"
+          action={() => DeleteChatroom(item.id)}
+          closeModal={() => setShowDelete(false)}
+          isBusy={isBusy}
+        />
+      </Delete>
     </>
   );
 };

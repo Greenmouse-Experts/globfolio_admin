@@ -53,6 +53,8 @@ export enum CACHE_LIFETIME {
 
   // notification
   export const GET_ADMIN_NOTIFICATION = '/notifications/admin'
+  export const MARK_NOTIFY = '/notifications/mark-read'
+  export const DELETE_NOTIFY = '/notifications/delete'
 
   // for chats and chat room
   export const CREATE_CHATROOM = '/chat/rooms'
@@ -61,4 +63,7 @@ export enum CACHE_LIFETIME {
   export const GET_ROOM_FILES = '/chat/room'
   export const GET_PREVIOUS_CHAT = '/chat/history'
   export const DELETE_MESSAGE = '/chat/room/message'
+
+  // routine
+  export const GET_DASHBOARD = '/admin/stats'
   
