@@ -7,6 +7,7 @@ import { LuBookCopy } from "react-icons/lu";
 import { BiCandles } from "react-icons/bi";
 import { formatAsNgnMoney } from "@/shared/utils/format";
 import { useGetTransactQuery } from "@/services/api/routineSlice";
+import { EmptyState1 } from "@/shared/utils/emptyState";
 
 interface Props{
   data: any
@@ -79,6 +80,9 @@ export const DashboardAlert:FC<AlertProps> = ({alert}) => {
   return (
     <div>
       <p className="fw-600">Alerts !</p>
+      {
+         alert && !alert.length && <div><EmptyState1 message="No Alerts Yet"/></div>
+      }
       {
         alert && !!alert.length && alert.map((item:any, i:number) => (
           <div className="flex items-center justify-between mt-4" key={i}>

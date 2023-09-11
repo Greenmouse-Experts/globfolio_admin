@@ -97,10 +97,12 @@ const ChatSection: FC<Props> = ({ item, socket, select, refetchRoom }) => {
       if(res.isSuccess){
         toast.success(res.data.message)
         setShowDelete(false)
+        setIsBusy(false)
         select('')
         refetchRoom()
       }else{
         toast.error(res.data.message)
+        setIsBusy(false)
       }
     })
     .catch((err) => {})

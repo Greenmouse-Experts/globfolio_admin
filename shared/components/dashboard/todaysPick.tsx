@@ -12,6 +12,7 @@ import { useRouter } from "next/navigation";
 import { useGetAdvisoryQuery } from "@/services/api/stockSlice";
 import { Advisory } from "@/shared/types/stocks";
 import { formatName } from "@/shared/utils/format";
+import { EmptyState1 } from "@/shared/utils/emptyState";
 
 const TodaysPickComp = () => {
   const route = useRouter();
@@ -39,6 +40,9 @@ const TodaysPickComp = () => {
           </Menu>
         </div>
         <div className="mt-6">
+        {
+         live && !live?.data.length && <div><EmptyState1 message="No Live Analytic Pick yet"/></div>
+      }
           {live &&
             !!live.data.length &&
             live.data.slice(0, 5).map((item: Advisory, i: number) => (

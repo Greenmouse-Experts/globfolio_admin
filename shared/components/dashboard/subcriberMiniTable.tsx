@@ -4,6 +4,7 @@ import Link from "next/link";
 import { UserData } from "@/shared/types/auth";
 import dayjs from "dayjs";
 import { formatAsNgnMoney } from "@/shared/utils/format";
+import { EmptyState2 } from "@/shared/utils/emptyState";
 
 interface Props{
   users: any[]
@@ -16,6 +17,9 @@ const SubscriberMiniTable:FC<Props> = ({users}) => {
           <p className="fw-600 fs-700">List of Subscribers</p>
           <Link href='/subscription' className="fs-500 fw-600 underline">View All</Link>
         </div>
+        {
+         users && !users.length && <div className="w-6/12 mx-auto"><EmptyState2 message="No Subscribed Users Yet"/></div>
+      }
         {users && !!users?.length && (
           <div className="lg:p-4 w-full">
             <div className="mt-2 flex flex-col">

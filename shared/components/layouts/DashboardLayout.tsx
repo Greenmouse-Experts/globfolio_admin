@@ -4,13 +4,16 @@ import Image from "next/image";
 import Link from "next/link";
 import { RiMenu3Line } from "react-icons/ri";
 import AddAuth from "./addAuth";
-import { BsBell } from "react-icons/bs";
+import { BsBell, BsGear } from "react-icons/bs";
 import { Menu, MenuHandler, MenuItem, MenuList, Button } from "../UI/dropdown";
 import Initials from "@/shared/utils/initials";
 import { useAppSelector } from "@/shared/redux/store";
 import { useGetNotifyQuery } from "@/services/api/routineSlice";
 import { NotifyItem } from "@/shared/types/routine";
 import { formatName } from "@/shared/utils/format";
+import useModal from "@/hooks/useModal";
+import LogoutModal from "../auth/Logout";
+import { BiLogOut } from "react-icons/bi";
 // dayjs time format
 const dayjs = require("dayjs");
 const relativeTime = require("dayjs/plugin/relativeTime");
@@ -19,10 +22,13 @@ dayjs.extend(relativeTime);
 const DashboardLayout = ({ children }: PropsWithChildren) => {
   const { data, isLoading, refetch } = useGetNotifyQuery();
   const unread = data?.data?.filter((where: any) => !where.isRead);
+  const {Modal, setShowModal} = useModal()
   const user = useAppSelector((state) => state.user.user);
   const [toggled, setToggled] = React.useState(false);
   let today = new Date();
   return (
+    <>
+    
     <div className="flex ">
       <div className="lg:w-[300px]">
         <SidebarLayout setToggled={setToggled} toggled={toggled} />
@@ -97,7 +103,25 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
                 </MenuList>
               </Menu>
               <div>
+                <Menu placement="bottom-end">
+            <MenuHandler>
+              <Button className="p-3 bg-transparent !shadow-none">
                 <Initials name={user.fullname} size={40} text="12" />
+              </Button>
+            </MenuHandler>
+            <MenuList className="p-2">
+              <MenuItem>
+                <Link href={'/settings'} className="block flex gap-x-1 items-center fw-500"> <BsGear/>Settings</Link>
+              </MenuItem>
+              <MenuItem
+                className="bg-red-400 text-white flex mt-1 gap-x-1 items-center fw-500"
+                onClick={() => setShowModal(true)}
+              >
+                <BiLogOut/>
+                Logout
+              </MenuItem>
+            </MenuList>
+          </Menu>
               </div>
             </div>
           </div>
@@ -112,6 +136,10 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
         </div>
       </div>
     </div>
+      <Modal title="" noHead>
+        <LogoutModal CloseModal={() => setShowModal(false)} />
+      </Modal>
+    </>
   );
 };
 
