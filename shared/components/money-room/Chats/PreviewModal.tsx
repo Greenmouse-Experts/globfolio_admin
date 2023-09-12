@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import Image from "next/image";
 import { RiSendPlane2Fill } from "react-icons/ri";
-import { isImage } from "@/shared/utils/format";
+import { isBlob, isImage } from "@/shared/utils/format";
 
 interface Props {
   image: string;
@@ -17,7 +17,14 @@ const PreviewModal: FC<Props> = ({ image, proceed, close }) => {
   return (
     <div>
       <div className="w-full">
-        {isImage(image) ? (
+      {/* <Image
+            src={image}
+            alt="image"
+            width={500}
+            height={500}
+            className="w-10/12 mx-auto"
+          /> */}
+        {isBlob(image) ? (
           <Image
             src={image}
             alt="image"

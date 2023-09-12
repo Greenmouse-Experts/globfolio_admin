@@ -37,14 +37,14 @@ const UsersList:FC<Props> = ({select, selected, socket}) => {
         console.log(data);
     })
   }, [socket])
-    const recent = last?.data?.filter((where:any) => where.afrom)
-    console.log(recent);
+    // const recent = last?.data?.filter((where:any) => where.afrom)
+//     console.log(recent);
     
-   const formatSender = (item:any) => {
-    if(item.afrom.id === id){
-        return item.ato
-    }else return item.afrom
-   }
+//    const formatSender = (item:any) => {
+//     if(item.afrom.id === id){
+//         return item.ato
+//     }else return item.afrom
+//    }
     
   return (
     <>
@@ -57,12 +57,12 @@ const UsersList:FC<Props> = ({select, selected, socket}) => {
             <div className='text-white mt-6 h-[450px] overflow-y-auto scroll-pro'>
                 {(searchQuery === "") && <ul>
                     {
-                        recent && !!recent.length && recent.map((item:any, i:number) => (
-                            <li key={i} className={`flex gap-x-2 mb-2 cursor-pointer rounded-lg hover:bg-[#1F2937] p-2 ${item.name === formatSender(item).fullname && `bg-[#1F2937]`}`} onClick={ () => select(formatSender(item))}>
-                                <Image src='https://res.cloudinary.com/greenmouse-tech/image/upload/v1692619891/globfolio/Ellipse_1366_rimyab.png' alt='profile' width={80} height={80} className='w-10'/>
+                        last && !!last.data.length && last.data.map((item:any, i:number) => (
+                            <li key={i} className={`flex gap-x-2 mb-2 cursor-pointer rounded-lg hover:bg-[#1F2937] p-2 ${item.name === item.scontact.fullname && `bg-[#1F2937]`}`} onClick={ () => select({fullname: item.scontact.fullname, id:item.scontact.id})}>
+                                <Image src={item.scontact.picture? item.scontact.picture : 'https://res.cloudinary.com/greenmouse-tech/image/upload/v1693229127/globfolio/Group_48368_1_y0m8ah.png'} alt='profile' width={80} height={80} className='w-10 h-10 circle'/>
                                 <div>
-                                    <p className='text-white fw-500 fs-300'>{formatSender(item).fullname}</p> 
-                                    <p className='whitespace-nowrap fs-200 text-gray-400'>{item.message}</p>
+                                    <p className='text-white fw-500 fs-300'>{item.scontact.fullname}</p> 
+                                    <p className='whitespace-nowrap fs-200 text-gray-400'>{item.lastMessage}</p>
                                 </div>
                             </li>
                         ))

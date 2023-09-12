@@ -87,7 +87,7 @@ const DashboardLayout = ({ children }: PropsWithChildren) => {
                       unread
                         .slice(0, 5)
                         .map((item: NotifyItem, index: number) => (
-                          <div className="border-b border-gray-700 pb-2 px-4 mb-2">
+                          <div className="border-b border-gray-700 pb-2 px-4 mb-2" key={index}>
                             <p className="pr-2 fs-300 fw-500">{formatName(item.message, 43)}</p>
                             <p className="italic fs-300 mt-1">
                               {dayjs(item.createdAt).fromNow()}

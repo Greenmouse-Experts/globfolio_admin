@@ -1,5 +1,5 @@
 import { useAppSelector } from "@/shared/redux/store";
-import React, { FC, useState, useEffect } from "react";
+import React, { FC, useState, useEffect, useRef } from "react";
 import { RiAttachment2, RiSendPlane2Fill } from "react-icons/ri";
 import { BiSolidImageAdd } from "react-icons/bi";
 import useModal from "@/hooks/useModal";
@@ -11,7 +11,7 @@ interface Props {
   socket: any;
   item: any;
   followPrivate: () => void;
-  response: any
+  response: any;
 }
 const ChatInput: FC<Props> = ({ socket, item, followPrivate, response }) => {
   const [message, setMessage] = useState("");
@@ -29,10 +29,10 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate, response }) => {
     const selectedFile = e.target.files[0];
     if (selectedFile) {
       const imageUrl = URL.createObjectURL(selectedFile);
-    setInputImage(selectedFile);
+      setInputImage(selectedFile);
       setSelectedImage(imageUrl);
-      covertFile(selectedFile)
-      setShowAttach(false)
+      covertFile(selectedFile);
+      setShowAttach(false);
     }
   };
   const sendMessage = (e: any) => {
@@ -58,7 +58,7 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate, response }) => {
     }
     setMessage("");
   };
-  const sendFiles = (val:string) => {
+  const sendFiles = (val: string) => {
     if (sendFile) {
       if (item.userId) {
         console.log({
@@ -68,7 +68,7 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate, response }) => {
           message: `${val}`,
           files: [sendFile],
         });
-        
+
         socket.emit("chatroom_listen", {
           chatroomId: item.id,
           userId: id,
@@ -87,20 +87,20 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate, response }) => {
         followPrivate();
       }
     }
-    setShowModal(false)
+    setShowModal(false);
   };
-  const covertFile = (item:any) => {
+  const covertFile = (item: any) => {
     const reader = new FileReader();
     reader.readAsDataURL(item);
     reader.onload = () => {
       const base64 = reader.result;
       setSendFile(base64);
     };
-  }
-  const ProceedToUpload = async(item:string) => {
-    sendFiles(item)
-  }
-  const ReplyMessage = (e:any) => {
+  };
+  const ProceedToUpload = async (item: string) => {
+    sendFiles(item);
+  };
+  const ReplyMessage = (e: any) => {
     e.preventDefault();
     setMessage(e.target.value);
     if (message !== "") {
@@ -110,7 +110,7 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate, response }) => {
           userId: id,
           reload_messages: false,
           message: `${message}`,
-          replyTo: response?.id
+          replyTo: response?.id,
         });
       } else {
         socket.emit("chatroom_listen", {
@@ -118,13 +118,13 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate, response }) => {
           from: id,
           reload_messages: false,
           message: `${message}`,
-          replyTo: response?.id
+          replyTo: response?.id,
         });
         followPrivate();
       }
     }
     setMessage("");
-  }
+  };
   return (
     <>
       <div className="px-4 pt-2">
@@ -137,7 +137,7 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate, response }) => {
           />
           <RiSendPlane2Fill
             className="text-2xl text-primary"
-            onClick={response?.message? ReplyMessage : sendMessage}
+            onClick={response?.message ? ReplyMessage : sendMessage}
           />
           <div className="relative">
             {showAttach && (
@@ -166,12 +166,19 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate, response }) => {
                 </div>
               </div>
             )}
-            <RiAttachment2 className="text-2xl text-primary" onClick={() => setShowAttach(!showAttach)}/>
+            <RiAttachment2
+              className="text-2xl text-primary"
+              onClick={() => setShowAttach(!showAttach)}
+            />
           </div>
         </div>
       </div>
       <Modal title="Selected File">
-        <PreviewModal image={selectedImage} proceed={ProceedToUpload} close={() => setShowModal(false)}/>
+        <PreviewModal
+          image={selectedImage}
+          proceed={ProceedToUpload}
+          close={() => setShowModal(false)}
+        />
       </Modal>
     </>
   );

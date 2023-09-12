@@ -22,6 +22,8 @@ interface Props {
   refetchRoom: () => void
 }
 const ChatSection: FC<Props> = ({ item, socket, select, refetchRoom }) => {
+  console.log(item);
+  
   const {Modal:ViewUser, setShowModal:setViewUser} = useModal()
   const {Modal:ViewFiles, setShowModal:setViewFiles} = useModal()
   const {Modal:Suspend, setShowModal:setShowSuspend} = useModal()
@@ -110,7 +112,6 @@ const ChatSection: FC<Props> = ({ item, socket, select, refetchRoom }) => {
   useEffect(() => {
     selectConnect()
   }, [item]);
-  console.log(reply);
 
   return (
     <>
@@ -120,13 +121,16 @@ const ChatSection: FC<Props> = ({ item, socket, select, refetchRoom }) => {
             <Image
               src={
                 item.img
-                  ? item.img
+                  ? item.img :
+                  item.banner
+                  ? 
+                  item.banner
                   : "https://res.cloudinary.com/greenmouse-tech/image/upload/v1693229127/globfolio/Group_48368_1_y0m8ah.png"
               }
               alt="profile"
               width={80}
               height={80}
-              className="w-12"
+              className="w-12 h-12 circle"
             />
             <div>
               <p className="fw-600 fs-500">

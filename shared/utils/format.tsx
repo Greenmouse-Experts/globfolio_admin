@@ -67,6 +67,10 @@ export const isLink = (url: string) => {
 return !!urlPattern.test(url);
 }
 
+export const isBlob = (object:any) => {
+  return object instanceof Blob;
+}
+
 export const parseData = (value:string) => {
   if (!value) return "";
 
