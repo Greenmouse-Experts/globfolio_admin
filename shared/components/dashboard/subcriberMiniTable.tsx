@@ -47,7 +47,7 @@ const SubscriberMiniTable:FC<Props> = ({users}) => {
                         </tr>
                       </thead>
                       <tbody>
-                        {users.map((item, index) => (
+                        {users.slice(0,5).map((item, index) => (
                           <tr className="" key={index}>
                             <td className="border-b border-gray-200 align-middle fs-500 whitespace-nowrap px-2 py-4 text-left">
                               {index + 1}

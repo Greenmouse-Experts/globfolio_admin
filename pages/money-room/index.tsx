@@ -9,7 +9,7 @@ import { useAppDispatch } from '@/shared/redux/store'
 import { resetMessages } from '@/shared/redux/reducers/ChatSlice'
 import { useGetRoomQuery } from '@/services/api/chatSlice'
 
-const socket = io('https://globfolio-8eb57b28054d.herokuapp.com/');
+const socket = io('https://api.globfolio.com/');
 const MoneyRoomPage:AppPage = () => {
   const [showChat, setShowChat] = useState(false)
   const { data: room, isLoading, refetch:refetchRoom } = useGetRoomQuery();

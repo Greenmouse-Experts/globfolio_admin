@@ -15,7 +15,7 @@ interface Props {
 }
 const ChatInput: FC<Props> = ({ socket, item, followPrivate, response }) => {
   const [message, setMessage] = useState("");
-  // const [photoMessage, setPhotoMessage] = useState("");
+  const [fileMessage, setFileMessage] = useState(false);
   const [sendFile, setSendFile] = useState<any>();
   const { Modal, setShowModal } = useModal();
   const [inputImage, setInputImage] = useState<any>();
@@ -34,6 +34,20 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate, response }) => {
       covertFile(selectedFile);
       setShowAttach(false);
     }
+    setFileMessage(false)
+  };
+  const handleFileInput2 = (e: any) => {
+    e.preventDefault();
+    setShowModal(true);
+    const selectedFile = e.target.files[0];
+    if (selectedFile) {
+      const imageUrl = URL.createObjectURL(selectedFile);
+      setInputImage(selectedFile);
+      setSelectedImage(imageUrl);
+      covertFile(selectedFile);
+      setShowAttach(false);
+    }
+    setFileMessage(true)
   };
   const sendMessage = (e: any) => {
     e.preventDefault();
@@ -61,20 +75,21 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate, response }) => {
   const sendFiles = (val: string) => {
     if (sendFile) {
       if (item.userId) {
-        console.log({
-          chatroomId: item.id,
-          userId: id,
-          reload_messages: false,
-          message: `${val}`,
-          files: [sendFile],
-        });
-
+        // console.log({
+        //   chatroomId: item.id,
+        //   userId: id,
+        //   reload_messages: false,
+        //   message: `${val}`,
+        //   files: [sendFile],
+        //   replyTo: response?.id,
+        // });
         socket.emit("chatroom_listen", {
           chatroomId: item.id,
           userId: id,
           reload_messages: false,
           message: `${val}`,
           files: [sendFile],
+          replyTo: response?.id,
         });
       } else {
         socket.emit("chatroom_listen", {
@@ -83,6 +98,7 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate, response }) => {
           reload_messages: false,
           message: `${val}`,
           files: [sendFile],
+          replyTo: response?.id,
         });
         followPrivate();
       }
@@ -129,6 +145,7 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate, response }) => {
     <>
       <div className="px-4 pt-2">
         <div className="border border-gray-600 bg-white flex gap-x-2 p-2 items-center rounded-lg">
+          <form className="flex w-full" onSubmit={response?.id ? ReplyMessage : sendMessage}>
           <input
             onChange={(e) => setMessage(e.target.value)}
             value={message}
@@ -137,8 +154,9 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate, response }) => {
           />
           <RiSendPlane2Fill
             className="text-2xl text-primary"
-            onClick={response?.message ? ReplyMessage : sendMessage}
+            onClick={response?.id ? ReplyMessage : sendMessage}
           />
+          </form>
           <div className="relative">
             {showAttach && (
               <div className="absolute -top-[108px] -left-[125px] bg-white p-6 w-40 rounded-xl shadow-lg">
@@ -160,7 +178,7 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate, response }) => {
                       type="file"
                       // accept="image/*"
                       className="absolute w-full h-full z-10 opacity-0"
-                      onChange={handleFileInput}
+                      onChange={handleFileInput2}
                     />
                   </p>
                 </div>
@@ -178,6 +196,7 @@ const ChatInput: FC<Props> = ({ socket, item, followPrivate, response }) => {
           image={selectedImage}
           proceed={ProceedToUpload}
           close={() => setShowModal(false)}
+          file={fileMessage}
         />
       </Modal>
     </>

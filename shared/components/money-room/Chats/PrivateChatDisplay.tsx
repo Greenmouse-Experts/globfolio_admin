@@ -5,9 +5,10 @@ import {
 import { useAppDispatch, useAppSelector } from "@/shared/redux/store";
 import { ChatData } from "@/shared/types/routine";
 import { EmptyState2 } from "@/shared/utils/emptyState";
-import { isImage, isLink } from "@/shared/utils/format";
+import { isFile, isImage, isLink } from "@/shared/utils/format";
 import Image from "next/image";
 import React, { FC, useRef, useEffect } from "react";
+import { AiOutlineFileText } from "react-icons/ai";
 import { BiTime } from "react-icons/bi";
 import { BsCheck2All, BsCheckAll } from "react-icons/bs";
 // dayjs time format
@@ -40,8 +41,6 @@ const PrivateChatDisplay: FC<Props> = ({ socket, roomId }) => {
             reply: areplyTo
           })
         );
-        console.log(needed);
-
         dispatch(saveInitailMsg(needed));
       }
     });
@@ -54,7 +53,6 @@ const PrivateChatDisplay: FC<Props> = ({ socket, roomId }) => {
   }, [socket]);
   useEffect(() => {
     if (scrollRef.current) {
-      console.log("im scrolling");
       scrollRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
     }
   }, [socket]);
@@ -71,7 +69,11 @@ const PrivateChatDisplay: FC<Props> = ({ socket, roomId }) => {
       scrollRef.current.scrollTop = scrollRef.current.scrollHeight;
     }
   }, [myMsg]);
-
+  const viewRef = useRef<HTMLDivElement | null>(null);
+  const goToView = (id:any) => {
+    const container = document.getElementById(id);
+    container?.scrollIntoView({ behavior: 'smooth' });
+};
   return (
     <>
       <div className="h-[500px] bg-gray-100 grid content-end">
@@ -99,9 +101,49 @@ const PrivateChatDisplay: FC<Props> = ({ socket, roomId }) => {
                         ? "bg-primary text-white"
                         : "bg-blue-100"
                     }`}
+                    ref={viewRef}
+                  id={item.id}
                   >
                     <p className="fw-600 fs-300 mb-1">{item.owner}</p>
                     <div>
+                    {item?.reply?.id ? (
+                    item.sender === id ? (
+                      <div className="bg-gray-800 mb-2" onClick={() => goToView(item.reply.id)}>
+                        <div className="fs-500 border-l-2 p-2">
+                          {!!item?.reply?.files?.length && isImage(item.reply.files[0]) && (
+                      <div>
+                        <Image
+                          src={item.reply.files[0]}
+                          alt="msg"
+                          width={300}
+                          height={400}
+                          className="w-6 circle"
+                        />
+                      </div>)}
+                          {item?.reply.message}
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="bg-gray-100 mb-2" onClick={() => goToView(item.reply.id)}>
+                        <div className="fs-500 border-l-[3px] border-blue-500 p-2">
+                        {!!item?.reply?.files?.length && isImage(item.reply.files[0]) && (
+                      <div>
+                        <Image
+                          src={item.reply.files[0]}
+                          alt="msg"
+                          width={300}
+                          height={400}
+                          className="w-6 circle"
+                        />
+                      </div>)}
+                          {item?.reply.message}
+                        </div>
+                      </div>
+                    )
+                  ) : (
+                    ""
+                  )}
+                     <div>
                     {!!item?.files?.length && isImage(item.files[0]) ? (
                       <div>
                         <Image
@@ -112,6 +154,15 @@ const PrivateChatDisplay: FC<Props> = ({ socket, roomId }) => {
                           className="w-48"
                         />
                       </div>
+                    ) : isFile(item.files[0]) ? (
+                      <a
+                        href={item.files[0]}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="my-2"
+                      >
+                        <AiOutlineFileText className="text-7xl mx-auto opacity-70" />
+                      </a>
                     ) : (
                       ""
                     )}
@@ -130,6 +181,7 @@ const PrivateChatDisplay: FC<Props> = ({ socket, roomId }) => {
                       item.message
                     )}
                   </p>
+                  </div>
                     <div className="flex justify-between items-center mt-2">
                       <div className="flex items-center gap-x-1">
                         <BiTime

@@ -6,7 +6,6 @@ import { MdOutlineEventNote } from "react-icons/md";
 import { LuBookCopy } from "react-icons/lu";
 import { BiCandles } from "react-icons/bi";
 import { formatAsNgnMoney } from "@/shared/utils/format";
-import { useGetTransactQuery } from "@/services/api/routineSlice";
 import { EmptyState1 } from "@/shared/utils/emptyState";
 
 interface Props{

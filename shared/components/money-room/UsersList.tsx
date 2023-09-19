@@ -11,7 +11,6 @@ interface Props {
     socket:any
   }
 const UsersList:FC<Props> = ({select, selected, socket}) => {
-        
     const [myUsers, setMyUsers] = useState<any[]>()
     const {data:last, isLoading} = useGetPreviousQuery()
     const [searchQuery, setSearchQuery] = useState('');
@@ -37,15 +36,7 @@ const UsersList:FC<Props> = ({select, selected, socket}) => {
         console.log(data);
     })
   }, [socket])
-    // const recent = last?.data?.filter((where:any) => where.afrom)
-//     console.log(recent);
-    
-//    const formatSender = (item:any) => {
-//     if(item.afrom.id === id){
-//         return item.ato
-//     }else return item.afrom
-//    }
-    
+    const recent = last?.data?.filter((where:any) => !where.chatroomid)
   return (
     <>
         <div className='text-white mt-3'>
@@ -57,9 +48,9 @@ const UsersList:FC<Props> = ({select, selected, socket}) => {
             <div className='text-white mt-6 h-[450px] overflow-y-auto scroll-pro'>
                 {(searchQuery === "") && <ul>
                     {
-                        last && !!last.data.length && last.data.map((item:any, i:number) => (
+                        last && !!recent.length && recent.map((item:any, i:number) => (
                             <li key={i} className={`flex gap-x-2 mb-2 cursor-pointer rounded-lg hover:bg-[#1F2937] p-2 ${item.name === item.scontact.fullname && `bg-[#1F2937]`}`} onClick={ () => select({fullname: item.scontact.fullname, id:item.scontact.id})}>
-                                <Image src={item.scontact.picture? item.scontact.picture : 'https://res.cloudinary.com/greenmouse-tech/image/upload/v1693229127/globfolio/Group_48368_1_y0m8ah.png'} alt='profile' width={80} height={80} className='w-10 h-10 circle'/>
+                                <Image src={item.scontact.picture? item.scontact.picture.secure_url : 'https://res.cloudinary.com/greenmouse-tech/image/upload/v1693229127/globfolio/Group_48368_1_y0m8ah.png'} alt='profile' width={80} height={80} className='w-10 h-10 circle'/>
                                 <div>
                                     <p className='text-white fw-500 fs-300'>{item.scontact.fullname}</p> 
                                     <p className='whitespace-nowrap fs-200 text-gray-400'>{item.lastMessage}</p>
@@ -73,7 +64,7 @@ const UsersList:FC<Props> = ({select, selected, socket}) => {
                     {
                         myUsers.map((item) => (
                             <li key={item.id} className={`flex gap-x-2 mb-2 cursor-pointer rounded-lg hover:bg-[#1F2937] p-2 ${item.fullname === selected?.fullname && `bg-[#1F2937]`}`} onClick={ () => select(item)}>
-                                <Image src='https://res.cloudinary.com/greenmouse-tech/image/upload/v1692619891/globfolio/Ellipse_1366_rimyab.png' alt='profile' width={80} height={80} className='w-10'/>
+                                <Image src={item.picture? item.picture.secure_url : 'https://res.cloudinary.com/greenmouse-tech/image/upload/v1693229127/globfolio/Group_48368_1_y0m8ah.png'} alt='profile' width={80} height={80} className='w-10 h-10'/>
                                 <div>
                                     <p className='text-white fw-500 fs-300'>{item.fullname}</p>
                                 </div>

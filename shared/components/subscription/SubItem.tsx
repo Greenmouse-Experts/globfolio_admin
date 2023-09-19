@@ -27,7 +27,6 @@ const SubItemComp: FC<Props> = ({ data, refetch, tab, change }) => {
 
   useEffect(() => {
     const plans = data.filter((where) => where.id === tab);
-    console.log(plans);
     setPlan(plans[0]);
     setBenefits(plans[0]?.benefits);
     reset({

@@ -105,6 +105,39 @@ export const subscriptionApiSlice = apiSlice.injectEndpoints({
           },
         }),
       }),
+
+      editRoom: builder.query<BaseResult | ErrorResult, any>({
+        query: (payload) => ({
+          url: `${ENDPOINT.EDIT_ROOM}${payload.id}`,
+          method: ENDPOINT.HTTP_METHODS.PUT,
+          body: payload ,
+          headers: {
+            Authorization: getLocalToken("token"),
+          },
+        }),
+      }),
+
+      banMember: builder.query<BaseResult | ErrorResult, any>({
+        query: (payload) => ({
+          url: `${ENDPOINT.REMOVE_USER}`,
+          method: ENDPOINT.HTTP_METHODS.POST,
+          body: payload ,
+          headers: {
+            Authorization: getLocalToken("token"),
+          },
+        }),
+      }),
+
+      assignUser: builder.query<BaseResult | ErrorResult, any>({
+        query: (payload) => ({
+          url: `${ENDPOINT.ASSIGN_USER}`,
+          method: ENDPOINT.HTTP_METHODS.POST,
+          body: payload ,
+          headers: {
+            Authorization: getLocalToken("token"),
+          },
+        }),
+      }),
     
   }),
   overrideExisting: true,
@@ -119,5 +152,8 @@ export const {
   useGetPreviousQuery,
   useLazySuspendChatRoomQuery,
   useLazyDeleteChatMsgQuery,
-  useLazyDeleteChatRoomQuery
+  useLazyDeleteChatRoomQuery,
+  useLazyEditRoomQuery,
+  useLazyBanMemberQuery,
+  useLazyAssignUserQuery
 } = subscriptionApiSlice;

@@ -79,7 +79,22 @@ export const parseData = (value:string) => {
 
 export const formatFile = (url:any) => {
  const file = parseData(url)
- console.log(file);
- 
  return file[0]
+}
+
+export const checkImage = (url:any) => {
+    const image = new (window as any).Image();
+    image.src = url;
+    image.onload = () => {
+      const {
+        height,
+        width
+      } = image;
+      if (height > 100 || width > 100) {
+        alert("Height and Width must not exceed 100px.");
+        return false;
+      }
+      alert("Uploaded image has valid Height and Width.");
+      return true;
+    };
 }

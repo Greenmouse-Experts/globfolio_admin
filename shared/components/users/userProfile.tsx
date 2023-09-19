@@ -61,13 +61,24 @@ const ViewUserProfile: FC<Props> = ({ item }) => {
         {isLoading && "Loading..."}
         {
           data && <div>
-          <div className="relative flex gap-x-4 border-b pb-3">
-            <Initials name={data?.message.fullname} size={60} text="20px" />
+          <div className="relative flex gap-x-2 border-b pb-3">
+            {
+              data.message.picture? 
+              <Image
+                src={data.message.picture.secure_url}
+                alt="sub"
+                width={70}
+                height={70}
+                className="w-16 h-16 mx-auto"
+              />
+              :
+              <Initials name={data?.message.fullname} size={60} text="20px" />
+            }
             <div className="">
               <p className="fs-700 fw-600">{data?.message.fullname}</p>
               <p>{item.email}</p>
             </div>
-            {item.subscriptionPlan && <div className="absolute right-0 -top-7">
+            {data.message.subscription && <div className="absolute right-0 -top-7">
               <Image
                 src="https://res.cloudinary.com/greenmouse-tech/image/upload/v1689834080/globfolio/3974366_iboyrd.png"
                 alt="sub"
@@ -75,7 +86,7 @@ const ViewUserProfile: FC<Props> = ({ item }) => {
                 height={70}
                 className="w-8 mx-auto"
               />
-              <p className="fs-200 fw-600 italic">{item.subscriptionPlan}</p>
+              <p className="fs-200 fw-600 italic">{data.message.subscription.subscriptionPlan.name}</p>
             </div>}
           </div>
           <div className="mt-3">

@@ -50,8 +50,6 @@ const ChatDisplay: FC<Props> = ({ socket, roomId, respond }) => {
   const getMessages = () => {
     socket.on("chatroom_messages", (data: any) => {
       if (data.msgs) {
-        console.log(data);
-
         const needed = data?.msgs.map(
           ({
             sender,
@@ -127,7 +125,6 @@ const ChatDisplay: FC<Props> = ({ socket, roomId, respond }) => {
     showDelete(true);
   };
   const deleteMsg = async (item: any) => {
-    console.log(item);
     const payload = {
       message_id: item,
       chatroom_id: roomId,
@@ -151,15 +148,10 @@ const ChatDisplay: FC<Props> = ({ socket, roomId, respond }) => {
   };
 
   const viewRef = useRef<HTMLDivElement | null>(null);
-  // const goToView = (id: any) => {
-  //   if (viewRef.current) {
-  //     viewRef.current.scrollIntoView({ behavior: "smooth", block: "end" });
-  //   }
-  // };
-  const goToView = (id:any) => {
+  const goToView = (id: any) => {
     const container = document.getElementById(id);
-    container?.scrollIntoView({ behavior: 'smooth' });
-};
+    container?.scrollIntoView({ behavior: "smooth" });
+  };
 
   return (
     <>
@@ -205,16 +197,46 @@ const ChatDisplay: FC<Props> = ({ socket, roomId, respond }) => {
                   </div>
                   {item?.reply?.id ? (
                     item.sender === id ? (
-                      <div className="bg-gray-800 mb-2" onClick={() => goToView(item.reply.id)}>
-                        <p className="fs-500 border-l-2 p-2">
+                      <div
+                        className="bg-gray-800 mb-2"
+                        onClick={() => goToView(item.reply.id)}
+                      >
+                        <div className="fs-500 border-l-2 p-2">
+                          {!!item?.reply?.files?.length &&
+                            isImage(item.reply.files[0]) && (
+                              <div>
+                                <Image
+                                  src={item.reply.files[0]}
+                                  alt="msg"
+                                  width={300}
+                                  height={400}
+                                  className="w-7 h-7 circle"
+                                />
+                              </div>
+                            )}
                           {item?.reply.message}
-                        </p>
+                        </div>
                       </div>
                     ) : (
-                      <div className="bg-gray-100 mb-2" onClick={() => goToView(item.reply.id)}>
-                        <p className="fs-500 border-l-[3px] border-blue-500 p-2">
+                      <div
+                        className="bg-gray-100 mb-2"
+                        onClick={() => goToView(item.reply.id)}
+                      >
+                        <div className="fs-500 border-l-[3px] border-blue-500 p-2">
+                          {!!item?.reply?.files?.length &&
+                            isImage(item.reply.files[0]) && (
+                              <div>
+                                <Image
+                                  src={item.reply.files[0]}
+                                  alt="msg"
+                                  width={300}
+                                  height={400}
+                                  className="w-7 h-7 circle"
+                                />
+                              </div>
+                            )}
                           {item?.reply.message}
-                        </p>
+                        </div>
                       </div>
                     )
                   ) : (
@@ -300,7 +322,7 @@ const ChatDisplay: FC<Props> = ({ socket, roomId, respond }) => {
                       alt="msg"
                       width={300}
                       height={400}
-                      className="w-48"
+                      className="w-24 h-24 circle"
                     />
                   </div>
                 ) : (

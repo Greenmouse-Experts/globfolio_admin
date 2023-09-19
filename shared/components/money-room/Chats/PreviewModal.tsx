@@ -1,14 +1,15 @@
 import React, { FC, useState } from "react";
 import Image from "next/image";
 import { RiSendPlane2Fill } from "react-icons/ri";
-import { isBlob, isImage } from "@/shared/utils/format";
+import { checkImage, isBlob, isImage } from "@/shared/utils/format";
 
 interface Props {
   image: string;
   proceed: (item: string) => void;
   close: () => void;
+  file: boolean
 }
-const PreviewModal: FC<Props> = ({ image, proceed, close }) => {
+const PreviewModal: FC<Props> = ({ image, proceed, close, file }) => {
   const [photoMessage, setPhotoMessage] = useState("");
   const handleProceed = () => {
     proceed(photoMessage);
@@ -17,14 +18,7 @@ const PreviewModal: FC<Props> = ({ image, proceed, close }) => {
   return (
     <div>
       <div className="w-full">
-      {/* <Image
-            src={image}
-            alt="image"
-            width={500}
-            height={500}
-            className="w-10/12 mx-auto"
-          /> */}
-        {isBlob(image) ? (
+        {!file ? (
           <Image
             src={image}
             alt="image"
