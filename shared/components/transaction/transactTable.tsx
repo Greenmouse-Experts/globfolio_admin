@@ -56,15 +56,15 @@ const TransactionTable:FC<Props> = ({status, transact}) => {
             Cell: (props: any) =>
               FormatStatus[props.value as keyof typeof FormatStatus],
           },
-          {
-            Header: " ",
-            accessor: "status",
-            id: "ids",
-            Cell: (props: any) =>
-              <div className='flex items-center'>
-                <BsThreeDotsVertical/>
-              </div>
-          },
+          // {
+          //   Header: " ",
+          //   accessor: "status",
+          //   id: "ids",
+          //   Cell: (props: any) =>
+          //     <div className='flex items-center'>
+          //       <BsThreeDotsVertical/>
+          //     </div>
+          // },
         ], // eslint-disable-next-line
         []
       );
