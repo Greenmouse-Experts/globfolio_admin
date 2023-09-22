@@ -7,19 +7,19 @@ import { InfinityLoader } from '@/shared/components/UI/Loading'
 
 
 const UsersPage:AppPage = () => {
-    const {data, isLoading} = useGetUsersQuery()
+    const {data, isLoading, refetch} = useGetUsersQuery()
     const tab = [
         {
             title: <p>All Users</p>,
-            content: <UserInfoTable users={data?.data}/>
+            content: <UserInfoTable users={data?.data} refetch={refetch}/>
         },
         {
             title: <p>Active Subscribers</p>,
-            content: <UserInfoTable status='active'  users={data?.data}/>
+            content: <UserInfoTable status='active'  users={data?.data} refetch={refetch}/>
         },
         {
             title: <p>Non-Active Users</p>,
-            content: <UserInfoTable status='inactive'  users={data?.data}/>
+            content: <UserInfoTable status='inactive'  users={data?.data} refetch={refetch}/>
         },
     ]
   return (

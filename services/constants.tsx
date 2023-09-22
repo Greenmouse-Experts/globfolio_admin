@@ -27,6 +27,7 @@ export enum CACHE_LIFETIME {
   export const GET_SINGLE_USER = '/admin/getUser'
   export const SUSPEND_USER = '/admin/suspend-user'
   export const UNSUSPEND_USER = '/admin/unSuspend-user'
+  export const DELETE_USER = '/admin/deleteUser'
 
   // stock advisory
   export const GET_ADVISORY = '/stockAdvisory/stockAdvisorys'
@@ -44,6 +45,8 @@ export enum CACHE_LIFETIME {
   export const EDIT_SUBSCRIPTION = '/subscription/update'
   export const GET_SUBSCRIBED_USERS = '/subscription/getPlanUsers'
   export const DELETE_SUBSCRIPTION = '/subscription/delete'
+  export const UPDATE_DURATION= '/subscription/offpayment/extendSubscription'
+  export const UPDATE_SUBSCRIPTION  = '/subscription/offpayment/upgrade'
 
   //feedbacks
   export const GET_FEEDBACKS = '/admin/getFeedbacks'

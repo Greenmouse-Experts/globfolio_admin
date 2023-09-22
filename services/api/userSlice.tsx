@@ -52,6 +52,16 @@ export const userApiSlice = apiSlice.injectEndpoints({
         },
       }),
     }),
+
+    deleteUser: builder.query<BaseResult | ErrorResult, any>({
+      query: (query) => ({
+        url: `${ENDPOINT.DELETE_USER}/${query}`,
+        method: ENDPOINT.HTTP_METHODS.DELETE,
+        headers: {
+          Authorization: getLocalToken("token"),
+        },
+      }),
+    }),
     
   }),
   overrideExisting: true,
@@ -61,5 +71,6 @@ export const {
   useGetUsersQuery,
   useGetOneUsersQuery,
   useLazySuspendUserQuery,
-  useLazyUnsuspendUserQuery
+  useLazyUnsuspendUserQuery,
+  useLazyDeleteUserQuery
 } = userApiSlice;

@@ -80,6 +80,7 @@ const SubItemComp: FC<Props> = ({ data, refetch, tab, change }) => {
       analystPickAccess: plan?.analystPickAccess,
       chatAccess: plan?.chatAccess,
       benefits: benefits,
+      planId: plan?.id,
     };
     setIsBusy(true);
     await edit(payload)

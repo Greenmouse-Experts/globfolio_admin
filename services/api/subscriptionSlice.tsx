@@ -62,6 +62,28 @@ export const subscriptionApiSlice = apiSlice.injectEndpoints({
           },
         }),
       }),
+
+      updateSubDuration: builder.query<CreateSubscriptionOutput | ErrorResult, any>({
+        query: (payload) => ({
+          url: ENDPOINT.UPDATE_DURATION,
+          body: payload ,
+          method: ENDPOINT.HTTP_METHODS.POST,
+          headers: {
+            Authorization: getLocalToken("token"),
+          },
+        }),
+      }),
+
+      updateSubscription: builder.query<BaseResult | ErrorResult, any>({
+        query: (payload) => ({
+          url: ENDPOINT.UPDATE_SUBSCRIPTION,
+          body: payload ,
+          method: ENDPOINT.HTTP_METHODS.POST,
+          headers: {
+            Authorization: getLocalToken("token"),
+          },
+        }),
+      }),
     
   }),
   overrideExisting: true,
@@ -72,5 +94,7 @@ export const {
   useLazyEditSubscriptionQuery,
   useLazyCreateSubscriptionQuery,
   useGetSubUserQuery,
-  useLazyDeleteSubscriptionQuery
+  useLazyDeleteSubscriptionQuery,
+  useLazyUpdateSubDurationQuery,
+  useLazyUpdateSubscriptionQuery
 } = subscriptionApiSlice;
