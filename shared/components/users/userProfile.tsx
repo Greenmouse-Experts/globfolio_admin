@@ -77,14 +77,14 @@ const ViewUserProfile: FC<Props> = ({ item }) => {
                   />
                 ) : (
                   <Initials
-                    name={data?.message.user.fullname}
+                    name={data?.message?.user?.fullname}
                     size={60}
                     text="20px"
                   />
                 )}
                 <div className="">
-                  <p className="fs-700 fw-600">{data?.message.user.fullname}</p>
-                  <p>{item.email}</p>
+                  <p className="fs-700 fw-600">{data?.message?.user?.fullname}</p>
+                  <p>{item?.email}</p>
                 </div>
               </>
               {data.message.subscription && (
@@ -97,7 +97,7 @@ const ViewUserProfile: FC<Props> = ({ item }) => {
                     className="w-8 mx-auto"
                   />
                   <p className="fs-200 fw-600 italic">
-                    {data.message.subscription.subscriptionPlan.name}
+                    {data?.message?.subscription?.subscriptionPlan?.name}
                   </p>
                 </div>
               )}

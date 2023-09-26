@@ -56,13 +56,13 @@ const SubscriberMiniTable:FC<Props> = ({users}) => {
                               {item.fullname}
                             </td>
                             <td className="border-b border-gray-200 align-middle fs-500 whitespace-nowrap px-2 py-4 text-left">
-                              {item.plan.name}
+                              {item?.plan?.name}
                             </td>
                             <td className="border-b border-gray-200 align-middle fs-500 whitespace-nowrap px-2 py-4 text-left">
-                              {dayjs(item.subscription.createdAt).format('DD-MMM-YYYY')}
+                              {dayjs(item.subscription?.createdAt).format('DD-MMM-YYYY')}
                             </td>
                             <td className="border-b border-gray-200 align-middle fs-500 whitespace-nowrap px-2 py-4 text-left">
-                              {formatAsNgnMoney(item.plan.amount)}
+                              {formatAsNgnMoney(item?.plan?.amount)}
                             </td>
                           </tr>
                         ))}

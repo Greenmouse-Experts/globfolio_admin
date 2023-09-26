@@ -35,8 +35,11 @@ const UsersList:FC<Props> = ({select, selected, socket}) => {
     socket.on(id, (data: any) => {
         console.log(data);
     })
+    
   }, [socket])
-    const recent = last?.data?.filter((where:any) => !where.chatroomid)
+  
+  console.log(last?.data);
+    const recent = last?.data?.filter((where:any) => !where?.chatroomid)
   return (
     <>
         <div className='text-white mt-3'>
@@ -49,11 +52,11 @@ const UsersList:FC<Props> = ({select, selected, socket}) => {
                 {(searchQuery === "") && <ul>
                     {
                         last && !!recent.length && recent.map((item:any, i:number) => (
-                            <li key={i} className={`flex gap-x-2 mb-2 cursor-pointer rounded-lg hover:bg-[#1F2937] p-2 ${item.name === item.scontact.fullname && `bg-[#1F2937]`}`} onClick={ () => select({fullname: item.scontact.fullname, id:item.scontact.id})}>
-                                <Image src={item.scontact.picture? item.scontact.picture.secure_url : 'https://res.cloudinary.com/greenmouse-tech/image/upload/v1693229127/globfolio/Group_48368_1_y0m8ah.png'} alt='profile' width={80} height={80} className='w-10 h-10 circle'/>
+                            <li key={i} className={`flex gap-x-2 mb-2 cursor-pointer rounded-lg hover:bg-[#1F2937] p-2 ${item?.name === item?.scontact?.fullname && `bg-[#1F2937]`}`} onClick={ () => select({fullname: item.scontact.fullname, id:item.scontact.id})}>
+                                <Image src={item?.scontact?.picture? item.scontact.picture.secure_url : 'https://res.cloudinary.com/greenmouse-tech/image/upload/v1693229127/globfolio/Group_48368_1_y0m8ah.png'} alt='profile' width={80} height={80} className='w-10 h-10 circle'/>
                                 <div>
-                                    <p className='text-white fw-500 fs-300'>{item.scontact.fullname}</p> 
-                                    <p className='whitespace-nowrap fs-200 text-gray-400'>{item.lastMessage}</p>
+                                    <p className='text-white fw-500 fs-300'>{item?.scontact?.fullname}</p> 
+                                    <p className='whitespace-nowrap fs-200 text-gray-400'>{item?.lastMessage}</p>
                                 </div>
                             </li>
                         ))

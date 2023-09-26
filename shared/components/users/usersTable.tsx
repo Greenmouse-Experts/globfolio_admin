@@ -114,7 +114,7 @@ const UserInfoTable: FC<Props> = ({ status, users, refetch }) => {
                 <MenuItem onClick={() => openSubscrition(row.row.original)}>
                   User Subscription
                 </MenuItem>
-                <MenuItem onClick={() => openDelete(row.row.original)}>
+                <MenuItem className="bg-red-500 text-white" onClick={() => openDelete(row.row.original)}>
                   Delete User
                 </MenuItem>
               </MenuList>
@@ -150,7 +150,7 @@ const UserInfoTable: FC<Props> = ({ status, users, refetch }) => {
       )}
       {selectedItem && (
         <Subscribe title="User Subscription">
-          <ViewSubscriptionProfile item={selectedItem} />
+          <ViewSubscriptionProfile item={selectedItem} refetchMain={refetch} />
         </Subscribe>
       )}
       <Delete title="Delete User">
