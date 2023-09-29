@@ -21,7 +21,7 @@ const ProfileSettings = () => {
             <p className="fs-300 mt-1">Super admin, Nigeria.</p>
           </div>
         </div>
-        <div className="flex gap-x-2 items-center p-1 px-2 rounded-[15px] border border-[#5F5F5F]" onClick={() => setShowModal(true)}>
+        <div className="flex gap-x-2 items-center p-1 px-2 rounded-[15px] border border-[#5F5F5F] cursor-pointer" onClick={() => setShowModal(true)}>
           <p>Edit</p>
           <AiOutlineEdit />
         </div>
