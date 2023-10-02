@@ -1,3 +1,4 @@
+"use client"
 import React, { FC, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import TextInput, { InputType } from "../UI/TextInput";
@@ -8,10 +9,15 @@ import { ScaleSpinner } from "../UI/Loading";
 import { formatName } from "@/shared/utils/format";
 import { BeatLoader } from "react-spinners";
 import {getName, getData} from 'country-list'
-import { AiOutlinePlusSquare } from "react-icons/ai";
+import { AiOutlinePlusSquare, AiOutlineUnorderedList } from "react-icons/ai";
 import useModal from "@/hooks/useModal";
 import AddSector from "./addSector";
 import { useGetSectorQuery } from "@/services/api/routineSlice";
+import ListCategory from "./listCategory";
+import 'react-quill/dist/quill.snow.css';
+import dynamic from "next/dynamic";
+
+const ReactQuill = dynamic(import('react-quill'), { ssr: false })
 
 interface Props {
   refetchLive: () => void
@@ -21,8 +27,10 @@ const AddAnalyticPicksForm:FC<Props> = ({refetchDraft, refetchLive}) => {
   const {data:sector, refetch:refetchSector} = useGetSectorQuery()
   const [isBusy, setIsBusy] = useState(false);
   const {Modal, setShowModal} = useModal()
+  const {Modal:ListCat, setShowModal:showListCat} = useModal()
   const [isPosting, setIsPosting] = useState(false);
   const [image, setImage] = useState<any>()
+  const [body, setBody] = useState<string>('')
   const [create] = useLazyCreateAdvisoryQuery()
   const [draft] = useLazyDraftAdvisoryQuery()
   const handleFileUpload = (e:any) => {
@@ -41,7 +49,7 @@ const AddAnalyticPicksForm:FC<Props> = ({refetchDraft, refetchLive}) => {
       industry: "",
       country: "",
       intro: "",
-      description: ""
+      // description: ""
     },
   });
 
@@ -51,6 +59,7 @@ const AddAnalyticPicksForm:FC<Props> = ({refetchDraft, refetchLive}) => {
     Object.entries(data).forEach(([key, value]) => {
       formData.append(key, value as any);
     });
+    formData.append("description", body);
     formData.append("image", image);
     await create(formData)
       .then((res:any) => {
@@ -58,6 +67,7 @@ const AddAnalyticPicksForm:FC<Props> = ({refetchDraft, refetchLive}) => {
           toast.success(res.data.message)
           toast.success('Published Successfully')
           reset()
+          setBody('')
           refetchLive()
           setIsBusy(false);
         }else {
@@ -101,7 +111,7 @@ const AddAnalyticPicksForm:FC<Props> = ({refetchDraft, refetchLive}) => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="grid lg:grid-cols-2 gap-4 mt-4">
             <div>
-            <label className="text-[#000000B2] fw-500 flex items-center gap-x-2">Category <AiOutlinePlusSquare className="cursor-pointer" onClick={() => setShowModal(true)}/></label>
+            <label className="text-[#000000B2] fw-500 flex items-center gap-x-2">Category <AiOutlinePlusSquare className="cursor-pointer" onClick={() => setShowModal(true)}/> <AiOutlineUnorderedList  className="cursor-pointer" onClick={() => showListCat(true)}/></label>
               <Controller
                 name="industry"
                 control={control}
@@ -171,7 +181,11 @@ const AddAnalyticPicksForm:FC<Props> = ({refetchDraft, refetchLive}) => {
               />
             </div>
             <div className="mt-6">
-              <Controller
+          <div className="mt-3">
+            <label className="block mb-2 fw-500">Body</label>
+            <ReactQuill theme="snow" value={body} onChange={setBody} className="h-48 mb-16" />
+        </div>
+              {/* <Controller
                 name="description"
                 control={control}
                 rules={{
@@ -190,7 +204,7 @@ const AddAnalyticPicksForm:FC<Props> = ({refetchDraft, refetchLive}) => {
                     {...field}
                   />
                 )}
-              />
+              /> */}
             </div>
           <div className="mt-8 lg:flex justify-between items-center">
             <div className="bg-[#F6F7FB] relative rounded w-44 px-6 py-[9px] cursor-pointer border border-gray-600 border-dashed">
@@ -212,6 +226,9 @@ const AddAnalyticPicksForm:FC<Props> = ({refetchDraft, refetchLive}) => {
       <Modal title="Add Category">
           <AddSector refetch={refetchSector} close={() => setShowModal(false)}/>
       </Modal>
+      <ListCat title="Picks Category">
+        <ListCategory/>
+      </ListCat>
     </>
   );
 };

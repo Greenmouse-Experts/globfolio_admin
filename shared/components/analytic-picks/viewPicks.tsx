@@ -9,6 +9,10 @@ import { ScaleSpinner } from "../UI/Loading";
 import { formatName } from "@/shared/utils/format";
 import Image from "next/image";
 import {getName, getData} from 'country-list'
+import 'react-quill/dist/quill.snow.css';
+import dynamic from "next/dynamic";
+
+const ReactQuill = dynamic(import('react-quill'), { ssr: false })
 
 interface Props {
   item: Advisory;
@@ -18,6 +22,7 @@ const ViewPicks: FC<Props> = ({ item }) => {
   const [isBusy, setIsBusy] = useState(false);
   const [image, setImage] = useState<any>();
   const [edit] = useLazyEditAdvisoryQuery();
+  const [body, setBody] = useState<string>(item.description)
   const handleFileUpload = (e: any) => {
     setImage(e.target.files[0]);
   };
@@ -33,16 +38,17 @@ const ViewPicks: FC<Props> = ({ item }) => {
       industry: item.industry || "",
       country: item.country || "",
       intro: item.intro || "",
-      description: item.description || "",
+      // description: item.description || "",
     },
   });
 
-  const onSubmit = async (data: any) => {
+  const onSubmit = async (data: any) => { 
     setIsBusy(true);
     const formData = new FormData();
     Object.entries(data).forEach(([key, value]) => {
       formData.append(key, value as any);
     });
+    formData.append("description", body);
     if(image){
         formData.append("image", image);
     }
@@ -143,7 +149,11 @@ const ViewPicks: FC<Props> = ({ item }) => {
               />
             </div>
             <div className="mt-6">
-              <Controller
+               <div className="mt-3">
+            <label className="block mb-2 fw-500">Body</label>
+            <ReactQuill theme="snow" value={body} onChange={setBody} className="h-48 mb-16" />
+        </div>
+              {/* <Controller
                 name="description"
                 control={control}
                 rules={{
@@ -162,7 +172,7 @@ const ViewPicks: FC<Props> = ({ item }) => {
                     {...field}
                   />
                 )}
-              />
+              /> */}
             </div>
             <div className="mt-8 flex justify-between items-center">
               <div className="bg-[#F6F7FB] relative rounded w-44 px-6 py-[9px] cursor-pointer border border-gray-600 border-dashed">

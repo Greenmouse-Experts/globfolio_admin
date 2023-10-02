@@ -106,6 +106,29 @@ export const stockApiSlice = apiSlice.injectEndpoints({
           },
         }),
       }),
+
+      editSector: builder.query<BaseResult | ErrorResult, any>({
+        query: (payload) => ({
+          url: `${ENDPOINT.GET_SECTOR}/${payload.id}`,
+          method: ENDPOINT.HTTP_METHODS.PATCH,
+          headers: {
+              authorization: getLocalToken("token")
+          },
+          body: payload ,
+        }),
+        keepUnusedDataFor: ENDPOINT.CACHE_LIFETIME.EXTENDED,
+      }),
+
+      deleteSector: builder.query<BaseResult | ErrorResult, any>({
+        query: (param) => ({
+          url: `${ENDPOINT.GET_SECTOR}/${param}`,
+          method: ENDPOINT.HTTP_METHODS.DELETE,
+          headers: {
+              authorization: getLocalToken("token")
+          },
+        }),
+        keepUnusedDataFor: ENDPOINT.CACHE_LIFETIME.EXTENDED,
+      }),
     
   }),
   overrideExisting: true,
@@ -120,5 +143,7 @@ export const {
   useGetDraftAdvisoryQuery,
   useGetOneDraftAdvisoryQuery,
   useLazyDeleteAdvisoryQuery,
-  useLazyPublishAdvisoryQuery
+  useLazyPublishAdvisoryQuery,
+  useLazyEditSectorQuery,
+  useLazyDeleteSectorQuery,
 } = stockApiSlice;
