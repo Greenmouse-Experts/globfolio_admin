@@ -131,7 +131,7 @@ const DraftPicks: FC<Props> = ({ data, refetch, liveRefetch }) => {
         />
       </Publish>
       <Edit title='Edit Advisory' wide>
-            <ViewPicks close={() => setShowEdit(false)} item={pick}/>
+            <ViewPicks close={() => setShowEdit(false)} refetch={refetch} item={pick}/>
       </Edit>
     </>
   );

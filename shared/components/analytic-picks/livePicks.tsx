@@ -90,7 +90,7 @@ const LivePicks:FC<Props> = ({data, refetch}) => {
         />
       </Delete>
       <Edit title='Edit Advisory' wide>
-            <ViewPicks close={() => setShowEdit(false)} item={selectedItem}/>
+            <ViewPicks close={() => setShowEdit(false)} refetch={refetch} item={selectedItem}/>
       </Edit>
     </>
   )

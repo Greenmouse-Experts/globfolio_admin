@@ -1,4 +1,4 @@
-import React, {FC} from "react";
+import React, { FC } from "react";
 import {
   FaAngleDoubleLeft,
   FaAngleDoubleRight,
@@ -15,26 +15,29 @@ import {
   usePagination,
 } from "react-table";
 import { RiEqualizerLine } from "react-icons/ri";
+import { CSVLink } from "react-csv";
+import * as XLSX from "xlsx";
 import { AiOutlineCloudDownload } from "react-icons/ai";
+import { Menu, MenuHandler, MenuItem, MenuList, Button } from "./dropdown";
 
 interface Props {
-    preGlobalFilteredRows: any,
-    globalFilter:any,
-    setGlobalFilter: any
+  preGlobalFilteredRows: any;
+  globalFilter: any;
+  setGlobalFilter: any;
 }
 
 interface Table<T extends object> {
-    columns: any;
-    data: T[];
-    updateMyData?: any;
-    skipPageReset?: boolean | undefined;
+  columns: any;
+  data: T[];
+  updateMyData?: any;
+  skipPageReset?: boolean | undefined;
 }
 
 const GlobalFilter = ({
   preGlobalFilteredRows,
   globalFilter,
   setGlobalFilter,
-}:Props) => {
+}: Props) => {
   const count = preGlobalFilteredRows.length;
   const [value, setValue] = React.useState(globalFilter);
   const onChange = useAsyncDebounce((value) => {
@@ -54,7 +57,7 @@ const GlobalFilter = ({
       />
     </div>
   );
-}
+};
 
 const Table = ({ columns, data }: Table<any>) => {
   const {
@@ -84,37 +87,63 @@ const Table = ({ columns, data }: Table<any>) => {
     useGlobalFilter,
     usePagination
   );
+  const exportCSVData = [
+    columns.map((columns: any) => columns.Header),
+    ...data.map((row) => columns.map((column: any) => row[column.accessor])),
+  ];
+  const exportToExcel = () => {
+    const ws = XLSX.utils.aoa_to_sheet(exportCSVData);
+    const wb = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(wb, ws, "Sheet1");
+    XLSX.writeFile(wb, "table_data.xlsx");
+  };
 
   return (
     <>
-        <div className="lg:flex items-center mb-5 relative z-10 w-6/12">
-          <div className="flex lg:gap-x-6">
+      <div className="lg:flex items-center mb-5 relative z-10 w-6/12">
+        <div className="flex lg:gap-x-6">
           <GlobalFilter
             preGlobalFilteredRows={preGlobalFilteredRows}
             globalFilter={state.globalFilter}
             setGlobalFilter={setGlobalFilter}
           />
           <div className="flex gap-x-4">
-              <div className="bg-[#F2F2F2] w-9 h-9 rounded shadow grid place-content-center">
-                <RiEqualizerLine className="text-xl"/>
-              </div>
-              <div className="bg-[#F2F2F2] grid w-9 h-9 rounded shadow place-content-center">
-                <AiOutlineCloudDownload className="text-xl"/>
-              </div>
-          </div>
-          </div>
-          <div className="flex justify-between relative -left-6 md:left-0 mt-3 lg:mt-0 lg:justify-end">
-            {headerGroups.map((headerGroup) =>
-              headerGroup.headers.map((column) =>
-                column.Filter ? (
-                  <div className="fs-500 px-3 py-2 " key={column.id}>
-                    {column.render("Filter")}
-                  </div>
-                ) : null
-              )
-            )}
+            {/* <div className="bg-[#F2F2F2] w-9 h-9 rounded shadow grid place-content-center">
+              <RiEqualizerLine className="text-xl" />
+            </div> */}
+            <div className="bg-[#F2F2F2]">
+              <Menu placement="bottom-end">
+                <MenuHandler>
+                  <Button className="grid w-9 h-9 rounded-lg place-content-center bg-transparent !shadow-none">
+                    <AiOutlineCloudDownload className="text-2xl text-black" />
+                  </Button>
+                </MenuHandler>
+                <MenuList className="p-2 fw-500 fs-500">
+                  <MenuItem>
+                    <CSVLink data={exportCSVData} filename="table_data.csv">
+                      Export as CSV
+                    </CSVLink>
+                  </MenuItem>
+                  <MenuItem className="p-2 fw-500 fs-500">
+                    <button onClick={exportToExcel}>Export as Excel</button>
+                  </MenuItem>
+                </MenuList>
+              </Menu>
+            </div>
           </div>
         </div>
+        <div className="flex justify-between relative -left-6 md:left-0 mt-3 lg:mt-0 lg:justify-end">
+          {headerGroups.map((headerGroup) =>
+            headerGroup.headers.map((column) =>
+              column.Filter ? (
+                <div className="fs-500 px-3 py-2 " key={column.id}>
+                  {column.render("Filter")}
+                </div>
+              ) : null
+            )
+          )}
+        </div>
+      </div>
       <div className="mt-2 flex flex-col">
         <div className="-my-2 overflow-x-auto ">
           <div className="py-2 align-middle inline-block min-w-full ">
@@ -129,7 +158,7 @@ const Table = ({ columns, data }: Table<any>) => {
                       {headerGroup.headers.map((column, index) => (
                         <th
                           scope="col"
-                        //   key={index}
+                          //   key={index}
                           className="px-2 pl-3 text-black align-middle border-b border-solid border-gray-200 py-3 fs-500 whitespace-nowrap text-left"
                           {...column.getHeaderProps()}
                         >
@@ -144,9 +173,9 @@ const Table = ({ columns, data }: Table<any>) => {
                     prepareRow(row);
                     const { key, ...restRowProps } = row.getRowProps();
                     return (
-                      <tr key={key}  {...restRowProps}>
+                      <tr key={key} {...restRowProps}>
                         {row.cells.map((cell, index) => {
-                            const { key, ...restCellProps } = cell.getCellProps();
+                          const { key, ...restCellProps } = cell.getCellProps();
                           return (
                             <td
                               className="border-b border-gray-200 align-middle fs-500 whitespace-nowrap px-2 py-4 text-left"
@@ -166,63 +195,63 @@ const Table = ({ columns, data }: Table<any>) => {
           </div>
         </div>
       </div>
-        <div className="pagination mt-8 lg:flex justify-between items-center bg-light fs-500 px-3 py-2 lg:py-2 rounded-lg">
-          <div className="flex items-center lg:w-6/12">
-            <div className="pr-5">
-              <span>
-                Page{" "}
-                <strong>
-                  {state.pageIndex + 1} of {pageOptions.length}
-                </strong>{" "}
-              </span>
-            </div>
-            <div className="w-20">
-              <select
-                value={state.pageSize}
-                onChange={(e) => {
-                  setPageSize(Number(e.target.value));
-                }}
-                className="bg-light border border-gray-400 rounded-md p-1"
-              >
-                {[5, 10, 20].map((pageSize) => (
-                  <option key={pageSize} value={pageSize}>
-                    Show {pageSize}
-                  </option>
-                ))}
-              </select>
-            </div>
+      <div className="pagination mt-8 lg:flex justify-between items-center bg-light fs-500 px-3 py-2 lg:py-2 rounded-lg">
+        <div className="flex items-center lg:w-6/12">
+          <div className="pr-5">
+            <span>
+              Page{" "}
+              <strong>
+                {state.pageIndex + 1} of {pageOptions.length}
+              </strong>{" "}
+            </span>
           </div>
-          <div className="flex lg:mt-0 mt-4 justify-center gap-2">
-            <button
-              className="border border-gray-400 w-7 h-7 grid place-content-center circle bg-primary text-white text-xl"
-              onClick={() => gotoPage(0)}
-              disabled={!canPreviousPage}
+          <div className="w-20">
+            <select
+              value={state.pageSize}
+              onChange={(e) => {
+                setPageSize(Number(e.target.value));
+              }}
+              className="bg-light border border-gray-400 rounded-md p-1"
             >
-              <FaAngleDoubleLeft />
-            </button>{" "}
-            <button
-              className="border border-gray-400 w-7 h-7 grid place-content-center circle bg-primary text-white text-xl"
-              onClick={() => previousPage()}
-              disabled={!canPreviousPage}
-            >
-              <FaAngleLeft />
-            </button>{" "}
-            <button
-              className="border border-gray-400 w-7 h-7 grid place-content-center circle bg-primary text-white text-xl"
-              onClick={() => nextPage()}
-              disabled={!canNextPage}
-            >
-              <FaAngleRight />
-            </button>{" "}
-            <button
-              className="border border-gray-400 w-7 h-7 grid place-content-center circle bg-primary text-white text-xl"
-              onClick={() => gotoPage(pageCount - 1)}
-              disabled={!canNextPage}
-            >
-              <FaAngleDoubleRight />
-            </button>
+              {[5, 10, 20].map((pageSize) => (
+                <option key={pageSize} value={pageSize}>
+                  Show {pageSize}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
+        <div className="flex lg:mt-0 mt-4 justify-center gap-2">
+          <button
+            className="border border-gray-400 w-7 h-7 grid place-content-center circle bg-primary text-white text-xl"
+            onClick={() => gotoPage(0)}
+            disabled={!canPreviousPage}
+          >
+            <FaAngleDoubleLeft />
+          </button>{" "}
+          <button
+            className="border border-gray-400 w-7 h-7 grid place-content-center circle bg-primary text-white text-xl"
+            onClick={() => previousPage()}
+            disabled={!canPreviousPage}
+          >
+            <FaAngleLeft />
+          </button>{" "}
+          <button
+            className="border border-gray-400 w-7 h-7 grid place-content-center circle bg-primary text-white text-xl"
+            onClick={() => nextPage()}
+            disabled={!canNextPage}
+          >
+            <FaAngleRight />
+          </button>{" "}
+          <button
+            className="border border-gray-400 w-7 h-7 grid place-content-center circle bg-primary text-white text-xl"
+            onClick={() => gotoPage(pageCount - 1)}
+            disabled={!canNextPage}
+          >
+            <FaAngleDoubleRight />
+          </button>
+        </div>
+      </div>
     </>
   );
 };
@@ -234,12 +263,15 @@ export default Table;
 export function SelectColumnFilter({
   column: { filterValue, setFilter, preFilteredRows, id },
   name,
-}:{column:any, name:any}) {
+}: {
+  column: any;
+  name: any;
+}) {
   // Calculate the options for filtering
   // using the preFilteredRows
   const options = React.useMemo(() => {
     const options = new Set<any>();
-    preFilteredRows.forEach((row:any) => {
+    preFilteredRows.forEach((row: any) => {
       options.add(row.values[id]);
     });
     return [...options.values()];
@@ -266,12 +298,12 @@ export function SelectColumnFilter({
   );
 }
 
-export const BooleanFilter = ({ column }:{column:any}) => {
+export const BooleanFilter = ({ column }: { column: any }) => {
   const [filterValue, setFilterValue] = React.useState(
     column.filterValue || ""
   );
 
-  const onChange = (event:any) => {
+  const onChange = (event: any) => {
     setFilterValue(event.target.value);
     column.setFilter(event.target.value || undefined);
   };

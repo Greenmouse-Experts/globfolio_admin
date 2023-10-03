@@ -160,7 +160,7 @@ const ViewSubscriptionProfile: FC<Props> = ({ item, refetchMain }) => {
             {data?.message.subscription?.subscriptionPlan && <div className="mt-2">
               <div>
                 <p className="fw-600">Subscription Duration</p>
-                <div className=" fw-500 mt-2 bg-green-100 py-1 px-2">
+                {data?.message.subscription?.subscriptionPlan.name !== "Free Plan" && <div className=" fw-500 mt-2 bg-green-100 py-1 px-2">
                   <div className="flex gap-x-2 items-center">
                     <p>
                       {dayjs(data?.message?.subscription?.createdAt).format(
@@ -178,7 +178,7 @@ const ViewSubscriptionProfile: FC<Props> = ({ item, refetchMain }) => {
                     Expires in{" "}
                     {dayjs(data?.message.subscription?.expiredAt).fromNow(true)}
                   </span>
-                </div>
+                </div>}
                 <p
                   className="mt-1 underline cursor-pointer fw-500"
                   onClick={() => setEditDuration(!editDuration)}

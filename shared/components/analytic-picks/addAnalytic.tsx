@@ -87,6 +87,7 @@ const AddAnalyticPicksForm:FC<Props> = ({refetchDraft, refetchLive}) => {
       formData.append(key, value as any);
     });
     formData.append("image", image);
+    formData.append("description", body);
     await draft(formData)
       .then((res:any) => {
         if (res.data.success) {
@@ -94,6 +95,7 @@ const AddAnalyticPicksForm:FC<Props> = ({refetchDraft, refetchLive}) => {
           toast.success('Published Successfully')
           reset()
           refetchDraft()
+          setBody('')
           setIsPosting(false);
         }else {
           toast.error(res.error.data.message)

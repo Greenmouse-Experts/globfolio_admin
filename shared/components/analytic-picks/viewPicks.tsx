@@ -17,8 +17,9 @@ const ReactQuill = dynamic(import('react-quill'), { ssr: false })
 interface Props {
   item: Advisory;
   close: () => void;
+  refetch: () => void;
 }
-const ViewPicks: FC<Props> = ({ item }) => {
+const ViewPicks: FC<Props> = ({ item, close, refetch }) => {
   const [isBusy, setIsBusy] = useState(false);
   const [image, setImage] = useState<any>();
   const [edit] = useLazyEditAdvisoryQuery();
@@ -38,6 +39,7 @@ const ViewPicks: FC<Props> = ({ item }) => {
       industry: item.industry || "",
       country: item.country || "",
       intro: item.intro || "",
+      stockAdvisoryId: item.id
       // description: item.description || "",
     },
   });
@@ -56,9 +58,9 @@ const ViewPicks: FC<Props> = ({ item }) => {
       .then((res: any) => {
         if (res.data.success) {
           toast.success(res.data.message);
-          toast.success("Editted Successfully");
           reset();
-          //   refetchLive()
+          close()
+          refetch()
           setIsBusy(false);
         } else {
           toast.error(res.error.data.message);
